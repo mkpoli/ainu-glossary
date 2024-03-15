@@ -22,7 +22,7 @@
 <table>
 	<thead>
 		<tr>
-			<th>類型</th>
+			<th>類型 / Type</th>
 			<th>日本語</th>
 			<th>English</th>
 			<th>中文</th>
@@ -33,7 +33,7 @@
 	<tbody>
 		{#each filtered as row}
 			<tr>
-				<td>{row.sheetName ?? ''}</td>
+				<td style="text-transform: capitalize;">{(row.sheetName ?? '').replace('_', ' ')}</td>
 				<td>{row.日本語 ?? ''}</td>
 				<td>{row.English ?? ''}</td>
 				<td>{row.中文 ?? ''}</td>
