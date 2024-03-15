@@ -13,8 +13,10 @@
 
 <main>
 	<h1>Tane an Aynuitak-kotupte Itak-uwoeroskip</h1>
-	<p role="doc-subtitle" lang="ja">現代アイヌ語翻訳用語集</p>
-	<p role="doc-subtitle" lang="en">Modern Ainu Translation Glossary</p>
+	<p role="doc-subtitle" lang="ja">
+		<span lang="ja">現代アイヌ語翻訳用語集</span> /
+		<span lang="en">Modern Ainu Translation Glossary</span>
+	</p>
 
 	<p>
 		Tanpe anak intennet or ta <a href={LINK} target="_blank">
@@ -67,6 +69,9 @@
 
 	h1 {
 		font-size: 2rem;
-		margin-bottom: 1rem;
+	}
+
+	p {
+		margin: 0;
 	}
 </style>
