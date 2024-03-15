@@ -26,3 +26,21 @@
 		{/each}
 	</tbody>
 </table>
+
+<style>
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1rem 0;
+	}
+
+	th,
+	td {
+		border: 1px solid #000;
+		padding: 0.5rem;
+	}
+
+	th {
+		background-color: #f0f0f0;
+	}
+</style>
