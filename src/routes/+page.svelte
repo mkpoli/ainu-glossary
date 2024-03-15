@@ -68,6 +68,13 @@
 	>
 
 	<h2>参考文献 / References</h2>
+	<p>
+		<a
+			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
+			target="_blank">Kanpimoto opitta</a
+		> nukar wa un=kore yan!
+	</p>
+
 	<p lang="ja">
 		<a
 			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
@@ -81,7 +88,43 @@
 			target="_blank">list of references</a
 		>.
 	</p>
+
+	<h2>ライセンス / License</h2>
+
+	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed">
+		<img
+			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
+			alt="CC BY-SA"
+		/>
+	</a>
+
+	<p>
+		Tan itak-uwoeroskip anak <a
+			href="https://creativecommons.org/licenses/by-sa/4.0/deed"
+			target="_blank">CC BY-SA 4.0 Deed</a
+		> sekor uweser eoripak yakun a=eywanke easkay.
+	</p>
+
+	<p lang="ja">
+		このデータは、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank"
+			>クリエイティブ・コモンズ 表示-継承 4.0 国際 ライセンス</a
+		>の下に提供されています。
+	</p>
+
+	<p lang="en">
+		This data is licensed under a <a
+			href="https://creativecommons.org/licenses/by-sa/4.0/"
+			target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a
+		>.
+	</p>
 </main>
+
+<hr />
+<footer>
+	<p>
+		© <a href="https://aynu.org/" target="_blank">Aynu.org</a> 2024
+	</p>
+</footer>
 
 <style>
 	:body {
@@ -113,5 +156,10 @@
 		padding: 0.5rem 1rem;
 		font-size: 1rem;
 		margin-top: 1rem;
+	}
+
+	footer {
+		padding: 1rem;
+		text-align: center;
 	}
 </style>
