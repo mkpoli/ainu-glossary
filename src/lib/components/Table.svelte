@@ -17,6 +17,7 @@
 <div class="query-form">
 	<label for="search">A=hunara / 検索 / Search</label>
 	<input type="text" name="" id="search" bind:value={query} />
+	<span>{filtered.length} / {data.length}</span>
 </div>
 
 <div class="table-container">
@@ -103,6 +104,10 @@
 	label {
 		display: block;
 		text-align: left;
+		white-space: nowrap;
+	}
+
+	.query-form {
 		white-space: nowrap;
 	}
 </style>
