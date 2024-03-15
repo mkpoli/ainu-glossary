@@ -54,7 +54,7 @@
 	table {
 		width: 100%;
 		border-collapse: collapse;
-		margin: 2rem 0;
+		margin: 0;
 
 		overflow-x: auto;
 	}
