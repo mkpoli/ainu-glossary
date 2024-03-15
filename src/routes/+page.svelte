@@ -66,6 +66,21 @@
 		}}
 		disabled={loading}>{loading ? '◉ データ取得中…' : '最新データを取得'}</button
 	>
+
+	<h2>参考文献 / References</h2>
+	<p lang="ja">
+		<a
+			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
+			target="_blank">参考文献の一覧</a
+		>を御覧ください。
+	</p>
+
+	<p lang="en">
+		Please see the <a
+			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
+			target="_blank">list of references</a
+		>.
+	</p>
 </main>
 
 <style>
