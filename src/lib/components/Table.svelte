@@ -5,6 +5,7 @@
 <table>
 	<thead>
 		<tr>
+			<th>類型</th>
 			<th>日本語</th>
 			<th>English</th>
 			<th>中文</th>
