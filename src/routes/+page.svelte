@@ -11,6 +11,13 @@
 	let loading = false;
 </script>
 
+<svelte:head>
+	<title>Tane an Aynuitak-kotupte Itak-uwoeroskip</title>
+	<meta name="description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
+	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uwoeroskip" />
+	<meta name="og:description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
+</svelte:head>
+
 <main>
 	<h1>Tane an Aynuitak-kotupte Itak-uwoeroskip</h1>
 	<p role="doc-subtitle" lang="ja">
