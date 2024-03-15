@@ -1,6 +1,23 @@
 <script lang="ts">
 	export let data: any;
+
+	let query: string = '';
+	let filtered: any[] = [];
+
+	$: filtered = data.filter((row: any) => {
+		return Object.values(row).some((value: any) => {
+			if (typeof value === 'string') {
+				return value.toLowerCase().includes(query.toLowerCase());
+			}
+			return false;
+		});
+	});
 </script>
+
+<div>
+	<label for="search">A=hunara / 検索 / Search</label>
+	<input type="text" name="" id="search" bind:value={query} />
+</div>
 
 <table>
 	<thead>
@@ -14,7 +31,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each data as row}
+		{#each filtered as row}
 			<tr>
 				<td>{row.sheetName ?? ''}</td>
 				<td>{row.日本語 ?? ''}</td>
@@ -42,5 +59,30 @@
 
 	th {
 		background-color: #f0f0f0;
+	}
+
+	div {
+		display: flex;
+
+		justify-content: center;
+		align-items: center;
+
+		gap: 1rem;
+
+		max-width: 30rem;
+
+		margin: 2rem auto;
+	}
+
+	input {
+		width: 100%;
+		padding: 0.5rem;
+		margin: 1rem 0;
+	}
+
+	label {
+		display: block;
+		text-align: left;
+		white-space: nowrap;
 	}
 </style>
