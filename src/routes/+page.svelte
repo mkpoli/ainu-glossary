@@ -69,9 +69,17 @@
 
 	h1 {
 		font-size: 2rem;
+
+		margin-bottom: 0.5rem;
 	}
 
 	p {
 		margin: 0;
+	}
+
+	p[role='doc-subtitle'] {
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-bottom: 2.5rem;
 	}
 </style>
