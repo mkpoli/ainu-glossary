@@ -62,6 +62,10 @@
 </main>
 
 <style>
+	:body {
+		margin: 0;
+	}
+
 	main {
 		padding: 1rem;
 		text-align: center;

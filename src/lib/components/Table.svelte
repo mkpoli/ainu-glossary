@@ -14,41 +14,49 @@
 	});
 </script>
 
-<div>
+<div class="query-form">
 	<label for="search">A=hunara / 検索 / Search</label>
 	<input type="text" name="" id="search" bind:value={query} />
 </div>
 
-<table>
-	<thead>
-		<tr>
-			<th>類型 / Type</th>
-			<th>日本語</th>
-			<th>English</th>
-			<th>中文</th>
-			<th>Aynuitak</th>
-			<th>注 / Notes</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each filtered as row}
+<div class="table-container">
+	<table>
+		<thead>
 			<tr>
-				<td style="text-transform: capitalize;">{(row.sheetName ?? '').replace('_', ' ')}</td>
-				<td>{row.日本語 ?? ''}</td>
-				<td>{row.English ?? ''}</td>
-				<td>{row.中文 ?? ''}</td>
-				<td>{row.Aynu ?? ''}</td>
-				<td>{row['註 / Notes'] ?? ''}</td>
+				<th>類型 / Type</th>
+				<th>日本語</th>
+				<th>English</th>
+				<th>中文</th>
+				<th>Aynuitak</th>
+				<th>注 / Notes</th>
 			</tr>
-		{/each}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{#each filtered as row}
+				<tr>
+					<td style="text-transform: capitalize;">{(row.sheetName ?? '').replace('_', ' ')}</td>
+					<td>{row.日本語 ?? ''}</td>
+					<td>{row.English ?? ''}</td>
+					<td>{row.中文 ?? ''}</td>
+					<td>{row.Aynu ?? ''}</td>
+					<td>{row['註 / Notes'] ?? ''}</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+</div>
 
 <style>
+	.table-container {
+		overflow-x: auto;
+	}
+
 	table {
 		width: 100%;
 		border-collapse: collapse;
 		margin: 2rem 0;
+
+		overflow-x: auto;
 	}
 
 	th,
@@ -61,7 +69,19 @@
 		background-color: #f0f0f0;
 	}
 
-	div {
+	@media (max-width: 768px) {
+		table {
+			width: 100%;
+			font-size: 0.8rem;
+		}
+
+		th,
+		td {
+			padding: 0.1rem;
+		}
+	}
+
+	.query-form {
 		display: flex;
 
 		justify-content: center;
