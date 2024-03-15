@@ -86,4 +86,10 @@
 		font-weight: bold;
 		margin-bottom: 2.5rem;
 	}
+
+	button {
+		padding: 0.5rem 1rem;
+		font-size: 1rem;
+		margin-top: 1rem;
+	}
 </style>
