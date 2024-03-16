@@ -1,23 +1,73 @@
 <script lang="ts">
-	export let data: any;
+	import Select from '$lib/components/Select.svelte';
+	import type { Writable } from 'svelte/store';
+
+	export let data: {
+		日本語?: string;
+		English?: string;
+		中文?: string;
+		Aynu?: string;
+		'註 / Notes'?: string;
+		sheetName: string;
+	}[];
 
 	let query: string = '';
 	let filtered: any[] = [];
 
-	$: filtered = data.filter((row: any) => {
-		return Object.values(row).some((value: any) => {
-			if (typeof value === 'string') {
-				return value.toLowerCase().includes(query.toLowerCase());
+	let allCategories: Map<
+		string,
+		{
+			label: string;
+			count: number;
+		}
+	>;
+	let selectedCategories: Writable<
+		{
+			value: string;
+			label: string;
+		}[]
+	>;
+	$: allCategories = new Map(
+		[...new Set(data.map((row) => row.sheetName))].map((item) => [
+			item,
+			{
+				label: item.replace('_', ' '),
+				count: data.filter((row) => row.sheetName === item).length
 			}
-			return false;
+		])
+	);
+	$: console.log('allCategories', allCategories);
+	$: console.log('selectedCategories', $selectedCategories);
+
+	$: filtered = data
+		.filter((row: any) => {
+			return $selectedCategories?.some((category) => category.value === row.sheetName);
+		})
+		.filter((row: any) => {
+			return Object.values(row).some((value: any) => {
+				if (typeof value === 'string') {
+					return value.toLowerCase().includes(query.toLowerCase());
+				}
+				return false;
+			});
 		});
-	});
 </script>
 
-<div class="query-form">
-	<label for="search">A=hunara / 検索 / Search</label>
-	<input type="text" name="" id="search" bind:value={query} />
-	<span>{filtered.length} / {data.length}</span>
+<div class="query-form-container">
+	<div class="query-form">
+		<label for="search">A=hunara / 検索 / Search</label>
+		<input type="text" name="" id="search" bind:value={query} />
+		<span>{filtered.length} / {data.length}</span>
+	</div>
+
+	<div class="query-form">
+		<Select
+			label="Isoneka / 類型 / Type"
+			options={allCategories}
+			bind:selected={selectedCategories}
+		/>
+		<span>{$selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
+	</div>
 </div>
 
 <div class="table-container">
@@ -91,8 +141,17 @@
 		gap: 1rem;
 
 		max-width: 30rem;
+	}
+
+	.query-form-container {
+		white-space: nowrap;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
 
 		margin: 2rem auto;
+		padding: 1rem;
 	}
 
 	input {
@@ -104,10 +163,6 @@
 	label {
 		display: block;
 		text-align: left;
-		white-space: nowrap;
-	}
-
-	.query-form {
 		white-space: nowrap;
 	}
 </style>
