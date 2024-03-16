@@ -1,38 +1,29 @@
-# create-svelte
+# Tane an Aynuitak-kotupte Itak-uwoeroskip / 現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-## Creating a project
+Tanpe anak intennet or ta Itak-uwoeroskip a=hunara wa a=upekare isaykare kusu aeywanke ne.
 
-If you're seeing this, you've probably already done this step. Congrats!
+This is a online web application to easily search and sort the original glossary.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+これは、元の用語集を簡単に検索して並べ替えるためのウェブアプリです。
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## 説明
 
-## Developing
+この語彙集は、アイヌ語、特に現代的なアイヌ語に、翻訳するためのグロッサリーです。昔からある表現のみならず、新語や造語を積極的に取り入れ、現代的な事物や生活を表現しうるような、分類語彙辞書である。
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+This glossary is for translating into the Ainu language, especially for modern usages. It is a categorized lexicon that actively incorporates coinage among traditional expressions, to be able to express contemporary lifestyles.
 
-```bash
-npm run dev
+## 使い方 / Usage
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+このアプリを利用するには、以下のリンクにアクセスしてください。
 
-## Building
+Acess the glossary from the following link:
 
-To create a production version of your app:
+* [Tane an Aynuitak-kotupte Itak-uwoeroskip (itak.aynu.org)](https://itak.aynu.org/)
+
+## 開発 / Development
 
 ```bash
-npm run build
+bun install
+bun dev
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
