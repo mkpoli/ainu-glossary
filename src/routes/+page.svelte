@@ -123,7 +123,7 @@
 <hr />
 <footer>
 	<p>
-		© <a href="https://aynu.org/" target="_blank">Aynu.org</a> 2024
+		© 2024 <a href="https://aynu.org/" target="_blank">Aynu.org</a>
 	</p>
 </footer>
 
