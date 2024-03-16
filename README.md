@@ -27,3 +27,7 @@ Acess the glossary from the following link:
 bun install
 bun dev
 ```
+
+## ライセンス / License
+Licensed under the [MIT License](./LICENSE).
+Copyright © 2024 mkpoli
