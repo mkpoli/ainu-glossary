@@ -19,6 +19,7 @@
 </svelte:head>
 
 <main>
+	<img src="/android-chrome-192x192.png" alt="Logo" />
 	<h1>Tane an Aynuitak-kotupte Itak-uwoeroskip</h1>
 	<p role="doc-subtitle" lang="ja">
 		<span lang="ja">現代アイヌ語翻訳用語集</span> /
@@ -139,6 +140,7 @@
 	h1 {
 		font-size: 2rem;
 
+		margin-top: 0.5rem;
 		margin-bottom: 0.5rem;
 	}
 
