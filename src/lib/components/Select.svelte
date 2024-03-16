@@ -100,9 +100,9 @@
 				on:click={() => {
 					selected.set([]);
 				}}
-				title="Inumke a=isamke / すべて選択解除 / Clear All"
+				title="Inumke a=isamka / すべて選択解除 / Clear All"
 			>
-				<span>Inumke a=isamke</span>
+				<span>Inumke a=isamka</span>
 				<span lang="ja" class="hidden" aria-hidden="false">すべて選択解除</span>
 				<span lang="en" class="hidden" aria-hidden="false">Clear All</span>
 			</button>
