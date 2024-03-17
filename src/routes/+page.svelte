@@ -65,7 +65,7 @@
 				});
 				const json = await res.json();
 
-				data.table = json.table;
+				data.table = json;
 			} catch (e) {
 				console.error(e); // eslint-disable-line no-console
 			} finally {
