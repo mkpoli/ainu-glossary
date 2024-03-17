@@ -144,7 +144,7 @@ export const POST: RequestHandler = async (request) => {
 		[] as { [key: string]: string }[]
 	);
 
-	console.log(all_content_sheets_data_flattened);
+	// console.log(all_content_sheets_data_flattened);
 
 	// Upload the result to Cloudflare R2 thourgh S3 API
 
@@ -157,5 +157,9 @@ export const POST: RequestHandler = async (request) => {
 		})
 	);
 
-	return json(all_content_sheets_data_flattened);
+	return new Response('Success', {
+		headers: {
+			'content-type': 'application/json'
+		}
+	});
 };

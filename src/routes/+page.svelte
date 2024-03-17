@@ -50,15 +50,22 @@
 			console.log('Requesting data from Google Sheets...'); // eslint-disable-line no-console
 			loading = true;
 			try {
-				const res = await fetch('/api/gdoc', {
+				await fetch('/api/gdoc', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({ link: LINK })
 				});
+
+				await new Promise((resolve) => setTimeout(resolve, 1000)); //
+
+				const res = await fetch('/api/gdoc', {
+					method: 'GET'
+				});
 				const json = await res.json();
-				data.table = json;
+
+				data.table = json.table;
 			} catch (e) {
 				console.error(e); // eslint-disable-line no-console
 			} finally {
