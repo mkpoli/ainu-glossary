@@ -267,6 +267,11 @@
 		height: 2.5rem;
 	}
 
+	img[alt='Logo'] {
+		width: 10rem;
+		height: 10rem;
+	}
+
 	@media (max-width: 768px) {
 		h1 {
 			font-size: 1.25rem;
@@ -291,7 +296,7 @@
 			margin-bottom: 0;
 		}
 
-		img {
+		img[alt='Logo'] {
 			width: 3rem;
 			height: 3rem;
 		}
