@@ -19,7 +19,11 @@
 </svelte:head>
 
 <main>
-	<img src="/android-chrome-192x192.png" alt="Logo" />
+	<picture>
+		<source srcset="/android-chrome-192x192.avif" type="image/avif" />
+		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
+		<img src="/android-chrome-192x192.png" alt="Logo" />
+	</picture>
 	<h1>Tane an Aynuitak-kotupte Itak-uwoeroskip</h1>
 	<p role="doc-subtitle" lang="ja">
 		<span lang="ja">現代アイヌ語翻訳用語集</span> /
