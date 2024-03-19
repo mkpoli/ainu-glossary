@@ -37,85 +37,78 @@
 	$: console.log('selected', $selected);
 </script>
 
-<div class="container">
-	<!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
-	<label class="label" use:melt={$label}>{labelName}</label>
-	<button class="button" use:melt={$trigger} aria-label="Food">
-		<div class="label">
-			{#if !$selected || $selected.length === 0}
-				<span>A=numke</span>
-				<span lang="ja">選択</span>
-				<span lang="en">Select</span>
-			{:else if $selected.length === 1}
-				<span>
-					{$selectedLabel}
-				</span>
-			{:else if $selected.length === options.size}
-				<span>Opitta</span>
+<!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
+<label class="label" use:melt={$label}>{labelName}</label>
+<button class="button" use:melt={$trigger} aria-label="Food">
+	<div class="label">
+		{#if !$selected || $selected.length === 0}
+			<span>A=numke</span>
+			<span lang="ja">選択</span>
+			<span lang="en">Select</span>
+		{:else if $selected.length === 1}
+			<span>
+				{$selectedLabel}
+			</span>
+		{:else if $selected.length === options.size}
+			<span>Opitta</span>
+			<span lang="ja">全て</span>
+			<span lang="en">All</span>
+		{:else}
+			<span
+				>{$selected
+					.slice(0, 3)
+					.map(({ label }) => label)
+					.join(', ')
+					.slice(0, 20)}...</span
+			>
+		{/if}
+	</div>
+</button>
+{#if $open}
+	<div class="menu" use:melt={$menu}>
+		<div class="options">
+			<button
+				class="option select-all"
+				disabled={($selected?.length ?? 0) === options.size}
+				on:click={() => {
+					selected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
+				}}
+			>
+				<span>opitta</span>
 				<span lang="ja">全て</span>
 				<span lang="en">All</span>
-			{:else}
-				<span
-					>{$selected
-						.slice(0, 3)
-						.map(({ label }) => label)
-						.join(', ')
-						.slice(0, 20)}...</span
-				>
-			{/if}
-		</div>
-	</button>
-	{#if $open}
-		<div class="menu" use:melt={$menu}>
-			<div class="options">
-				<button
-					class="option select-all"
-					disabled={($selected?.length ?? 0) === options.size}
-					on:click={() => {
-						selected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
-					}}
-				>
-					<span>opitta</span>
-					<span lang="ja">全て</span>
-					<span lang="en">All</span>
-				</button>
-				<hr use:melt={$horizontal} />
-				{#each options.entries() as [item, { label, count }]}
-					<div
-						class="option"
-						use:melt={$option({ value: item, label })}
-						class:highlighted={$isSelected(item)}
-						class:selected={$isSelected(item)}
-					>
-						<div class="check {$isSelected(item) ? 'block' : 'hidden'}">✔</div>
-
-						{label}<small>{count}</small>
-					</div>
-				{/each}
-			</div>
-
-			<hr use:melt={$horizontal} />
-			<button
-				class="option select-none"
-				on:click={() => {
-					selected.set([]);
-				}}
-				title="Inumke a=isamka / すべて選択解除 / Clear All"
-			>
-				<span>Inumke a=isamka</span>
-				<span lang="ja" class="hidden" aria-hidden="false">すべて選択解除</span>
-				<span lang="en" class="hidden" aria-hidden="false">Clear All</span>
 			</button>
+			<hr use:melt={$horizontal} />
+			{#each options.entries() as [item, { label, count }]}
+				<div
+					class="option"
+					use:melt={$option({ value: item, label })}
+					class:highlighted={$isSelected(item)}
+					class:selected={$isSelected(item)}
+				>
+					<div class="check {$isSelected(item) ? 'block' : 'hidden'}">✔</div>
+
+					{label}<small>{count}</small>
+				</div>
+			{/each}
 		</div>
-	{/if}
-</div>
+
+		<hr use:melt={$horizontal} />
+		<button
+			class="option select-none"
+			on:click={() => {
+				selected.set([]);
+			}}
+			title="Inumke a=isamka / すべて選択解除 / Clear All"
+		>
+			<span>Inumke a=isamka</span>
+			<span lang="ja" class="hidden" aria-hidden="false">すべて選択解除</span>
+			<span lang="en" class="hidden" aria-hidden="false">Clear All</span>
+		</button>
+	</div>
+{/if}
 
 <style lang="postcss">
-	.container {
-		display: contents;
-		/* gap: 1rem; */
-	}
-
 	.label {
 		display: block;
 	}
