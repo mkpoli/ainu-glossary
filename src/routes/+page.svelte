@@ -216,6 +216,32 @@
 		margin-bottom: 2.5rem;
 	}
 
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 1.25rem;
+			margin-top: 0.25rem;
+			margin-bottom: 0.25rem;
+		}
+
+		p[role='doc-subtitle'] {
+			font-size: 1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		p:not([role='doc-subtitle']) {
+			font-size: 0.75rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+
+		img {
+			width: 3rem;
+			height: 3rem;
+		}
+	}
+
 	button {
 		padding: 0.5rem 1rem;
 		font-size: 1rem;
