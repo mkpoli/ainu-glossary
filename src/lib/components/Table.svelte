@@ -120,18 +120,6 @@
 		background-color: #f0f0f0;
 	}
 
-	@media (max-width: 768px) {
-		table {
-			width: 100%;
-			font-size: 0.8rem;
-		}
-
-		th,
-		td {
-			padding: 0.1rem;
-		}
-	}
-
 	.query-form-container {
 		white-space: nowrap;
 		display: flex;
@@ -154,6 +142,34 @@
 		gap: 1rem;
 
 		max-width: 30rem;
+	}
+
+	@media (max-width: 768px) {
+		table {
+			width: 100%;
+			font-size: 0.8rem;
+		}
+
+		th,
+		td {
+			padding: 0.1rem;
+		}
+
+		.query-form {
+			flex-direction: column;
+			margin: 0.25rem;
+			gap: 0.5rem;
+		}
+
+		.query-form-container {
+			margin: 0.5rem;
+			padding: 0.5rem;
+		}
+
+		.query-form :global(input),
+		.query-form :global(button) {
+			min-width: 75vw !important;
+		}
 	}
 
 	input {

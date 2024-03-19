@@ -112,8 +112,8 @@
 
 <style lang="postcss">
 	.container {
-		display: flex;
-		gap: 1rem;
+		display: contents;
+		/* gap: 1rem; */
 	}
 
 	.label {
