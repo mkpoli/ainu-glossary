@@ -40,13 +40,14 @@
 		</a> a=hunara wa uwotutanu a=nukar easkay kuni aeywankep ne.
 	</p>
 	<p lang="en">
-		This is a online web application to easily search and sort <a href={LINK} target="_blank"
-			>the original glossary</a
+		This is a web application that allows you to easily search and sort and list the <a
+			href={LINK}
+			target="_blank">original glossary</a
 		>.
 	</p>
 	<p lang="ja">
 		これは、<a href={LINK} target="_blank">元の用語集</a
-		>を簡単に検索して並べ替えるためのウェブアプリです。
+		>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
 	</p>
 
 	{#if data.table && data.table.length && data.table.length > 0}
