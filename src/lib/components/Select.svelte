@@ -1,17 +1,11 @@
 <script lang="ts">
 	import { createSelect, createSeparator, melt } from '@melt-ui/svelte';
 
-	export let options: Map<
-		string,
-		{
-			label: string;
-			count: number;
-		}
-	>;
+	let { options, label: labelName = '', selected = $bindable(undefined) }: Props = $props();
 
 	const {
 		elements: { trigger, menu, option, label },
-		states: { selected, selectedLabel, open },
+		states: { selected: meltSelected, selectedLabel, open },
 		helpers: { isSelected }
 	} = createSelect({
 		defaultSelected: [...options.entries()].map(([value, { label }]) => ({ value, label })),
@@ -24,38 +18,48 @@
 		multiple: true
 	});
 
-	let labelName: string = '';
+	interface Props {
+		options: Map<
+			string,
+			{
+				label: string;
+				count: number;
+			}
+		>;
+		label?: string;
+		selected?: { value: string; label: string }[] | undefined;
+	}
 
-	export { labelName as label, selected };
+	$effect(() => {
+		selected = $meltSelected;
+	});
 
 	const {
 		elements: { root: horizontal }
 	} = createSeparator({
 		orientation: 'horizontal'
 	});
-
-	$: console.log('selected', $selected);
 </script>
 
-<!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
+<!-- svelte-ignore a11y_label_has_associated_control - $label contains the 'for' attribute -->
 <label class="label" use:melt={$label}>{labelName}</label>
 <button class="button" use:melt={$trigger} aria-label="Food">
 	<div class="label">
-		{#if !$selected || $selected.length === 0}
+		{#if !$meltSelected || $meltSelected.length === 0}
 			<span>A=numke</span>
 			<span lang="ja">選択</span>
 			<span lang="en">Select</span>
-		{:else if $selected.length === 1}
+		{:else if $meltSelected.length === 1}
 			<span>
 				{$selectedLabel}
 			</span>
-		{:else if $selected.length === options.size}
+		{:else if $meltSelected.length === options.size}
 			<span>Opitta</span>
 			<span lang="ja">全て</span>
 			<span lang="en">All</span>
 		{:else}
 			<span
-				>{$selected
+				>{$meltSelected
 					.slice(0, 3)
 					.map(({ label }) => label)
 					.join(', ')
@@ -69,9 +73,9 @@
 		<div class="options">
 			<button
 				class="option select-all"
-				disabled={($selected?.length ?? 0) === options.size}
-				on:click={() => {
-					selected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
+				disabled={($meltSelected?.length ?? 0) === options.size}
+				onclick={() => {
+					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
 				}}
 			>
 				<span>opitta</span>
@@ -96,8 +100,8 @@
 		<hr use:melt={$horizontal} />
 		<button
 			class="option select-none"
-			on:click={() => {
-				selected.set([]);
+			onclick={() => {
+				meltSelected.set([]);
 			}}
 			title="Inumke a=isamka / すべて選択解除 / Clear All"
 		>

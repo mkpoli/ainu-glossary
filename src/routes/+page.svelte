@@ -5,10 +5,14 @@
 	const LINK =
 		'https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 	console.log(data);
 
-	let loading = false;
+	let loading = $state(false);
 </script>
 
 <svelte:head>
@@ -50,7 +54,7 @@
 	{/if}
 
 	<button
-		on:click={async () => {
+		onclick={async () => {
 			console.log('Requesting data from Google Sheets...'); // eslint-disable-line no-console
 			loading = true;
 			try {

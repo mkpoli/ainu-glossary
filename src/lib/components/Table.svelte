@@ -1,18 +1,24 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Select from '$lib/components/Select.svelte';
 	import type { Writable } from 'svelte/store';
 
-	export let data: {
-		日本語?: string;
-		English?: string;
-		中文?: string;
-		Aynu?: string;
-		'註 / Notes'?: string;
-		sheetName: string;
-	}[];
+	interface Props {
+		data: {
+			日本語?: string;
+			English?: string;
+			中文?: string;
+			Aynu?: string;
+			'註 / Notes'?: string;
+			sheetName: string;
+		}[];
+	}
 
-	let query: string = '';
-	let filtered: any[] = [];
+	let { data }: Props = $props();
+
+	let query: string = $state('');
+	let filtered: any[] = $state([]);
 
 	let allCategories: Map<
 		string,
@@ -20,37 +26,43 @@
 			label: string;
 			count: number;
 		}
-	>;
-	let selectedCategories: Writable<
-		{
-			value: string;
-			label: string;
-		}[]
-	>;
-	$: allCategories = new Map(
-		[...new Set(data.map((row) => row.sheetName))].map((item) => [
-			item,
-			{
-				label: item.replace('_', ' '),
-				count: data.filter((row) => row.sheetName === item).length
-			}
-		])
-	);
-	$: console.log('allCategories', allCategories);
-	$: console.log('selectedCategories', $selectedCategories);
-
-	$: filtered = data
-		.filter((row: any) => {
-			return $selectedCategories?.some((category) => category.value === row.sheetName);
-		})
-		.filter((row: any) => {
-			return Object.values(row).some((value: any) => {
-				if (typeof value === 'string') {
-					return value.toLowerCase().includes(query.toLowerCase());
+	> = $derived(
+		new Map(
+			[...new Set(data.map((row) => row.sheetName))].map((item) => [
+				item,
+				{
+					label: item.replace('_', ' '),
+					count: data.filter((row) => row.sheetName === item).length
 				}
-				return false;
+			])
+		)
+	);
+
+	let selectedCategories:
+		| {
+				value: string;
+				label: string;
+		  }[]
+		| undefined = $state();
+	run(() => {
+		console.log('allCategories', allCategories);
+	});
+	$inspect('selectedCategories', selectedCategories);
+
+	run(() => {
+		filtered = data
+			.filter((row: any) => {
+				return selectedCategories?.some((category) => category.value === row.sheetName);
+			})
+			.filter((row: any) => {
+				return Object.values(row).some((value: any) => {
+					if (typeof value === 'string') {
+						return value.toLowerCase().includes(query.toLowerCase());
+					}
+					return false;
+				});
 			});
-		});
+	});
 </script>
 
 <div class="query-form-container">
@@ -66,7 +78,7 @@
 			options={allCategories}
 			bind:selected={selectedCategories}
 		/>
-		<span>{$selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
+		<span>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
 	</div>
 </div>
 
