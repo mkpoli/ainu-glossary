@@ -40,9 +40,9 @@
 		</a> a=hunara wa uwotutanu a=nukar easkay kuni aeywankep ne.
 	</p>
 	<p lang="en">
-		This is a web application that allows you to easily search, sort, and list the <a
+		This is a web application that allows you to easily search, sort, and list <a
 			href={LINK}
-			target="_blank">original glossary</a
+			target="_blank">the original glossary</a
 		>.
 	</p>
 	<p lang="ja">
