@@ -37,7 +37,7 @@
 	<p>
 		Tanpe anak intennet or ta <a href={LINK} target="_blank">
 			<i>Itak-uwoeroskip</i>
-		</a> a=hunara wa a=upekare isaykare kusu aeywanke ne.
+		</a> a=hunara wa uwotutanu a=nukar easkay kuni aeywankep ne.
 	</p>
 	<p lang="en">
 		This is a online web application to easily search and sort <a href={LINK} target="_blank"
