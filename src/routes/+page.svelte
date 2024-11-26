@@ -114,6 +114,7 @@
 	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed">
 		<img
 			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
+			height="50"
 			alt="CC BY-SA"
 		/>
 	</a>
