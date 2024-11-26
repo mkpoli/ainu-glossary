@@ -68,9 +68,12 @@
 	});
 </script>
 
-<div class="query-form-container">
-	<div class="query-form">
-		<label for="search" style="display: flex; align-items: center; gap: 0.5rem;">
+<div
+	class="query-form-container"
+	style="display: grid; grid-template-columns: auto 1fr auto 1fr; width: max-content; text-align:left;"
+>
+	<div class="query-form" style="display: contents;">
+		<label for="search" style="display: contents;">
 			<MaterialSymbolsSearch />
 			Ihunara / 検索 / Search
 		</label>
@@ -78,8 +81,12 @@
 		<span>{filtered.length} / {data.length}</span>
 	</div>
 
-	<div class="query-form">
-		<Select options={allCategories} bind:selected={selectedCategories}>
+	<div class="query-form" style="display: contents;">
+		<Select
+			options={allCategories}
+			bind:selected={selectedCategories}
+			labelStyle="display: contents;"
+		>
 			<MaterialSymbolsCategoryOutline />
 			Isoneka / 類型 / Type
 		</Select>

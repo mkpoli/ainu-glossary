@@ -6,6 +6,8 @@
 		options,
 		label: labelName = '',
 		selected = $bindable(undefined),
+		labelClass = '',
+		labelStyle = '',
 		children
 	}: Props = $props();
 
@@ -33,6 +35,8 @@
 			}
 		>;
 		label?: string;
+		labelClass?: string;
+		labelStyle?: string;
 		selected?: { value: string; label: string }[] | undefined;
 		children?: Snippet<[]>;
 	}
@@ -49,7 +53,9 @@
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control - $label contains the 'for' attribute -->
-<label class="label" use:melt={$label}>{@render children?.()}{labelName}</label>
+<label class="label {labelClass}" style={labelStyle} use:melt={$label}
+	>{@render children?.()}{labelName}</label
+>
 <button class="button" use:melt={$trigger} aria-label="Food">
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
