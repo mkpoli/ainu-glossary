@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { createSelect, createSeparator, melt } from '@melt-ui/svelte';
+	import type { Snippet } from 'svelte';
 
-	let { options, label: labelName = '', selected = $bindable(undefined) }: Props = $props();
+	let {
+		options,
+		label: labelName = '',
+		selected = $bindable(undefined),
+		children
+	}: Props = $props();
 
 	const {
 		elements: { trigger, menu, option, label },
@@ -28,6 +34,7 @@
 		>;
 		label?: string;
 		selected?: { value: string; label: string }[] | undefined;
+		children?: Snippet<[]>;
 	}
 
 	$effect(() => {
@@ -42,7 +49,7 @@
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control - $label contains the 'for' attribute -->
-<label class="label" use:melt={$label}>{labelName}</label>
+<label class="label" use:melt={$label}>{@render children?.()}{labelName}</label>
 <button class="button" use:melt={$trigger} aria-label="Food">
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
