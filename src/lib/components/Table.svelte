@@ -71,7 +71,7 @@
 	<div class="query-form">
 		<label for="search" style="display: flex; align-items: center; gap: 0.5rem;">
 			<MaterialSymbolsSearch />
-			A=hunara / 検索 / Search
+			Ihunara / 検索 / Search
 		</label>
 		<input type="text" name="" id="search" bind:value={query} />
 		<span>{filtered.length} / {data.length}</span>
