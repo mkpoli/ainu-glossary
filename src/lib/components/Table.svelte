@@ -5,6 +5,7 @@
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
 	import Select from '$lib/components/Select.svelte';
+	import Localized from '$lib/Localized.svelte';
 
 	interface Props {
 		data: {
@@ -74,7 +75,7 @@
 	<div class="query-form" style="display: contents;">
 		<label for="search" style="display: contents;">
 			<MaterialSymbolsSearch />
-			Ihunara / 検索 / Search
+			<Localized eng="Search" ain="Ihunara" jap="検索" />
 		</label>
 		<input type="text" name="" id="search" bind:value={query} />
 		<span>{filtered.length} / {data.length}</span>
@@ -87,7 +88,7 @@
 			labelStyle="display: contents;"
 		>
 			<MaterialSymbolsCategoryOutline />
-			Katekori / 分類 / Categories
+			<Localized ain="Katekori" jap="分類" eng="Categories" />
 		</Select>
 		<span>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
 	</div>
