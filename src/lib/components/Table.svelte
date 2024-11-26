@@ -6,6 +6,7 @@
 
 	import Select from '$lib/components/Select.svelte';
 	import Localized from '$lib/Localized.svelte';
+	import SearchableLink from '$lib/components/SearchableLink.svelte';
 
 	interface Props {
 		data: {
@@ -113,7 +114,7 @@
 					<td>{row.日本語 ?? ''}</td>
 					<td>{row.English ?? ''}</td>
 					<td>{row.中文 ?? ''}</td>
-					<td>{row.Aynu ?? ''}</td>
+					<td><SearchableLink content={row.Aynu ?? ''} /></td>
 					<td>{row['註 / Notes'] ?? ''}</td>
 				</tr>
 			{/each}
