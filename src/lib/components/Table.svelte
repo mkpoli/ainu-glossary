@@ -2,6 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import MaterialSymbolsSearch from '~icons/material-symbols/search';
+	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
 	import Select from '$lib/components/Select.svelte';
 	import type { Writable } from 'svelte/store';
@@ -78,11 +79,10 @@
 	</div>
 
 	<div class="query-form">
-		<Select
-			label="Isoneka / 類型 / Type"
-			options={allCategories}
-			bind:selected={selectedCategories}
-		/>
+		<Select options={allCategories} bind:selected={selectedCategories}>
+			<MaterialSymbolsCategoryOutline />
+			Isoneka / 類型 / Type
+		</Select>
 		<span>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
 	</div>
 </div>
