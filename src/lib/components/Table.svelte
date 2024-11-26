@@ -5,7 +5,6 @@
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
 	import Select from '$lib/components/Select.svelte';
-	import type { Writable } from 'svelte/store';
 
 	interface Props {
 		data: {
