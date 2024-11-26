@@ -7,7 +7,7 @@
 	import Select from '$lib/components/Select.svelte';
 	import Localized from '$lib/Localized.svelte';
 	import SearchableLink from '$lib/components/SearchableLink.svelte';
-
+	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	interface Props {
 		data: {
 			日本語?: string;
@@ -111,9 +111,9 @@
 			{#each filtered as row}
 				<tr>
 					<td style="text-transform: capitalize;">{(row.sheetName ?? '').replace('_', ' ')}</td>
-					<td>{row.日本語 ?? ''}</td>
-					<td>{row.English ?? ''}</td>
-					<td>{row.中文 ?? ''}</td>
+					<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
+					<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
+					<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
 					<td><SearchableLink content={row.Aynu ?? ''} /></td>
 					<td>{row['註 / Notes'] ?? ''}</td>
 				</tr>
