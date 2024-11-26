@@ -1,7 +1,7 @@
-# Tane an Aynuitak-kotupte Itak-uwoeroskip / 現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary
+# Tane an Aynuitak-kotupte Itak-uoeroskip / 現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary
 
 
-Tanpe anak intennet or ta Itak-uwoeroskip a=hunara wa a=upekare isaykare kusu aeywanke ne.
+Tanpe anak intennet or ta Itak-uoeroskip a=hunara wa a=upekare isaykare kusu aeywanke ne.
 
 This is a online web application to easily search and sort the original glossary.
 
@@ -19,7 +19,7 @@ This glossary is for translating into the Ainu language, especially for modern u
 
 Acess the glossary from the following link:
 
-* [Tane an Aynuitak-kotupte Itak-uwoeroskip (itak.aynu.org)](https://itak.aynu.org/)
+* [Tane an Aynuitak-kotupte Itak-uoeroskip (itak.aynu.org)](https://itak.aynu.org/)
 
 ## 開発 / Development
 

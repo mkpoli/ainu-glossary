@@ -20,9 +20,9 @@
 </script>
 
 <svelte:head>
-	<title>Tane an Aynuitak-kotupte Itak-uwoeroskip</title>
+	<title>Tane an Aynuitak-kotupte Itak-uoeroskip</title>
 	<meta name="description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
-	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uwoeroskip" />
+	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uoeroskip" />
 	<meta name="og:description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
 </svelte:head>
 
@@ -32,7 +32,7 @@
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
 		<img src="/android-chrome-192x192.png" alt="Logo" />
 	</picture>
-	<h1>Tane an Aynuitak-kotupte Itak-uwoeroskip</h1>
+	<h1>Tane an Aynuitak-kotupte Itak-uoeroskip</h1>
 	<p role="doc-subtitle" lang="ja">
 		<span lang="ja">現代アイヌ語翻訳用語集</span> /
 		<span lang="en">Modern Ainu Translation Glossary</span>
@@ -40,8 +40,8 @@
 
 	<p>
 		Tanpe anak intennet or ta <a href={LINK} target="_blank">
-			<i>Itak-uwoeroskip</i>
-		</a> a=hunara wa uwotutanu a=nukar easkay kuni aeywankep ne.
+			<i>Itak-uoeroskip</i>
+		</a> a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne.
 	</p>
 	<p lang="en">
 		This is a web application that allows you to easily search, sort, and list <a
@@ -121,7 +121,7 @@
 	</a>
 
 	<p>
-		Tan itak-uwoeroskip anak <a
+		Tan itak-uoeroskip anak <a
 			href="https://creativecommons.org/licenses/by-sa/4.0/deed"
 			target="_blank">CC BY-SA 4.0 Deed</a
 		> sekor uwesere eoripak yakun a=eywanke easkay.
@@ -171,7 +171,7 @@
 			<a href="https://wiki.aynu.org/" target="_blank">Aynuwiki</a>
 		</li>
 		<!-- * [https://dict.aynu.org/ Aynuitak-Eonnekunnep -{(dict.aynu.org)}-]
-		* [https://itak.aynu.org/ Tane an Aynuitak-kotupte Itak-uwoeroskip -{(itak.aynu.org)}-]
+		* [https://itak.aynu.org/ Tane an Aynuitak-kotupte Itak-uoeroskip -{(itak.aynu.org)}-]
 		* [https://site.aynu.org/ Aynuitak Inuypa Ukosammaani Sayto -{(site.aynu.org)}-] -->
 		<li>
 			<a href="https://dict.aynu.org/" target="_blank">Aynuitak-Eonnekunnep</a>
