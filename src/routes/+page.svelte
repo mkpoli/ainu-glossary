@@ -88,11 +88,11 @@
 		disabled={loading}>{loading ? '◉ データ取得中…' : '最新データを取得'}</button
 	>
 
-	<h2><Localized ain="Kanpimoto" jap="参考文献" eng="References" /></h2>
+	<h2><Localized ain="Kampimoto" jap="参考文献" eng="References" /></h2>
 	<p>
 		<a
 			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
-			target="_blank">Kanpimoto opitta</a
+			target="_blank">Kampimoto opitta</a
 		> nukar wa un=kore yan!
 	</p>
 
