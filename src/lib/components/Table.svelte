@@ -88,7 +88,7 @@
 			labelStyle="display: contents;"
 		>
 			<MaterialSymbolsCategoryOutline />
-			Isoneka / 類型 / Type
+			Katekori / 分類 / Categories
 		</Select>
 		<span>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
 	</div>
