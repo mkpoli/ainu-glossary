@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
+	import MaterialSymbolsSearch from '~icons/material-symbols/search';
+
 	import Select from '$lib/components/Select.svelte';
 	import type { Writable } from 'svelte/store';
 
@@ -67,7 +69,10 @@
 
 <div class="query-form-container">
 	<div class="query-form">
-		<label for="search">A=hunara / 検索 / Search</label>
+		<label for="search" style="display: flex; align-items: center; gap: 0.5rem;">
+			<MaterialSymbolsSearch />
+			A=hunara / 検索 / Search
+		</label>
 		<input type="text" name="" id="search" bind:value={query} />
 		<span>{filtered.length} / {data.length}</span>
 	</div>
