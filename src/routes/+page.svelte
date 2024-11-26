@@ -110,7 +110,7 @@
 		>.
 	</p>
 
-	<h2><Localized ain="Uwesere" jap="ライセンス" eng="License" /></h2>
+	<h2><Localized ain="Uesere" jap="ライセンス" eng="License" /></h2>
 
 	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed">
 		<img
@@ -124,7 +124,7 @@
 		Tan itak-uoeroskip anak <a
 			href="https://creativecommons.org/licenses/by-sa/4.0/deed"
 			target="_blank">CC BY-SA 4.0 Deed</a
-		> sekor uwesere eoripak yakun a=eywanke easkay.
+		> sekor uesere eoripak yakun a=eywanke easkay.
 	</p>
 
 	<p lang="ja">
