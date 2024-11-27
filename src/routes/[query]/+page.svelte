@@ -15,7 +15,7 @@
 	</a>
 {/snippet}
 
-<main>
+<main class="max-w-prose mx-auto p-4 flex flex-col gap-6">
 	{@render goBack()}
 	<h1 class="text-2xl font-bold">
 		<Localized separator="<br/>">
@@ -35,10 +35,10 @@
 		</Localized>
 	</h1>
 
-	<output>
+	<output class="flex flex-col gap-6">
 		{#each data.found as item}
-			<section>
-				<h2>{item.Aynu}</h2>
+			<section class="px-6 py-4 shadow-hard border border-black">
+				<h2 class="m-0">{item.Aynu}</h2>
 				<p lang="en">{item.English}</p>
 				<p lang="ja">{item.日本語}</p>
 				<p lang="zh">{item.中文}</p>
@@ -47,27 +47,3 @@
 	</output>
 	{@render goBack()}
 </main>
-
-<style>
-	main {
-		max-width: 80ch;
-		margin: 0 auto;
-
-		padding: 1rem;
-
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	output {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	section {
-		padding: 1rem 2rem;
-		box-shadow: 0 0 0 1px black;
-	}
-</style>
