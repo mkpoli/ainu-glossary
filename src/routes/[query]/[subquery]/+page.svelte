@@ -17,13 +17,13 @@
 </script>
 
 <svelte:head>
-	<title>{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</title>
+	<title>{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</title>
 
-	<meta name="description" content={DESCRIPTIONS[data.query].replace('{word}', data.subquery)} />
+	<meta name="description" content={DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)} />
 </svelte:head>
 
-<h1 class="m-0">{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</h1>
-<p>{DESCRIPTIONS[data.query].replace('{word}', data.subquery)}</p>
+<h1 class="m-0">{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</h1>
+<p>{DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)}</p>
 
 <output class="flex flex-col gap-6">
 	{#each data.found as item}

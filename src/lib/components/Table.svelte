@@ -27,7 +27,7 @@
 			[...new Set(data.map((row) => row.sheetName))].map((item) => [
 				item,
 				{
-					label: item.replace('_', ' '),
+					label: item.replaceAll('_', ' '),
 					count: data.filter((row) => row.sheetName === item).length
 				}
 			])
