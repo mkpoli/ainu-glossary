@@ -14,8 +14,24 @@
 {/snippet}
 
 <main>
-	{@render goBackButton()}
-	<h1>{data.query}</h1>
+	{@render goBack()}
+	<h1 class="text-2xl font-bold">
+		<Localized separator="<br/>">
+			{#snippet ain()}
+				<span class="italic">{data.query}</span> a=hunara wa oka p
+			{/snippet}
+			{#snippet jap()}
+				<span class="font-normal text-lg">
+					アイヌ語<span class="italic">{data.query}</span>の意味とは？
+				</span>
+			{/snippet}
+			{#snippet eng()}
+				<span class="font-normal text-lg">
+					What does <span class="italic">{data.query}</span> mean in Ainu?
+				</span>
+			{/snippet}
+		</Localized>
+	</h1>
 
 	<output>
 		{#each data.found as item}
@@ -27,7 +43,7 @@
 			</section>
 		{/each}
 	</output>
-	{@render goBackButton()}
+	{@render goBack()}
 </main>
 
 <style>

@@ -1,7 +1,30 @@
 <script lang="ts">
-	let { ain, eng, jap }: { ain: string; eng: string; jap: string } = $props();
+	import type { Snippet } from 'svelte';
+	let {
+		ain,
+		eng,
+		jap,
+		separator = ' / '
+	}: {
+		ain: string | Snippet<[]>;
+		eng: string | Snippet<[]>;
+		jap: string | Snippet<[]>;
+		separator?: string;
+	} = $props();
 </script>
 
+{#snippet stringOrSnippet(value: string | Snippet<[]>)}
+	{#if typeof value === 'string'}
+		{value}
+	{:else}
+		{@render value()}
+	{/if}
+{/snippet}
+
 <span>
-	{ain} / <span lang="en">{eng}</span> / <span lang="ja">{jap}</span>
+	{@render stringOrSnippet(ain)}
+	{@html separator}
+	<span lang="en">{@render stringOrSnippet(eng)}</span>
+	{@html separator}
+	<span lang="ja">{@render stringOrSnippet(jap)}</span>
 </span>
