@@ -116,20 +116,32 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each filtered as row}
+			{#if filtered.length === 0}
 				<tr>
-					<td
-						class="capitalize"
-						title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
-							formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
+					<td colspan="6" class="text-center"
+						><Localized
+							ain="A=hunara hike ka isam"
+							jpn="検索結果がありません"
+							eng="No results found"
+						/></td
 					>
-					<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
-					<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
-					<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
-					<td><SearchableLink content={row.Aynu ?? ''} /></td>
-					<td>{row['註 / Notes'] ?? ''}</td>
 				</tr>
-			{/each}
+			{:else}
+				{#each filtered as row}
+					<tr>
+						<td
+							class="capitalize"
+							title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
+								formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
+						>
+						<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
+						<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
+						<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
+						<td><SearchableLink content={row.Aynu ?? ''} /></td>
+						<td>{row['註 / Notes'] ?? ''}</td>
+					</tr>
+				{/each}
+			{/if}
 		</tbody>
 	</table>
 </div>
