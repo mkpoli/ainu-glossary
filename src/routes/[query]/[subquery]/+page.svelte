@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SearchResultCard from '$lib/components/SearchResultCard.svelte';
+
 	let { data } = $props();
 
 	const TRANSLATIONS = {
@@ -25,11 +27,6 @@
 
 <output class="flex flex-col gap-6">
 	{#each data.found as item}
-		<section class="px-6 py-4 shadow-hard border border-black">
-			<h2 lang="ain" class="m-0">{item.Aynu}</h2>
-			<p lang="en">{item.English}</p>
-			<p lang="ja">{item.日本語}</p>
-			<p lang="zh">{item.中文}</p>
-		</section>
+		<SearchResultCard {item} />
 	{/each}
 </output>
