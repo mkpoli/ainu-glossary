@@ -28,7 +28,7 @@
 	<meta name="og:description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
 </svelte:head>
 
-<main>
+<main class="flex flex-col items-center justify-center gap-1">
 	<picture>
 		<source srcset="/android-chrome-192x192.avif" type="image/avif" />
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
@@ -108,10 +108,10 @@
 
 	<h2><Localized ain="Uesere" jap="ライセンス" eng="License" /></h2>
 
-	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed">
+	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed" class="my-2">
 		<img
 			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
-			height="50"
+			class="h-12"
 			alt="CC BY-SA"
 		/>
 	</a>
@@ -158,7 +158,7 @@
 		</a>
 	</div>
 
-	<ul>
+	<ul class="my-4">
 		<li></li>
 		<li>
 			<a href="https://aynu.org/" target="_blank">Aynu.org</a>
