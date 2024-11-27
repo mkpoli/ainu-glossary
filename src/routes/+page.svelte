@@ -64,6 +64,28 @@
 			これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
 			>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
 		</p>
+
+		<details class="my-4 flex flex-col gap-4 max-w-prose mx-auto text-center">
+			<summary>
+				<Localized ain="Uepeker" jpn="詳細" eng="Details" />
+			</summary>
+			<div class="flex flex-col gap-2 text-justify">
+				<p>
+					Tan itak-uoeroskip anakne tane an Aynuitak hene koitaktupte kuni p ne. Teeta wano oka
+					iporse patek somo ne no asir itak ne yakka a=kar itak ne yakka ci=omare wa kusu tane an pe
+					a=ye wa kesto an kor a=eywanke easkay kuni iesoye cinumkekampi ne ruwe ne.
+				</p>
+				<p lang="ja">
+					この語彙集は、アイヌ語、特に現代的なアイヌ語に、翻訳するためのグロッサリーです。昔からある表現のみならず、新語や造語を積極的に取り入れ、現代的な事物や生活を表現しうるような、分類語彙対訳辞書である。
+				</p>
+				<p lang="en">
+					This glossary is for translating into the Ainu language, particularly for modern usages.
+					It is a categorized multilingual lexicon that actively incorporates coinage besides
+					traditional expressions, enabling the expression of modern objects and contemporary
+					lifestyles.
+				</p>
+			</div>
+		</details>
 	</div>
 
 	{#if data.table && data.table.length && data.table.length > 0}
