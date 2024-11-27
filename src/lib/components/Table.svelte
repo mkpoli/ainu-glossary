@@ -5,7 +5,7 @@
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
 	import Select from '$lib/components/Select.svelte';
-	import Localized from '$lib/Localized.svelte';
+	import Localized from '$lib/components/Localized.svelte';
 	import SearchableLink from '$lib/components/SearchableLink.svelte';
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	interface Props {

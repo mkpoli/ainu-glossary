@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Localized from '$lib/Localized.svelte';
+	import Localized from '$lib/components/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
 	import type { Snippet } from 'svelte';
 

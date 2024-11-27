@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Localized from '$lib/Localized.svelte';
+	import Localized from '$lib/components/Localized.svelte';
 	import type { PageData } from './$types';
 	let { data }: { data: PageData } = $props();
 </script>

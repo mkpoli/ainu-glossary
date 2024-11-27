@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Table from '$lib/components/Table.svelte';
-	import Localized from '$lib/Localized.svelte';
+	import Localized from '$lib/components/Localized.svelte';
 	import type { PageData } from './$types';
 
 	import GitHub from '~icons/simple-icons/github';
