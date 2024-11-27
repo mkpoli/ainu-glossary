@@ -8,6 +8,8 @@
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
+	import { browser } from '$app/environment';
+	import SearchResultCard from './SearchResultCard.svelte';
 
 	interface Props {
 		data: Entry[];
@@ -59,7 +61,15 @@
 				});
 			})
 	);
+
+	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
+	$inspect('isLargeScreen', isLargeScreen);
+
+	let groupedBySheetName = $derived(Object.groupBy(data, (row) => row.sheetName));
+	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
+
+<svelte:window on:resize={() => (isLargeScreen = browser ? window.innerWidth >= 768 : false)} />
 
 <div
 	class="query-form-container flex flex-col md:grid md:grid-cols-[auto_1fr_1.5fr_1fr] w-full md:w-max md:text-left gap-2 md:gap-4 md:items-center mb-10 md:whitespace-nowrap"
@@ -97,46 +107,73 @@
 </div>
 
 <div class="overflow-x-auto w-full">
-	<table class="w-full border-collapse m-0 overflow-x-auto text-sm md:text-base">
-		<thead>
-			<tr>
-				<th>類型 / Type</th>
-				<th>日本語</th>
-				<th>English</th>
-				<th>中文</th>
-				<th>Aynuitak</th>
-				<th>注 / Notes</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#if filtered.length === 0}
+	{#if isLargeScreen}
+		<table class="w-full border-collapse m-0 overflow-x-auto text-sm md:text-base">
+			<thead>
 				<tr>
-					<td colspan="6" class="text-center"
-						><Localized
+					<th>類型 / Type</th>
+					<th>日本語</th>
+					<th>English</th>
+					<th>中文</th>
+					<th>Aynuitak</th>
+					<th>注 / Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#if filtered.length === 0}
+					<tr>
+						<td colspan="6" class="text-center"
+							><Localized
+								ain="A=hunara hike ka isam"
+								jpn="検索結果がありません"
+								eng="No results found"
+							/></td
+						>
+					</tr>
+				{:else}
+					{#each filtered as row}
+						<tr>
+							<td
+								class="capitalize"
+								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
+									formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
+							>
+							<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
+							<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
+							<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
+							<td><SearchableLink content={row.Aynu ?? ''} /></td>
+							<td>{row['註 / Notes'] ?? ''}</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
+		</table>
+	{:else}
+		<div class="flex flex-col">
+			{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
+				<h2 class="m-0 capitalize my-2">{sheetName.replaceAll('_', ' ')}</h2>
+				{#if rows}
+					{#each rows as row}
+						<div class="border border-black p-2">
+							<h3 class="m-0 font-bold">{row.Aynu}</h3>
+							<p title="English">{row.English}</p>
+							<p title="日本語">{row.日本語}</p>
+							<p title="中文">{row.中文}</p>
+							<p title="註 / Notes">{row['註 / Notes']}</p>
+						</div>
+					{/each}
+				{:else}
+					<p>
+						<Localized
 							ain="A=hunara hike ka isam"
 							jpn="検索結果がありません"
 							eng="No results found"
-						/></td
-					>
-				</tr>
-			{:else}
-				{#each filtered as row}
-					<tr>
-						<td
-							class="capitalize"
-							title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
-								formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
-						>
-						<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
-						<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
-						<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
-						<td><SearchableLink content={row.Aynu ?? ''} /></td>
-						<td>{row['註 / Notes'] ?? ''}</td>
-					</tr>
-				{/each}
-			{/if}
-		</tbody>
-	</table>
+						/>
+					</p>
+				{/if}
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss">
