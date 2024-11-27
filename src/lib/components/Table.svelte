@@ -103,7 +103,7 @@
 	</div>
 </div>
 
-<div class="overflow-x-auto">
+<div class="overflow-x-auto w-full">
 	<table class="w-full border-collapse m-0 overflow-x-auto text-sm md:text-base">
 		<thead>
 			<tr>
