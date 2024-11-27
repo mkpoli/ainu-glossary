@@ -65,13 +65,13 @@
 >
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
-			<Localized ain="A=numke" jap="選択" eng="Select" />
+			<Localized ain="A=numke" jpn="選択" eng="Select" />
 		{:else if $meltSelected.length === 1}
 			<span>
 				{$selectedLabel}
 			</span>
 		{:else if $meltSelected.length === options.size}
-			<Localized ain="Opitta" jap="全て" eng="All" />
+			<Localized ain="Opitta" jpn="全て" eng="All" />
 		{:else}
 			<span
 				>{$meltSelected
@@ -96,7 +96,7 @@
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
 				}}
 			>
-				<Localized ain="Opitta" jap="全て" eng="All" />
+				<Localized ain="Opitta" jpn="全て" eng="All" />
 			</button>
 			<hr use:melt={$horizontal} />
 			{#each options.entries() as [item, { label, count }]}

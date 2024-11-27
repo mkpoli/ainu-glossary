@@ -83,15 +83,15 @@
 	>
 		{#if loading}
 			<LineMdDownloadingLoop width="1.25em" height="1.25em" />
-			<Localized ain="Tatum a=etokoyki kor an" jap="データを準備中" eng="Preparing data" />
+			<Localized ain="Tatum a=etokoyki kor an" jpn="データを準備中" eng="Preparing data" />
 		{:else}
 			<Download width="1.25em" height="1.25em" />
-			<Localized ain="Tatum ranke" jap="データをダウンロード" eng="Download data" />
+			<Localized ain="Tatum ranke" jpn="データをダウンロード" eng="Download data" />
 		{/if}
 	</button>
 
 	<h2>
-		<Localized ain="Kampimoto" jap="参考文献" eng="References" />
+		<Localized ain="Kampimoto" jpn="参考文献" eng="References" />
 	</h2>
 	<p>
 		<a
@@ -114,7 +114,7 @@
 		>.
 	</p>
 
-	<h2><Localized ain="Uesere" jap="ライセンス" eng="License" /></h2>
+	<h2><Localized ain="Uesere" jpn="ライセンス" eng="License" /></h2>
 
 	<a href="https://creativecommons.org/licenses/by-sa/4.0/deed" class="my-2">
 		<img
@@ -144,7 +144,7 @@
 		>.
 	</p>
 
-	<h2><Localized ain="Rinko" jap="リンク" eng="Links" /></h2>
+	<h2><Localized ain="Rinko" jpn="リンク" eng="Links" /></h2>
 	<div class="flex justify-center items-center gap-4">
 		<a
 			class="flex justify-center items-center text-neutral-600 hover:text-black"

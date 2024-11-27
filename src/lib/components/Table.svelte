@@ -74,7 +74,7 @@
 	<div class="query-form contents">
 		<label for="search" class="flex items-center justify-start gap-2 md:contents">
 			<MaterialSymbolsSearch />
-			<Localized eng="Search" ain="Ihunara" jap="検索" />
+			<Localized eng="Search" ain="Ihunara" jpn="検索" />
 		</label>
 		<input
 			type="text"
@@ -95,7 +95,7 @@
 			labelClass="flex items-center justify-start gap-2 md:contents"
 		>
 			<MaterialSymbolsCategoryOutline />
-			<Localized ain="Katekori" jap="分類" eng="Categories" />
+			<Localized ain="Katekori" jpn="分類" eng="Categories" />
 		</Select>
 		<span class="text-xs text-right md:text-base md:text-left"
 			>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span

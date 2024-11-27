@@ -3,12 +3,12 @@
 	let {
 		ain,
 		eng,
-		jap,
+		jpn,
 		separator = ' / '
 	}: {
 		ain: string | Snippet<[]>;
 		eng: string | Snippet<[]>;
-		jap: string | Snippet<[]>;
+		jpn: string | Snippet<[]>;
 		separator?: string;
 	} = $props();
 </script>
@@ -26,5 +26,5 @@
 	{@html separator}
 	<span lang="en">{@render stringOrSnippet(eng)}</span>
 	{@html separator}
-	<span lang="ja">{@render stringOrSnippet(jap)}</span>
+	<span lang="ja">{@render stringOrSnippet(jpn)}</span>
 </span>

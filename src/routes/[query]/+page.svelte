@@ -10,7 +10,7 @@
 		{#snippet ain()}
 			<span class="italic">{data.query}</span> a=hunara wa oka p
 		{/snippet}
-		{#snippet jap()}
+		{#snippet jpn()}
 			<span class="font-normal text-lg">
 				アイヌ語<span class="italic">{data.query}</span>の意味とは？
 			</span>
