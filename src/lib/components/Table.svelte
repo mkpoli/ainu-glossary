@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import MaterialSymbolsSearch from '~icons/material-symbols/search';
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
@@ -25,7 +23,20 @@
 	let { data, sheets }: Props = $props();
 
 	let query: string = $state('');
-	let filtered: any[] = $state([]);
+	let filtered = $derived(
+		data
+			.filter((row: any) => {
+				return selectedCategories?.some((category) => category.value === row.sheetName);
+			})
+			.filter((row: any) => {
+				return Object.values(row).some((value: any) => {
+					if (typeof value === 'string') {
+						return value.toLowerCase().includes(query.toLowerCase());
+					}
+					return false;
+				});
+			})
+	);
 
 	let allCategories: Map<
 		string,
@@ -51,25 +62,9 @@
 				label: string;
 		  }[]
 		| undefined = $state();
-	run(() => {
-		console.log('allCategories', allCategories);
-	});
-	$inspect('selectedCategories', selectedCategories);
 
-	run(() => {
-		filtered = data
-			.filter((row: any) => {
-				return selectedCategories?.some((category) => category.value === row.sheetName);
-			})
-			.filter((row: any) => {
-				return Object.values(row).some((value: any) => {
-					if (typeof value === 'string') {
-						return value.toLowerCase().includes(query.toLowerCase());
-					}
-					return false;
-				});
-			});
-	});
+	$inspect('allCategories', allCategories);
+	$inspect('selectedCategories', selectedCategories);
 </script>
 
 <div
