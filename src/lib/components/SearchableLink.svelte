@@ -12,11 +12,11 @@
 					{#if ['a', 'an', '='].includes(part)}
 						{part}
 					{:else}
-						<a href={`/${part}`}>{part}</a>
+						<a href={`/${part}`} tabindex="-1">{part}</a>
 					{/if}
 				{/each}
 			{:else}
-				<a href={`/${word}`}>{word}</a>
+				<a href={`/${word}`} tabindex="-1">{word}</a>
 			{/if}
 			<!--       
 				{#if word.split('=')[0] === 'a'}

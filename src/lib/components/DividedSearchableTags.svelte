@@ -8,7 +8,7 @@
 		{#if segment.segment.match(/^[VNA]\d$/)}
 			{segment.segment}
 		{:else}
-			<a href={`/${language}/${segment.segment}`}>{segment.segment}</a>
+			<a href={`/${language}/${segment.segment}`} tabindex="-1">{segment.segment}</a>
 		{/if}
 	{/each}
 </span>
