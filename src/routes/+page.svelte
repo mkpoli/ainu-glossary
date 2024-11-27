@@ -242,11 +242,6 @@
 		color: black;
 	}
 
-	a.icon svg {
-		width: 2.5rem;
-		height: 2.5rem;
-	}
-
 	img[alt='Logo'] {
 		width: 10rem;
 		height: 10rem;
