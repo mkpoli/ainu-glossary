@@ -56,8 +56,9 @@
 <label class="label {labelClass}" style={labelStyle} use:melt={$label}
 	>{@render children?.()}{labelName}</label
 >
+
 <button
-	class="button w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm"
+	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:opacity-90"
 	use:melt={$trigger}
 	aria-label="Food"
 >
@@ -86,10 +87,13 @@
 	</div>
 </button>
 {#if $open}
-	<div class="menu" use:melt={$menu}>
-		<div class="options">
+	<div
+		class="menu absolute z-10 flex flex-col max-h-[300px] bg-white shadow-harder outline-none"
+		use:melt={$menu}
+	>
+		<div class="overflow-y-auto">
 			<button
-				class="option select-all w-full"
+				class="option w-full px-4 py-1 font-bold text-neutral-500 text-left capitalize bg-transparent border-none h-10 m-0 min-w-[220px] shadow-hard border border-gray-900 text-sm hover:opacity-90 hover:text-black disabled:text-black"
 				disabled={($meltSelected?.length ?? 0) === options.size}
 				onclick={() => {
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
@@ -102,21 +106,26 @@
 			<hr use:melt={$horizontal} />
 			{#each options.entries() as [item, { label, count }]}
 				<div
-					class="option"
+					class="relative cursor-pointer px-8 py-1 text-transform capitalize text-sm bg-white hover:bg-neutral-50"
 					use:melt={$option({ value: item, label })}
-					class:highlighted={$isSelected(item)}
-					class:selected={$isSelected(item)}
+					class:bg-neutral-100={$isSelected(item)}
 				>
-					<div class="check {$isSelected(item) ? 'block' : 'hidden'}">✔</div>
+					<div
+						class="check {$isSelected(item)
+							? 'block'
+							: 'hidden'} absolute left-2 top-1/2 -translate-y-1/2"
+					>
+						✔
+					</div>
 
-					{label}<small>{count}</small>
+					{label}<span class="text-xs text-neutral-500 ml-2">{count}</span>
 				</div>
 			{/each}
 		</div>
 
 		<hr use:melt={$horizontal} />
 		<button
-			class="option select-none"
+			class="py-2 px-4 option capitalize text-left bg-transparent border-none h-10 m-0 min-w-[220px] text-sm hover:bg-neutral-50 hover:text-black text-neutral-500"
 			onclick={() => {
 				meltSelected.set([]);
 			}}
@@ -130,21 +139,6 @@
 {/if}
 
 <style lang="postcss">
-	.button {
-		display: flex;
-		height: 40px;
-		min-width: 220px;
-		align-items: center;
-		justify-content: space-between;
-		background-color: white;
-		padding: 0.5rem 12px;
-		font-family: inherit;
-		font-size: 0.875rem;
-	}
-	.button:hover {
-		opacity: 0.9;
-	}
-
 	/* Chevron */
 	.button::after {
 		content: '';
@@ -162,113 +156,11 @@
 		margin: 0 8px;
 	}
 
-	.menu {
-		position: absolute;
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		max-height: 300px;
-		background-color: white;
-		box-shadow:
-			0 2px 4px -1px rgba(0, 0, 0, 0.2),
-			0 1px 3px rgba(0, 0, 0, 0.1),
-			0 1px 2px rgba(0, 0, 0, 0.06),
-			0 0 0 1px rgba(0, 0, 0, 0.1);
-		outline: 0;
-	}
-
-	.options {
-		overflow-y: auto;
-	}
-
-	.select-all {
-		padding: 4px 16px;
-		font-weight: bold;
-		text-transform: capitalize;
-	}
-
-	/* Option */
-	.option {
-		position: relative;
-		cursor: pointer;
-		padding: 4px 2em;
-		text-transform: capitalize;
-		font-family: inherit;
-		font-size: 0.875rem;
-	}
-
-	.option[data-highlighted] {
-		background-color: #cccccc;
-	}
-
-	.option[data-selected] {
-		background-color: #yourMagnum100Color;
-		color: #yourMagnum900Color;
-	}
-
-	.check {
-		position: absolute;
-		left: 8px;
-		top: 50%;
-		transform: translateY(-50%);
-		display: none;
-	}
-	.check.block {
-		display: block;
-	}
-
 	span {
 		text-transform: capitalize;
 	}
 
 	hr {
-		/* margin: 0.5rem 0; */
-		margin: 0;
-		border: 0;
-		border-top: 1px solid #ccc; /* Replace with actual color */
-	}
-
-	button.select-none {
-		text-transform: capitalize;
-		appearance: none;
-		background-color: transparent;
-		border: none;
-		padding: 0.75rem 1rem;
-		font-size: 0.8em;
-		color: #888;
-		text-align: left;
-	}
-
-	button.select-none:hover {
-		color: black;
-	}
-
-	.hidden {
-		display: none;
-	}
-
-	button.select-all {
-		text-transform: capitalize;
-		appearance: none;
-		background-color: transparent;
-		border: none;
-		padding: 4px 1em;
-		font-size: 0.8em;
-		color: #888;
-		text-align: left;
-	}
-
-	button.select-all:hover {
-		color: black;
-	}
-
-	button.select-all:disabled {
-		color: black;
-	}
-
-	small {
-		font-size: 0.8rem;
-		color: #888;
-		margin-left: 0.5rem;
+		@apply m-0 border-0 border-t border-neutral-400;
 	}
 </style>
