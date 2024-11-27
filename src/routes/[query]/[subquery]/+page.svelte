@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Localized from '$lib/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
@@ -15,6 +16,10 @@
 		zh: '這頁解釋了阿伊努語中「{word}」的說法。',
 		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。'
 	};
+
+	if (browser) {
+		document.documentElement.lang = data.query;
+	}
 </script>
 
 {#snippet goBackButton()}
@@ -24,6 +29,12 @@
 	</button>
 {/snippet}
 
+<svelte:head>
+	<title>{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</title>
+
+	<meta name="description" content={DESCRIPTIONS[data.query].replace('{word}', data.subquery)} />
+</svelte:head>
+
 <main>
 	{@render goBackButton()}
 	<h1>{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</h1>
@@ -32,7 +43,7 @@
 	<output>
 		{#each data.found as item}
 			<section>
-				<h2>{item.Aynu}</h2>
+				<h2 lang="ain">{item.Aynu}</h2>
 				<p lang="en">{item.English}</p>
 				<p lang="ja">{item.日本語}</p>
 				<p lang="zh">{item.中文}</p>
