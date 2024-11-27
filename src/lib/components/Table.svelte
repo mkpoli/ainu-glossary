@@ -8,6 +8,7 @@
 	import Localized from '$lib/components/Localized.svelte';
 	import SearchableLink from '$lib/components/SearchableLink.svelte';
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
+	import { formatGenre } from '$lib/genre';
 	interface Props {
 		data: {
 			日本語?: string;
@@ -110,7 +111,7 @@
 		<tbody>
 			{#each filtered as row}
 				<tr>
-					<td style="text-transform: capitalize;">{(row.sheetName ?? '').replace('_', ' ')}</td>
+					<td style="text-transform: capitalize;">{formatGenre(row.sheetName)}</td>
 					<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
 					<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
 					<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>

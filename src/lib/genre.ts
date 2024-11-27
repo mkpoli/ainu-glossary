@@ -35,3 +35,7 @@ export function generateColorHashFromString(text: string): string {
 	const index = hash % availableColors.length;
 	return availableColors[index];
 }
+
+export function formatGenre(genre: string): string {
+	return genre.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+}

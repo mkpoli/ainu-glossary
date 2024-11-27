@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Entry } from '$lib/data';
-	import { generateColorHashFromString } from '$lib/genre';
+	import { formatGenre, generateColorHashFromString } from '$lib/genre';
 
 	let { item }: { item: Entry } = $props();
 </script>
@@ -14,7 +14,7 @@
 		<div
 			class={`${generateColorHashFromString(item.sheetName)} text-neutral-800 rounded-md w-max px-2 py-1`}
 		>
-			{item.sheetName}
+			{formatGenre(item.sheetName)}
 		</div>
 	</div>
 	<div class="col-span-2">
