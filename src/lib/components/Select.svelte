@@ -59,7 +59,7 @@
 >
 
 <button
-	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:opacity-90"
+	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:bg-neutral-200"
 	use:melt={$trigger}
 	aria-label="Food"
 >
@@ -90,7 +90,7 @@
 	>
 		<div class="overflow-y-auto">
 			<button
-				class="option w-full px-4 py-1 font-bold text-neutral-500 text-left capitalize bg-transparent border-none h-10 m-0 min-w-[220px] shadow-hard border border-gray-900 text-sm hover:opacity-90 hover:text-black disabled:text-black"
+				class="w-full px-4 py-2 font-bold text-neutral-500 text-left capitalize bg-transparent border-none m-0 min-w-[220px] shadow-hard border border-gray-900 text-sm hover:opacity-90 hover:text-black disabled:text-black hover:bg-neutral-50 cursor-pointer"
 				disabled={($meltSelected?.length ?? 0) === options.size}
 				onclick={() => {
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
