@@ -6,7 +6,7 @@
 	import GitHub from '~icons/simple-icons/github';
 	import X from '~icons/simple-icons/x';
 
-	import { GOOGLE_SHEET_LINK } from '$lib/data';
+	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
 
 	interface Props {
 		data: PageData;
@@ -56,6 +56,27 @@
 	{#if data.table && data.table.length && data.table.length > 0}
 		<Table data={data.table} />
 	{/if}
+
+	<button
+		onclick={() => {
+			loading = true;
+			const header = [...Object.keys(data.table[0])].join('\n');
+			const csv = data.table.map((row: Entry) => Object.values(row).join(',')).join('\n');
+			const blob = new Blob([csv], { type: 'text/csv' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'ainu-glossary.csv';
+			a.click();
+			loading = false;
+		}}
+	>
+		{#if loading}
+			<Localized ain="Tatum a=etokoyki kor an" jap="データを準備中" eng="Preparing data" />
+		{:else}
+			<Localized ain="Tatum ranke" jap="データをダウンロード" eng="Download data" />
+		{/if}
+	</button>
 
 	<h2><Localized ain="Kampimoto" jap="参考文献" eng="References" /></h2>
 	<p>
