@@ -37,26 +37,26 @@
 	<h1 class="text-xl md:text-3xl mt-2 mb-2 md:my-1">Tane an Aynuitak-kotupte Itak-uoeroskip</h1>
 	<p
 		role="doc-subtitle"
-		class="text-base font-bold mb-10 md:text-xl md:mb-2 md:my-1 flex flex-col md:flex-row gap-2"
+		class="text-base font-bold mb-4 md:text-xl md:mb-2 md:my-1 flex flex-col md:flex-row gap-2"
 		lang="ja"
 	>
 		<span lang="ja">現代アイヌ語翻訳用語集</span><span class="hidden md:inline"> / </span>
 		<span lang="en">Modern Ainu Translation Glossary</span>
 	</p>
 
-	<div class="my-4 md:my-8">
+	<div class="my-4 md:my-8 text-sm md:text-base">
 		<p>
 			Tanpe anak intennet or ta <a href={GOOGLE_SHEET_LINK} target="_blank">
 				<i>Itak-uoeroskip</i>
 			</a> a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne.
 		</p>
-		<p lang="en">
+		<p lang="en" class="text-xs md:text-base">
 			This is a web application that allows you to easily search, sort, and list <a
 				href={GOOGLE_SHEET_LINK}
 				target="_blank">the original glossary</a
 			>.
 		</p>
-		<p lang="ja">
+		<p lang="ja" class="text-xs md:text-base">
 			これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
 			>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
 		</p>

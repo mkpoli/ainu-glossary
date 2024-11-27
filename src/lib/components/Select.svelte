@@ -56,7 +56,11 @@
 <label class="label {labelClass}" style={labelStyle} use:melt={$label}
 	>{@render children?.()}{labelName}</label
 >
-<button class="button" use:melt={$trigger} aria-label="Food">
+<button
+	class="button w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm"
+	use:melt={$trigger}
+	aria-label="Food"
+>
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
 			<span>A=numke</span>
@@ -85,7 +89,7 @@
 	<div class="menu" use:melt={$menu}>
 		<div class="options">
 			<button
-				class="option select-all"
+				class="option select-all w-full"
 				disabled={($meltSelected?.length ?? 0) === options.size}
 				onclick={() => {
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
@@ -126,10 +130,6 @@
 {/if}
 
 <style lang="postcss">
-	.label {
-		display: block;
-	}
-
 	.button {
 		display: flex;
 		height: 40px;
@@ -138,10 +138,6 @@
 		justify-content: space-between;
 		background-color: white;
 		padding: 0.5rem 12px;
-		box-shadow:
-			0 1px 3px rgba(0, 0, 0, 0.1),
-			0 1px 2px rgba(0, 0, 0, 0.06);
-		border: 1px solid #767676;
 		font-family: inherit;
 		font-size: 0.875rem;
 	}

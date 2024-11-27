@@ -69,33 +69,42 @@
 </script>
 
 <div
-	class="query-form-container"
-	style="display: grid; grid-template-columns: auto 1fr auto 1fr; width: max-content; text-align:left;"
+	class="query-form-container flex flex-col md:grid md:grid-cols-[auto_1fr_1.5fr_1fr] w-full md:w-max md:text-left gap-2 md:gap-4 md:items-center mb-10 md:whitespace-nowrap"
 >
-	<div class="query-form" style="display: contents;">
-		<label for="search" style="display: contents;">
+	<div class="query-form contents">
+		<label for="search" class="flex items-center justify-start gap-2 md:contents">
 			<MaterialSymbolsSearch />
 			<Localized eng="Search" ain="Ihunara" jap="検索" />
 		</label>
-		<input type="text" name="" id="search" bind:value={query} />
-		<span>{filtered.length} / {data.length}</span>
+		<input
+			type="text"
+			name=""
+			id="search"
+			bind:value={query}
+			class="w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm"
+		/>
+		<span class="text-xs text-right md:text-base md:text-left"
+			>{filtered.length} / {data.length}</span
+		>
 	</div>
 
-	<div class="query-form" style="display: contents;">
+	<div class="query-form contents">
 		<Select
 			options={allCategories}
 			bind:selected={selectedCategories}
-			labelStyle="display: contents;"
+			labelClass="flex items-center justify-start gap-2 md:contents"
 		>
 			<MaterialSymbolsCategoryOutline />
 			<Localized ain="Katekori" jap="分類" eng="Categories" />
 		</Select>
-		<span>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span>
+		<span class="text-xs text-right md:text-base md:text-left"
+			>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span
+		>
 	</div>
 </div>
 
-<div class="table-container">
-	<table>
+<div class="overflow-x-auto">
+	<table class="w-full border-collapse m-0 overflow-x-auto text-sm md:text-base">
 		<thead>
 			<tr>
 				<th>類型 / Type</th>
@@ -110,7 +119,7 @@
 			{#each filtered as row}
 				<tr>
 					<td
-						style="text-transform: capitalize;"
+						class="capitalize"
 						title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
 							formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
 					>
@@ -125,100 +134,12 @@
 	</table>
 </div>
 
-<style>
-	.table-container {
-		overflow-x: auto;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		margin: 0;
-
-		overflow-x: auto;
-	}
-
-	th,
-	td {
-		border: 1px solid #000;
-		padding: 0.5rem;
-	}
-
+<style lang="postcss">
 	th {
-		background-color: #f0f0f0;
+		@apply bg-neutral-200 border-black p-2 border;
 	}
 
-	.query-form-container {
-		white-space: nowrap;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-
-		margin: 2rem auto;
-		padding: 1rem;
-
-		gap: 1rem;
-	}
-
-	.query-form {
-		display: flex;
-
-		justify-content: center;
-		align-items: center;
-
-		gap: 1rem;
-
-		max-width: 30rem;
-	}
-
-	@media (max-width: 768px) {
-		table {
-			width: 100%;
-			font-size: 0.8rem;
-		}
-
-		th,
-		td {
-			padding: 0.1rem;
-		}
-
-		.query-form {
-			flex-direction: column;
-			margin: 0.25rem;
-			gap: 0.5rem;
-		}
-
-		.query-form-container {
-			margin: 0.5rem;
-			padding: 0.5rem;
-		}
-
-		.query-form :global(input),
-		.query-form :global(button) {
-			min-width: 75vw !important;
-		}
-	}
-
-	input {
-		width: 100%;
-		padding: 0.5rem;
-		margin: 0;
-		height: 40px;
-		min-width: 220px;
-		background-color: white;
-		padding: 0.5rem 12px;
-		box-shadow:
-			0 1px 3px rgba(0, 0, 0, 0.1),
-			0 1px 2px rgba(0, 0, 0, 0.06);
-		border: 1px solid #767676;
-		font-family: inherit;
-		font-size: 0.875rem;
-	}
-
-	label {
-		display: block;
-		text-align: left;
-		white-space: nowrap;
+	td {
+		@apply border-black p-1 md:p-2 border;
 	}
 </style>
