@@ -61,19 +61,21 @@ function generateSitemap(hostname: string, urls: string[]) {
 
 export async function GET() {
 	const data = await downloadData();
-	const urls = data.flatMap((item) => [
-		...(item.Aynu ? extractLinkableWords(item.Aynu).map((word) => `/${word}`) : []),
-		...(item.日本語
-			? extractLinkableWordsWithLanguage(item.日本語, 'ja').map((word) => `/ja/${word}`)
-			: []),
-		...(item.English
-			? extractLinkableWordsWithLanguage(item.English, 'en').map((word) => `/en/${word}`)
-			: []),
-		...(item.中文
-			? extractLinkableWordsWithLanguage(item.中文, 'zh').map((word) => `/zh/${word}`)
-			: [])
-	]);
-	return new Response(generateSitemap('https://itak.aynu.org/', urls), {
+	const urls: Set<string> = new Set(
+		data.flatMap((item) => [
+			...(item.Aynu ? extractLinkableWords(item.Aynu).map((word) => `/${word}`) : []),
+			...(item.日本語
+				? extractLinkableWordsWithLanguage(item.日本語, 'ja').map((word) => `/ja/${word}`)
+				: []),
+			...(item.English
+				? extractLinkableWordsWithLanguage(item.English, 'en').map((word) => `/en/${word}`)
+				: []),
+			...(item.中文
+				? extractLinkableWordsWithLanguage(item.中文, 'zh').map((word) => `/zh/${word}`)
+				: [])
+		])
+	);
+	return new Response(generateSitemap('https://itak.aynu.org/', Array.from(urls)), {
 		headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=0' }
 	});
 }
