@@ -11,7 +11,7 @@ export const load: PageLoad = async ({ params: { query, subquery }, fetch }) => 
 		error(404, 'Not found');
 	}
 
-	const json = await fetchData();
+	const json = await fetchData(fetch);
 
 	const key = (
 		{
