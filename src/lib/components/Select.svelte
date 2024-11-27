@@ -59,7 +59,7 @@
 >
 
 <button
-	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:bg-neutral-200"
+	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:bg-neutral-200 focus:outline-none focus:ring-black focus:border-black focus:ring-1"
 	use:melt={$trigger}
 	aria-label="Food"
 >

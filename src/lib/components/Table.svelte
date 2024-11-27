@@ -81,7 +81,7 @@
 			name=""
 			id="search"
 			bind:value={query}
-			class="w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm"
+			class="w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm focus:ring-black focus:border-black"
 		/>
 		<span class="text-xs text-right md:text-base md:text-left"
 			>{filtered.length} / {data.length}</span
