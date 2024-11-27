@@ -5,6 +5,14 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<svelte:head>
+	<title>アイヌ語で{data.query}とは？ What is {data.query} in Ainu?</title>
+	<meta
+		name="description"
+		content="アイヌ語で{data.query}ってどういう意味？{data.query}は何のことを指すの？意味や使い方について解説します | What does {data.query} mean in Ainu? How to use {data.query} in Ainu?"
+	/>
+</svelte:head>
+
 <h1 class="text-2xl font-bold">
 	<Localized separator="<br/>">
 		{#snippet ain()}
