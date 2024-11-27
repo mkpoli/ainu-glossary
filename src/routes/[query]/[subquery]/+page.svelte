@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import Localized from '$lib/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
 	let { data } = $props();
@@ -23,10 +22,13 @@
 </script>
 
 {#snippet goBackButton()}
-	<button onclick={() => goto('/')}>
+	<a
+		href="/"
+		class="my-2 flex items-center gap-2 hover:underline no-underline text-inherit hover:text-theme-500"
+	>
 		<MaterialSymbolsArrowBackIosNew />
 		<Localized ain="Hosipire" jap="戻る" eng="Back" />
-	</button>
+	</a>
 {/snippet}
 
 <svelte:head>
@@ -35,15 +37,15 @@
 	<meta name="description" content={DESCRIPTIONS[data.query].replace('{word}', data.subquery)} />
 </svelte:head>
 
-<main>
+<main class="max-w-prose mx-auto p-4 flex flex-col gap-6">
 	{@render goBackButton()}
-	<h1>{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</h1>
+	<h1 class="m-0">{TRANSLATIONS[data.query].replace('{word}', data.subquery)}</h1>
 	<p>{DESCRIPTIONS[data.query].replace('{word}', data.subquery)}</p>
 
-	<output>
+	<output class="flex flex-col gap-6">
 		{#each data.found as item}
-			<section>
-				<h2 lang="ain">{item.Aynu}</h2>
+			<section class="px-6 py-4 shadow-hard border border-black">
+				<h2 lang="ain" class="m-0">{item.Aynu}</h2>
 				<p lang="en">{item.English}</p>
 				<p lang="ja">{item.日本語}</p>
 				<p lang="zh">{item.中文}</p>
@@ -52,45 +54,3 @@
 	</output>
 	{@render goBackButton()}
 </main>
-
-<style>
-	main {
-		max-width: 80ch;
-		margin: 0 auto;
-
-		padding: 1rem;
-
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	button {
-		background: none;
-		border: none;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 1.25rem;
-	}
-
-	button:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	output {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	section {
-		padding: 1rem 2rem;
-		box-shadow: 0 0 0 1px black;
-	}
-
-	h1 {
-		margin: 0;
-	}
-</style>
