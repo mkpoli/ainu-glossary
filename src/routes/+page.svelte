@@ -31,7 +31,7 @@
 	<title>Tane an Aynuitak-kotupte Itak-uoeroskip</title>
 	<meta name="description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
 	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uoeroskip" />
-	<meta name="og:description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
+	<meta name="og:image" content="/screenshot.png" />
 	<meta
 		name="keywords"
 		content="アイヌ語, 現代アイヌ語, 翻訳用語集, 詞典, 辞典, 言語復興, 辭書, Ainu, Modern Ainu, Translation Glossary, Ainu Language, Language Revitalization, Dictionary, Ainu Dictionary"
