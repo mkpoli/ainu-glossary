@@ -19,6 +19,12 @@
 	console.log(data);
 
 	let loading = $state(false);
+
+	const DESCRIPTIONS = {
+		ain: 'Tan itak-uoeroskip anakne tane an Aynuitak hene koitaktupte kuni p ne. Teeta wano oka iporse patek somo ne no asir itak ne yakka a=kar itak ne yakka ci=omare wa kusu tane an pe a=ye wa kesto an kor a=eywanke easkay kuni iesoye cinumkekampi ne ruwe ne.',
+		jpn: 'この語彙集は、アイヌ語、特に現代的なアイヌ語に、翻訳するためのグロッサリーです。昔からある表現のみならず、新語や造語を積極的に取り入れ、現代的な事物や生活を表現しうるような、分類語彙対訳辞書である。',
+		eng: 'This glossary is for translating into the Ainu language, particularly for modern usages. It is a categorized multilingual lexicon that actively incorporates coinage besides traditional expressions, enabling the expression of modern objects and contemporary lifestyles.'
+	};
 </script>
 
 <svelte:head>
@@ -70,20 +76,9 @@
 				<Localized ain="Uepeker" jpn="詳細" eng="Details" />
 			</summary>
 			<div class="flex flex-col gap-2 text-justify">
-				<p>
-					Tan itak-uoeroskip anakne tane an Aynuitak hene koitaktupte kuni p ne. Teeta wano oka
-					iporse patek somo ne no asir itak ne yakka a=kar itak ne yakka ci=omare wa kusu tane an pe
-					a=ye wa kesto an kor a=eywanke easkay kuni iesoye cinumkekampi ne ruwe ne.
-				</p>
-				<p lang="ja">
-					この語彙集は、アイヌ語、特に現代的なアイヌ語に、翻訳するためのグロッサリーです。昔からある表現のみならず、新語や造語を積極的に取り入れ、現代的な事物や生活を表現しうるような、分類語彙対訳辞書である。
-				</p>
-				<p lang="en">
-					This glossary is for translating into the Ainu language, particularly for modern usages.
-					It is a categorized multilingual lexicon that actively incorporates coinage besides
-					traditional expressions, enabling the expression of modern objects and contemporary
-					lifestyles.
-				</p>
+				<p>{DESCRIPTIONS.ain}</p>
+				<p lang="ja">{DESCRIPTIONS.jpn}</p>
+				<p lang="en">{DESCRIPTIONS.eng}</p>
 			</div>
 		</details>
 	</div>
