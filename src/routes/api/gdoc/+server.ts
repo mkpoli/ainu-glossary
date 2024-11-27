@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
 
-import { downloadData } from '$lib/server/data';
+import { downloadData, updateData } from '$lib/server/data';
 
 export const GET: RequestHandler = async () => {
 	// Retrive data from R2 through S3 API
@@ -16,7 +16,7 @@ export const GET: RequestHandler = async () => {
 
 export const POST: RequestHandler = async (request) => {
 	try {
-		await downloadData();
+		await updateData();
 		return json({ success: true });
 	} catch (e) {
 		console.error(e);
