@@ -149,5 +149,14 @@ export async function updateData(): Promise<void> {
 		})
 	);
 
+	await s3.send(
+		new PutObjectCommand({
+			Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+			Key: 'sheets.json',
+			Body: JSON.stringify(all_content_sheets),
+			ContentType: 'application/json'
+		})
+	);
+
 	console.info('[updateData] Uploaded to Cloudflare R2');
 }
