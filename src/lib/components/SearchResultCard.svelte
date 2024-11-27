@@ -19,9 +19,10 @@
 			{formatGenre(item.sheetName)}
 		</div>
 	</div>
-	<div class="col-span-2">
+	<div>
 		<p lang="en">{item.English}</p>
 		<p lang="ja">{item.日本語}</p>
 		<p lang="zh">{item.中文}</p>
 	</div>
+	<div>{item['註 / Notes']}</div>
 </section>
