@@ -7,17 +7,10 @@
 	import SearchableLink from '$lib/components/SearchableLink.svelte';
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
-	import type { Sheet } from '$lib/data';
+	import type { Entry, Sheet } from '$lib/data';
 
 	interface Props {
-		data: {
-			日本語?: string;
-			English?: string;
-			中文?: string;
-			Aynu?: string;
-			'註 / Notes'?: string;
-			sheetName: string;
-		}[];
+		data: Entry[];
 		sheets: Sheet[];
 	}
 
