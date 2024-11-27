@@ -16,8 +16,6 @@
 				},
 				body: JSON.stringify({ link: GOOGLE_SHEET_LINK })
 			});
-
-			await new Promise((resolve) => setTimeout(resolve, 1000)); //
 		} catch (e) {
 			console.error(e); // eslint-disable-line no-console
 		} finally {
