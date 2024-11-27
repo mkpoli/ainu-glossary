@@ -67,13 +67,13 @@
 		{#if !$meltSelected || $meltSelected.length === 0}
 			<Localized ain="A=numke" jpn="選択" eng="Select" />
 		{:else if $meltSelected.length === 1}
-			<span>
+			<span class="capitalize">
 				{$selectedLabel}
 			</span>
 		{:else if $meltSelected.length === options.size}
 			<Localized ain="Opitta" jpn="全て" eng="All" />
 		{:else}
-			<span
+			<span class="capitalize"
 				>{$meltSelected
 					.slice(0, 3)
 					.map(({ label }) => label)
