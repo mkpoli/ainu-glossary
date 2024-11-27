@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
+	import Footer from '$lib/components/Footer.svelte';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -11,6 +12,8 @@
 </script>
 
 {@render children?.()}
+
+<Footer />
 
 <style>
 	:global(*) {

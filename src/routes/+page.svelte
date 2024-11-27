@@ -178,13 +178,6 @@
 	</ul>
 </main>
 
-<hr />
-<footer>
-	<p>
-		© 2024 <a href="https://aynu.org/" target="_blank">Aynu.org</a>
-	</p>
-</footer>
-
 <style>
 	:body {
 		margin: 0;
@@ -220,11 +213,6 @@
 		padding: 0.5rem 1rem;
 		font-size: 1rem;
 		margin-top: 1rem;
-	}
-
-	footer {
-		padding: 1rem;
-		text-align: center;
 	}
 
 	ul {
