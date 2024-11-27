@@ -8,6 +8,7 @@
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
 	import type { Sheet } from '$lib/data';
+
 	interface Props {
 		data: {
 			日本語?: string;
@@ -21,22 +22,6 @@
 	}
 
 	let { data, sheets }: Props = $props();
-
-	let query: string = $state('');
-	let filtered = $derived(
-		data
-			.filter((row: any) => {
-				return selectedCategories?.some((category) => category.value === row.sheetName);
-			})
-			.filter((row: any) => {
-				return Object.values(row).some((value: any) => {
-					if (typeof value === 'string') {
-						return value.toLowerCase().includes(query.toLowerCase());
-					}
-					return false;
-				});
-			})
-	);
 
 	let allCategories: Map<
 		string,
@@ -61,10 +46,26 @@
 				value: string;
 				label: string;
 		  }[]
-		| undefined = $state();
+		| undefined = $state(undefined);
 
 	$inspect('allCategories', allCategories);
 	$inspect('selectedCategories', selectedCategories);
+
+	let query: string = $state('');
+	let filtered = $derived(
+		data
+			.filter((row: any) => {
+				return selectedCategories?.some((category) => category.value === row.sheetName);
+			})
+			.filter((row: any) => {
+				return Object.values(row).some((value: any) => {
+					if (typeof value === 'string') {
+						return value.toLowerCase().includes(query.toLowerCase());
+					}
+					return false;
+				});
+			})
+	);
 </script>
 
 <div
