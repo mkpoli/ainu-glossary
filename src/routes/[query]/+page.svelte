@@ -25,6 +25,6 @@
 
 <output class="flex flex-col gap-6">
 	{#each data.found as item}
-		<SearchResultCard {item} />
+		<SearchResultCard {item} sheets={data.sheets} />
 	{/each}
 </output>

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Entry } from '$lib/data';
+	import type { Entry, Sheet } from '$lib/data';
 	import { formatGenre, generateColorHashFromString } from '$lib/genre';
 
-	let { item }: { item: Entry } = $props();
+	let { item, sheets }: { item: Entry; sheets: Sheet[] } = $props();
 </script>
 
 <section
@@ -13,6 +13,8 @@
 		<!-- Genre -->
 		<div
 			class={`${generateColorHashFromString(item.sheetName)} text-neutral-800 rounded-md w-max px-2 py-1`}
+			title={sheets.find((sheet) => sheet.sheetName === item.sheetName)?.description ??
+				formatGenre(item.sheetName)}
 		>
 			{formatGenre(item.sheetName)}
 		</div>
