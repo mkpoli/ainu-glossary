@@ -144,11 +144,6 @@
 		border-color: black transparent transparent;
 	}
 
-	button span:not(:first-child)::before {
-		content: '/';
-		margin: 0 8px;
-	}
-
 	hr {
 		@apply m-0 border-0 border-t border-neutral-400;
 	}
