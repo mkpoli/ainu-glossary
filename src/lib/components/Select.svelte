@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createSelect, createSeparator, melt } from '@melt-ui/svelte';
 	import type { Snippet } from 'svelte';
+	import Localized from '$lib/components/Localized.svelte';
 
 	let {
 		options,
@@ -64,17 +65,13 @@
 >
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
-			<span>A=numke</span>
-			<span lang="ja">選択</span>
-			<span lang="en">Select</span>
+			<Localized ain="A=numke" jap="選択" eng="Select" />
 		{:else if $meltSelected.length === 1}
 			<span>
 				{$selectedLabel}
 			</span>
 		{:else if $meltSelected.length === options.size}
-			<span>Opitta</span>
-			<span lang="ja">全て</span>
-			<span lang="en">All</span>
+			<Localized ain="Opitta" jap="全て" eng="All" />
 		{:else}
 			<span
 				>{$meltSelected
@@ -99,9 +96,7 @@
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
 				}}
 			>
-				<span>opitta</span>
-				<span lang="ja">全て</span>
-				<span lang="en">All</span>
+				<Localized ain="Opitta" jap="全て" eng="All" />
 			</button>
 			<hr use:melt={$horizontal} />
 			{#each options.entries() as [item, { label, count }]}
@@ -131,9 +126,7 @@
 			}}
 			title="Inumke a=isamka / すべて選択解除 / Clear All"
 		>
-			<span>Inumke a=isamka</span>
-			<span lang="ja" class="hidden" aria-hidden="false">すべて選択解除</span>
-			<span lang="en" class="hidden" aria-hidden="false">Clear All</span>
+			Inumke a=isamka
 		</button>
 	</div>
 {/if}
@@ -154,10 +147,6 @@
 	button span:not(:first-child)::before {
 		content: '/';
 		margin: 0 8px;
-	}
-
-	span {
-		text-transform: capitalize;
 	}
 
 	hr {
