@@ -6,8 +6,7 @@
 	import GitHub from '~icons/simple-icons/github';
 	import X from '~icons/simple-icons/x';
 
-	const LINK =
-		'https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing';
+	import { GOOGLE_SHEET_LINK } from '$lib/data';
 
 	interface Props {
 		data: PageData;
@@ -39,54 +38,24 @@
 	</p>
 
 	<p>
-		Tanpe anak intennet or ta <a href={LINK} target="_blank">
+		Tanpe anak intennet or ta <a href={GOOGLE_SHEET_LINK} target="_blank">
 			<i>Itak-uoeroskip</i>
 		</a> a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne.
 	</p>
 	<p lang="en">
 		This is a web application that allows you to easily search, sort, and list <a
-			href={LINK}
+			href={GOOGLE_SHEET_LINK}
 			target="_blank">the original glossary</a
 		>.
 	</p>
 	<p lang="ja">
-		これは、<a href={LINK} target="_blank">元の用語集</a
+		これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
 		>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
 	</p>
 
 	{#if data.table && data.table.length && data.table.length > 0}
 		<Table data={data.table} />
 	{/if}
-
-	<button
-		onclick={async () => {
-			console.log('Requesting data from Google Sheets...'); // eslint-disable-line no-console
-			loading = true;
-			try {
-				await fetch('/api/gdoc', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ link: LINK })
-				});
-
-				await new Promise((resolve) => setTimeout(resolve, 1000)); //
-
-				const res = await fetch('/api/gdoc', {
-					method: 'GET'
-				});
-				const json = await res.json();
-
-				data.table = json;
-			} catch (e) {
-				console.error(e); // eslint-disable-line no-console
-			} finally {
-				loading = false;
-			}
-		}}
-		disabled={loading}>{loading ? '◉ データ取得中…' : '最新データを取得'}</button
-	>
 
 	<h2><Localized ain="Kampimoto" jap="参考文献" eng="References" /></h2>
 	<p>
