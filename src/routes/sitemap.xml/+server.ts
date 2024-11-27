@@ -60,9 +60,9 @@ function generateSitemap(hostname: string, urls: string[]) {
 }
 
 export async function GET() {
-	const data = await downloadData();
+	const { table } = await downloadData();
 	const urls: Set<string> = new Set(
-		data.flatMap((item) => [
+		table.flatMap((item) => [
 			...(item.Aynu ? extractLinkableWords(item.Aynu).map((word) => `/${word}`) : []),
 			...(item.日本語
 				? extractLinkableWordsWithLanguage(item.日本語, 'ja').map((word) => `/ja/${word}`)

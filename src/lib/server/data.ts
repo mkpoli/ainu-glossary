@@ -10,7 +10,7 @@ import {
 	PRIVATE_GOOGLE_API_CLIENT_EMAIL,
 	PRIVATE_GOOGLE_API_CLIENT_ID
 } from '$env/static/private';
-import type { Entry } from '$lib/data';
+import type { Entry, Sheet } from '$lib/data';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { google } from 'googleapis';
 const auth = new google.auth.GoogleAuth({
@@ -40,22 +40,25 @@ const s3 = new S3Client({
 	endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
 }) as NodeJsClient<S3Client>;
 
-export async function downloadData(): Promise<Entry[]> {
+export async function downloadTextFile(key: string): Promise<string> {
 	const result = await s3.send(
-		new GetObjectCommand({
-			Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-			Key: 'table.json'
-		})
+		new GetObjectCommand({ Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET, Key: key })
 	);
 
 	const chunks: Uint8Array[] = [];
+
 	for await (const chunk of result.Body ?? []) {
 		chunks.push(chunk);
 	}
 
-	const buffer = Buffer.concat(chunks);
+	return Buffer.concat(chunks).toString();
+}
 
-	return JSON.parse(buffer.toString());
+export async function downloadData(): Promise<{ table: Entry[]; sheets: Sheet[] }> {
+	const table_result = JSON.parse(await downloadTextFile('table.json'));
+	const sheets_result = JSON.parse(await downloadTextFile('sheets.json'));
+
+	return { table: table_result, sheets: sheets_result };
 }
 
 export async function updateData(): Promise<void> {

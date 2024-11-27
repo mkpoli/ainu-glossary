@@ -11,7 +11,7 @@ export const load: PageLoad = async ({ params: { query, subquery }, fetch }) => 
 		error(404, 'Not found');
 	}
 
-	const json = await fetchData(fetch);
+	const { table, sheets } = await fetchData(fetch);
 
 	const key = (
 		{
@@ -21,11 +21,12 @@ export const load: PageLoad = async ({ params: { query, subquery }, fetch }) => 
 		} as const
 	)[query];
 
-	const found: Entry[] = json.filter((item) => item[key]?.includes(subquery));
+	const found: Entry[] = table.filter((item) => item[key]?.includes(subquery));
 
 	return {
 		found,
 		query,
-		subquery
+		subquery,
+		sheets
 	};
 };
