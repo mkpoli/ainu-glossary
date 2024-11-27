@@ -1,4 +1,5 @@
 import 'unplugin-icons/types/svelte';
+import '@types/nodes';
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
