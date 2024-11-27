@@ -57,7 +57,7 @@
 	</p>
 
 	{#if data.table && data.table.length && data.table.length > 0}
-		<Table data={data.table} />
+		<Table data={data.table} sheets={data.sheets} />
 	{/if}
 
 	<button

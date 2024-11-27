@@ -9,6 +9,7 @@
 	import SearchableLink from '$lib/components/SearchableLink.svelte';
 	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
+	import type { Sheet } from '$lib/data';
 	interface Props {
 		data: {
 			日本語?: string;
@@ -18,9 +19,10 @@
 			'註 / Notes'?: string;
 			sheetName: string;
 		}[];
+		sheets: Sheet[];
 	}
 
-	let { data }: Props = $props();
+	let { data, sheets }: Props = $props();
 
 	let query: string = $state('');
 	let filtered: any[] = $state([]);
@@ -111,7 +113,11 @@
 		<tbody>
 			{#each filtered as row}
 				<tr>
-					<td style="text-transform: capitalize;">{formatGenre(row.sheetName)}</td>
+					<td
+						style="text-transform: capitalize;"
+						title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
+							formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
+					>
 					<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
 					<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
 					<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
