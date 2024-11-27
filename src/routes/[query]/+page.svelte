@@ -1,16 +1,18 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Localized from '$lib/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
 	import type { PageData } from './$types';
 	let { data }: { data: PageData } = $props();
 </script>
 
-{#snippet goBackButton()}
-	<button onclick={() => goto('/')}>
+{#snippet goBack()}
+	<a
+		href="/"
+		class="my-2 flex items-center gap-2 hover:underline no-underline text-inherit hover:text-theme-500"
+	>
 		<MaterialSymbolsArrowBackIosNew />
 		<Localized ain="Hosipire" jap="戻る" eng="Back" />
-	</button>
+	</a>
 {/snippet}
 
 <main>
@@ -56,20 +58,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
-	}
-
-	button {
-		background: none;
-		border: none;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 1.25rem;
-	}
-
-	button:hover {
-		text-decoration: underline;
-		cursor: pointer;
 	}
 
 	output {
