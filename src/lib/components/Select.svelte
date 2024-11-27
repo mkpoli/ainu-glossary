@@ -65,7 +65,7 @@
 >
 	<div class="label">
 		{#if !$meltSelected || $meltSelected.length === 0}
-			<Localized ain="A=numke" jpn="選択" eng="Select" />
+			<Localized ain="Inumke" jpn="選択" eng="Select" />
 		{:else if $meltSelected.length === 1}
 			<span class="capitalize">
 				{$selectedLabel}
@@ -120,13 +120,13 @@
 
 		<hr use:melt={$horizontal} />
 		<button
-			class="py-2 px-4 option capitalize text-left bg-transparent border-none h-10 m-0 min-w-[220px] text-sm hover:bg-neutral-50 hover:text-black text-neutral-500"
+			class="py-2 px-4 option text-left bg-transparent border-none h-10 m-0 min-w-[220px] text-sm hover:bg-neutral-50 hover:text-black text-neutral-500"
 			onclick={() => {
 				meltSelected.set([]);
 			}}
-			title="Inumke a=isamka / すべて選択解除 / Clear All"
+			title="Inumke isamka / すべて選択解除 / Clear All"
 		>
-			Inumke a=isamka
+			Inumke isamka
 		</button>
 	</div>
 {/if}
