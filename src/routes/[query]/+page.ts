@@ -1,12 +1,11 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Entry } from '$lib/data';
+import { fetchData, type Entry } from '$lib/data';
 
 export const load: PageLoad = async ({ params: { query }, fetch }) => {
-	const res = await fetch('/api/gdoc');
-	const json = await res.json();
+	const data = await fetchData();
 
-	const found: Entry[] = json.filter((item: any) =>
+	const found: Entry[] = data.filter((item: any) =>
 		[item.Aynu, item.English, item.日本語].join('').toLowerCase().includes(query.toLowerCase())
 	);
 

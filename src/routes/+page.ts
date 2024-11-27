@@ -1,10 +1,9 @@
+import { fetchData } from '$lib/data';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async (context) => {
-	const { fetch } = context;
-	const res = await fetch('/api/gdoc');
-	const json = await res.json();
+	const data = await fetchData();
 	return {
-		table: json
+		table: data
 	};
 };
