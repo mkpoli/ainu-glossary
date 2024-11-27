@@ -6,6 +6,9 @@
 	import GitHub from '~icons/simple-icons/github';
 	import X from '~icons/simple-icons/x';
 
+	import Download from '~icons/material-symbols/cloud-download-outline-rounded';
+	import LineMdDownloadingLoop from '~icons/line-md/downloading-loop';
+
 	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
 
 	interface Props {
@@ -70,10 +73,13 @@
 			a.click();
 			loading = false;
 		}}
+		style="display: inline-flex; align-items: center; gap: 0.5rem;"
 	>
 		{#if loading}
+			<LineMdDownloadingLoop width="1.25em" height="1.25em" />
 			<Localized ain="Tatum a=etokoyki kor an" jap="データを準備中" eng="Preparing data" />
 		{:else}
+			<Download width="1.25em" height="1.25em" />
 			<Localized ain="Tatum ranke" jap="データをダウンロード" eng="Download data" />
 		{/if}
 	</button>
