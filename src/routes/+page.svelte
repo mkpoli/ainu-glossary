@@ -25,12 +25,16 @@
 		jpn: 'この語彙集は、アイヌ語、特に現代的なアイヌ語に、翻訳するためのグロッサリーです。昔からある表現のみならず、新語や造語を積極的に取り入れ、現代的な事物や生活を表現しうるような、分類語彙対訳辞書である。',
 		eng: 'This glossary is for translating into the Ainu language, particularly for modern usages. It is a categorized multilingual lexicon that actively incorporates coinage besides traditional expressions, enabling the expression of modern objects and contemporary lifestyles.'
 	};
+
+	const DESCRIPTION_SHORT =
+		'現代的なアイヌ語の使用のための、伝統的な表現および新語の両方を取り入れた、活きるオンライン分類対訳辞書 | A Categorized Multilingual Online Lexicon for Modern Ainu';
 </script>
 
 <svelte:head>
 	<title>Tane an Aynuitak-kotupte Itak-uoeroskip</title>
-	<meta name="description" content="現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary" />
+	<meta name="description" content={DESCRIPTION_SHORT} />
 	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uoeroskip" />
+	<meta name="og:description" content={DESCRIPTION_SHORT} />
 	<meta name="og:image" content="/screenshot.png" />
 	<meta
 		name="keywords"
