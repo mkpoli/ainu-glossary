@@ -60,15 +60,15 @@
 				<i>Itak-uoeroskip</i>
 			</a> a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne.
 		</p>
+		<p lang="ja" class="text-xs md:text-base">
+			これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
+			>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
+		</p>
 		<p lang="en" class="text-xs md:text-base">
 			This is a web application that allows you to easily search, sort, and list <a
 				href={GOOGLE_SHEET_LINK}
 				target="_blank">the original glossary</a
 			>.
-		</p>
-		<p lang="ja" class="text-xs md:text-base">
-			これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
-			>を簡単に検索したり、並べ替えたりして一覧表示できるウェブアプリです。
 		</p>
 
 		<details class="my-4 flex flex-col gap-4 max-w-prose mx-auto text-center">

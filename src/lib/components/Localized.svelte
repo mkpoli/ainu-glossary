@@ -24,7 +24,7 @@
 <span>
 	{@render stringOrSnippet(ain)}
 	{@html separator}
-	<span lang="en">{@render stringOrSnippet(eng)}</span>
-	{@html separator}
 	<span lang="ja">{@render stringOrSnippet(jpn)}</span>
+	{@html separator}
+	<span lang="en">{@render stringOrSnippet(eng)}</span>
 </span>
