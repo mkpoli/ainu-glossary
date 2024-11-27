@@ -6,13 +6,13 @@
 	const TRANSLATIONS = {
 		en: 'How to say "{word}" in Ainu?',
 		zh: '如何用阿伊努語說「{word}」?',
-		ja: 'アイヌ語で「{word}」とはどう言うの？'
+		ja: '「{word}」はアイヌ語でなんて言う？'
 	};
 
 	const DESCRIPTIONS = {
-		en: "This page explains the expression of '{word}' in Ainu.",
-		zh: '這頁解釋了阿伊努語中「{word}」的說法。',
-		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。'
+		en: "This page explains the expression of '{word}' in Ainu. How do you say '{word}' in the Ainu language? What is '{word}' in Ainu? Similar expressions and alternative phrases are also introduced.",
+		zh: '這頁解釋了阿伊努語中「{word}」的說法。阿伊努語怎麼說「{word}」? 阿伊努語中「{word}」是什麼？還有一些類似的表現和替代詞等等。',
+		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。アイヌ語で「{word}」はどう言えばいい？似たような表現・言い換えも紹介します。'
 	};
 </script>
 
