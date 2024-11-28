@@ -2,6 +2,8 @@
 	import Localized from '$lib/components/ui/Localized.svelte';
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
 	import type { PageData } from './$types';
+	import m from '$lib/script.svelte';
+	import T from '$lib/components/ui/T.svelte';
 	let { data }: { data: PageData } = $props();
 </script>
 
@@ -16,7 +18,11 @@
 <h1 class="text-2xl font-bold">
 	<Localized separator="<br/>">
 		{#snippet ain()}
-			<span class="italic">{data.query}</span> a=hunara wa oka p
+			{#if m.script === 'Latn'}
+				“<span class="italic"><T t={data.query} /></span>”<T t=" hunara wa oka p" />
+			{:else}
+				「<T t={data.query} />」<T t=" hunara wa oka p" />
+			{/if}
 		{/snippet}
 		{#snippet jpn()}
 			<span class="text-lg font-normal">
