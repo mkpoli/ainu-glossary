@@ -1,4 +1,6 @@
 <script lang="ts">
+	import T from '../ui/T.svelte';
+
 	let { content }: { content: string } = $props();
 </script>
 
@@ -10,23 +12,14 @@
 			{#if word.includes('=')}
 				{#each word.split(/(=)/) as part}
 					{#if ['a', 'an', '='].includes(part)}
-						{part}
+						<T t={part} />
 					{:else}
-						<a href={`/${part}`} tabindex="-1">{part}</a>
+						<a href={`/${part}`} tabindex="-1"><T t={part} /></a>
 					{/if}
 				{/each}
 			{:else}
-				<a href={`/${word}`} tabindex="-1">{word}</a>
+				<a href={`/${word}`} tabindex="-1"><T t={word} /></a>
 			{/if}
-			<!--       
-				{#if word.split('=')[0] === 'a'}
-					a=<a href={`/${word.split('=')[1]}`}>{word.split('=')[0]}</a>
-				{:else if word.split('=').at(-1) === 'an'}
-					<a href={`/${word}`}>{word}</a>=an
-				{:else}
-					<a href={`/${word}`}>{word}</a>
-				{/if} -->
-			<!-- {/if} -->
 		{:else}
 			{word}
 		{/if}
