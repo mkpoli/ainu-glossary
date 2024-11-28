@@ -5,14 +5,14 @@ export type Script = 'Kana' | 'Latn';
 function latn2kana(latn: string) {
 	const processedLatn = latn
 		.replace(/-/g, ' ')
-		.replace(/\buo/g, 'uwo')
-		.replace(/\bue/g, 'uwe')
-		.replace(/\bio/g, 'iyo')
-		.replace(/\bie/g, 'iye')
-		.replace(/or ta/g, 'otta')
-		.replace(/an=ye/g, 'ayye')
-		.replace(/mp/g, 'np')
-		.replace(/mm/g, 'nm');
+		.replace(/\buo/gi, 'uwo')
+		.replace(/\bue/gi, 'uwe')
+		.replace(/\bio/gi, 'iyo')
+		.replace(/\bie/gi, 'iye')
+		.replace(/or ta/gi, 'otta')
+		.replace(/an=ye/gi, 'ayye')
+		.replace(/mp/gi, 'np')
+		.replace(/mm/gi, 'nm');
 
 	const converted = convertLatnToKana(processedLatn);
 
