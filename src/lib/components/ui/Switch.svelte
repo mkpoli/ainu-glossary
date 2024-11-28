@@ -2,10 +2,6 @@
 	import { createSwitch, melt } from '@melt-ui/svelte';
 	import type { Snippet } from 'svelte';
 
-	const {
-		elements: { root, input }
-	} = createSwitch();
-
 	let {
 		checked = $bindable(false),
 		children,
@@ -19,6 +15,12 @@
 		onchange?: (checked: boolean) => void;
 		id?: string;
 	} = $props();
+
+	const {
+		elements: { root, input }
+	} = createSwitch({
+		defaultChecked: checked
+	});
 
 	$effect(() => {
 		checked = $input.checked;

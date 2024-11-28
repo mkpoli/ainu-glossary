@@ -111,7 +111,10 @@
 		>
 	</div>
 	<div class="query-form col-span-4 flex items-center justify-center">
-		<Switch onchange={(checked) => (m.script = checked ? 'Kana' : 'Latn')}>
+		<Switch
+			checked={m.script === 'Kana'}
+			onchange={(checked) => (m.script = checked ? 'Kana' : 'Latn')}
+		>
 			Romanci{#snippet on()}カタカナ{/snippet}
 		</Switch>
 	</div>

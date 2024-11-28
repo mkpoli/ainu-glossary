@@ -23,7 +23,9 @@ function latn2kana(latn: string) {
 }
 
 function createScriptManager() {
-	let script = $state<Script>('Latn');
+	let script = $state<Script>(
+		browser ? ((localStorage.getItem('ain-script') as Script) ?? 'Latn') : 'Latn'
+	);
 	let t = $derived(script === 'Kana' ? latn2kana : (latn: string) => latn);
 
 	return {
@@ -34,6 +36,8 @@ function createScriptManager() {
 			script = value;
 			if (browser) {
 				document.documentElement.lang = value === 'Kana' ? 'ain-Kana' : 'ain-Latn';
+				localStorage.setItem('ain-script', value);
+				console.info(`Ainu script set to ${value}`);
 			}
 		},
 		get t() {
