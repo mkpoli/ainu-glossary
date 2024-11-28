@@ -2,6 +2,7 @@
 	import Localized from '$lib/components/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
 	import type { Snippet } from 'svelte';
+	import Header from '$lib/components/Header.svelte';
 
 	let { children }: { children: Snippet<[]> } = $props();
 </script>
@@ -15,8 +16,9 @@
 		<Localized ain="Hosipire" jpn="戻る" eng="Back" />
 	</a>
 {/snippet}
+
+<Header />
 <main class="max-w-prose mx-auto p-4 flex flex-col gap-6">
-	{@render goBack()}
 	{@render children()}
 	{@render goBack()}
 </main>
