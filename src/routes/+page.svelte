@@ -47,22 +47,22 @@
 </svelte:head>
 
 <main class="flex flex-col items-center justify-center gap-1 p-4 text-center">
-	<picture class="my-4">
+	<picture class="md:my-4">
 		<source srcset="/android-chrome-192x192.avif" type="image/avif" />
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
 		<img src="/android-chrome-192x192.png" alt="Logo" class="h-10 w-10 md:h-40 md:w-40" />
 	</picture>
-	<h1 class="mb-2 mt-2 text-xl md:my-1 md:text-3xl"><T t={SITE_TITLE} /></h1>
+	<h1 class="my-1 text-xl md:my-1 md:text-3xl"><T t={SITE_TITLE} /></h1>
 	<p
 		role="doc-subtitle"
-		class="mb-4 flex flex-col gap-2 text-base font-bold md:my-1 md:mb-2 md:flex-row md:text-xl"
+		class="mb-4 flex flex-col text-base font-bold md:my-1 md:mb-2 md:flex-row md:gap-2 md:text-xl"
 		lang="ja"
 	>
 		<span lang="ja">現代アイヌ語翻訳用語集</span><span class="hidden md:inline"> / </span>
 		<span lang="en">Modern Ainu Translation Glossary</span>
 	</p>
 
-	<div class="my-4 text-sm md:my-8 md:text-base">
+	<div class="my-2 text-sm md:my-4 md:my-8 md:text-base">
 		<p>
 			<T t="Tanpe anak intennet or ta " /><a href={GOOGLE_SHEET_LINK} target="_blank">
 				<i><T t="Itak-uoeroskip" /></i>
@@ -79,11 +79,11 @@
 			>.
 		</p>
 
-		<details class="mx-auto my-4 flex max-w-prose flex-col gap-4 text-center">
+		<details class="mx-auto my-4 flex max-w-prose flex-col text-center">
 			<summary>
 				<Localized ain="Uepeker" jpn="詳細" eng="Details" />
 			</summary>
-			<div class="flex flex-col gap-2 text-justify">
+			<div class="mt-4 flex flex-col gap-2 text-justify">
 				<p><T t={DESCRIPTIONS.ain} /></p>
 				<p lang="ja">{DESCRIPTIONS.jpn}</p>
 				<p lang="en">{DESCRIPTIONS.eng}</p>
