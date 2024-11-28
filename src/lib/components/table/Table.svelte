@@ -157,11 +157,15 @@
 				{#if rows}
 					{#each rows as row}
 						<div class="border border-black p-2">
-							<h3 class="m-0 font-bold">{row.Aynu}</h3>
-							<p title="English">{row.English}</p>
-							<p title="日本語">{row.日本語}</p>
-							<p title="中文">{row.中文}</p>
-							<p title="註 / Notes">{row['註 / Notes']}</p>
+							<h3 class="m-0 font-bold"><SearchableLink content={row.Aynu ?? ''} /></h3>
+							<p title="English">
+								<DividedSearchableTags content={row.English ?? ''} language="en" />
+							</p>
+							<p title="日本語">
+								<DividedSearchableTags content={row.日本語 ?? ''} language="ja" />
+							</p>
+							<p title="中文"><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></p>
+							<p title="註 / Notes">{row['註 / Notes'] ?? ''}</p>
 						</div>
 					{/each}
 				{:else}
