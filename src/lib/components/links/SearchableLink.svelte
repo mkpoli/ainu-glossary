@@ -8,7 +8,7 @@
 	{#each content.split(/([\s,\{\}]+)/u) as word}
 		{#if word.match(/^[VNA]\d$/)}
 			{word}
-		{:else if word.match(/^[a-zA-Z=\-]+$/)}
+		{:else if word.match(/^[a-zA-Záíúéó=\-]+$/)}
 			{#if word.includes('=')}
 				{#each word.split(/(=)/) as part}
 					{#if ['a', 'an', '='].includes(part)}
