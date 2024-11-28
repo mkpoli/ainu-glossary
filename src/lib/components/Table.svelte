@@ -11,6 +11,8 @@
 	import { browser } from '$app/environment';
 	import SearchResultCard from './SearchResultCard.svelte';
 
+	import groupBy from 'object.groupby';
+
 	interface Props {
 		data: Entry[];
 		sheets: Sheet[];
@@ -65,14 +67,14 @@
 	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
 	$inspect('isLargeScreen', isLargeScreen);
 
-	let groupedBySheetName = $derived(Object.groupBy(data, (row) => row.sheetName));
+	let groupedBySheetName = $derived(groupBy(data, 'sheetName'));
 	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
 
 <svelte:window on:resize={() => (isLargeScreen = browser ? window.innerWidth >= 768 : false)} />
 
 <div
-	class="query-form-container flex flex-col md:grid md:grid-cols-[auto_1fr_1.5fr_1fr] w-full md:w-max md:text-left gap-2 md:gap-4 md:items-center mb-10 md:whitespace-nowrap"
+	class="query-form-container mb-10 flex w-full flex-col gap-2 md:grid md:w-max md:grid-cols-[auto_1fr_1.5fr_1fr] md:items-center md:gap-4 md:whitespace-nowrap md:text-left"
 >
 	<div class="query-form contents">
 		<label for="search" class="flex items-center justify-start gap-2 md:contents">
@@ -84,9 +86,9 @@
 			name=""
 			id="search"
 			bind:value={query}
-			class="w-full p-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm focus:ring-black focus:border-black"
+			class="m-0 h-10 w-full min-w-[220px] border border-gray-900 bg-white p-2 text-sm shadow-hard focus:border-black focus:ring-black"
 		/>
-		<span class="text-xs text-right md:text-base md:text-left"
+		<span class="text-right text-xs md:text-left md:text-base"
 			>{filtered.length} / {data.length}</span
 		>
 	</div>
@@ -100,15 +102,15 @@
 			<MaterialSymbolsCategoryOutline />
 			<Localized ain="Katekori" jpn="分類" eng="Categories" />
 		</Select>
-		<span class="text-xs text-right md:text-base md:text-left"
+		<span class="text-right text-xs md:text-left md:text-base"
 			>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span
 		>
 	</div>
 </div>
 
-<div class="overflow-x-auto w-full">
+<div class="w-full overflow-x-auto">
 	{#if isLargeScreen}
-		<table class="w-full border-collapse m-0 overflow-x-auto text-sm md:text-base">
+		<table class="m-0 w-full border-collapse overflow-x-auto text-sm md:text-base">
 			<thead>
 				<tr>
 					<th>類型 / Type</th>
@@ -151,7 +153,7 @@
 	{:else}
 		<div class="flex flex-col">
 			{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
-				<h2 class="m-0 capitalize my-2">{sheetName.replaceAll('_', ' ')}</h2>
+				<h2 class="m-0 my-2 capitalize">{sheetName.replaceAll('_', ' ')}</h2>
 				{#if rows}
 					{#each rows as row}
 						<div class="border border-black p-2">
@@ -178,10 +180,10 @@
 
 <style lang="postcss">
 	th {
-		@apply bg-neutral-200 border-black p-2 border;
+		@apply border border-black bg-neutral-200 p-2;
 	}
 
 	td {
-		@apply border-black p-1 md:p-2 border;
+		@apply border border-black p-1 md:p-2;
 	}
 </style>
