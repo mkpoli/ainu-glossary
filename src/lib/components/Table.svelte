@@ -67,7 +67,7 @@
 	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
 	$inspect('isLargeScreen', isLargeScreen);
 
-	let groupedBySheetName = $derived(groupBy(data, 'sheetName'));
+	let groupedBySheetName = $derived(groupBy(data, (row) => row.sheetName));
 	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
 
