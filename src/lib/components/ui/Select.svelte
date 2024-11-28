@@ -2,6 +2,7 @@
 	import { createSelect, createSeparator, melt } from '@melt-ui/svelte';
 	import type { Snippet } from 'svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
+	import T from './T.svelte';
 
 	let {
 		options,
@@ -126,7 +127,7 @@
 			}}
 			title="Inumke isamka / すべて選択解除 / Clear All"
 		>
-			Inumke isamka
+			<T t="Inumke isamka" />
 		</button>
 	</div>
 {/if}
