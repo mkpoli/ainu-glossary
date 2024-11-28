@@ -4,13 +4,21 @@
 	import DividedSearchableTags from '../links/DividedSearchableTags.svelte';
 	import SearchableLink from '../links/SearchableLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
-	let { item, sheets }: { item: Entry; sheets: Sheet[] } = $props();
+	import type { FuseResultMatch } from 'fuse.js';
+	import groupBy from 'object.groupby';
+	let {
+		item,
+		sheets,
+		matches
+	}: { item: Entry; sheets: Sheet[]; matches: readonly FuseResultMatch[] | undefined } = $props();
+
+	const highlights = groupBy(matches ?? [], (match) => match.key ?? '');
 </script>
 
 <section
 	class="grid grid-cols-[1fr_auto] items-start gap-4 border border-black px-6 py-4 shadow-hard"
 >
-	<h2 class="m-0"><SearchableLink content={item.Aynu ?? ''} /></h2>
+	<h2 class="m-0"><SearchableLink content={item.Aynu ?? ''} highlight={highlights['Aynu']} /></h2>
 	<div class="flex justify-end gap-2">
 		<!-- Genre -->
 		<div
@@ -22,9 +30,27 @@
 		</div>
 	</div>
 	<div>
-		<p lang="ja"><DividedSearchableTags content={item.日本語 ?? ''} language="ja" /></p>
-		<p lang="en"><DividedSearchableTags content={item.English ?? ''} language="en" /></p>
-		<p lang="zh"><DividedSearchableTags content={item.中文 ?? ''} language="zh" /></p>
+		<p lang="ja">
+			<DividedSearchableTags
+				content={item.日本語 ?? ''}
+				language="ja"
+				highlight={highlights['日本語']}
+			/>
+		</p>
+		<p lang="en">
+			<DividedSearchableTags
+				content={item.English ?? ''}
+				language="en"
+				highlight={highlights['English']}
+			/>
+		</p>
+		<p lang="zh">
+			<DividedSearchableTags
+				content={item.中文 ?? ''}
+				language="zh"
+				highlight={highlights['中文']}
+			/>
+		</p>
 	</div>
 	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>
 </section>

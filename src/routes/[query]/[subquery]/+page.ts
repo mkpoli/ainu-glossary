@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { fetchData, type Entry } from '$lib/data';
+import Fuse, { type FuseResult } from 'fuse.js';
 
 function isValidLanguage(lang: string): lang is 'en' | 'ja' | 'zh' {
 	return ['en', 'ja', 'zh'].includes(lang);
@@ -21,7 +22,13 @@ export const load: PageLoad = async ({ params: { query, subquery }, fetch }) => 
 		} as const
 	)[query];
 
-	const found: Entry[] = table.filter((item) => item[key]?.includes(subquery));
+	const fuse = new Fuse(table, {
+		keys: [key],
+		includeScore: true,
+		includeMatches: true,
+		threshold: 0.5
+	});
+	const found: FuseResult<Entry>[] = fuse.search(subquery);
 
 	return {
 		found,
