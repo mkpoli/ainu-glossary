@@ -84,7 +84,7 @@
 				<Localized ain="Uepeker" jpn="詳細" eng="Details" />
 			</summary>
 			<div class="flex flex-col gap-2 text-justify">
-				<p>{DESCRIPTIONS.ain}</p>
+				<p><T t={DESCRIPTIONS.ain} /></p>
 				<p lang="ja">{DESCRIPTIONS.jpn}</p>
 				<p lang="en">{DESCRIPTIONS.eng}</p>
 			</div>
