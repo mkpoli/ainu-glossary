@@ -5,10 +5,10 @@
 </script>
 
 <span>
-	{#each content.split(/([\s,\{\}]+)/u) as word}
+	{#each content.split(/([\s,\{\}\?\-\(\)!]+)/u) as word}
 		{#if word.match(/^[VN]\d|YYYY|MM|DD$/)}
 			{word}
-		{:else if word.match(/^[a-zA-Záíúéó=\-]+$/)}
+		{:else if word.match(/^[a-zA-Záíúéó=]+$/)}
 			{#if word.includes('=')}
 				{#each word.split(/(=)/) as part}
 					{#if ['a', 'an', '='].includes(part)}
