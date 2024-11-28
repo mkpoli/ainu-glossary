@@ -14,10 +14,12 @@ function latn2kana(latn: string) {
 		.replace(/mp/gi, 'np')
 		.replace(/mm/gi, 'nm');
 
-	const converted = convertLatnToKana(processedLatn);
-
-	return converted.replace(/ト゚/g, 'ツ゚');
-	// return processedLatn;
+	try {
+		const converted = convertLatnToKana(processedLatn);
+		return converted.replace(/ト゚/g, 'ツ゚');
+	} catch (e) {
+		return processedLatn;
+	}
 }
 
 function createScriptManager() {
