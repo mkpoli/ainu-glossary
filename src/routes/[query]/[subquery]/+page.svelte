@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SearchResultCard from '$lib/components/SearchResultCard.svelte';
+	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
 
 	let { data } = $props();
 

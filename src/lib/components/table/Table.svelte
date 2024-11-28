@@ -2,14 +2,14 @@
 	import MaterialSymbolsSearch from '~icons/material-symbols/search';
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
 
-	import Select from '$lib/components/Select.svelte';
-	import Localized from '$lib/components/Localized.svelte';
-	import SearchableLink from '$lib/components/SearchableLink.svelte';
-	import DividedSearchableTags from '$lib/components/DividedSearchableTags.svelte';
+	import Select from '$lib/components/ui/Select.svelte';
+	import Localized from '$lib/components/ui/Localized.svelte';
+	import SearchableLink from '$lib/components/table/SearchableLink.svelte';
+	import DividedSearchableTags from '$lib/components/table/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
 	import { browser } from '$app/environment';
-	import SearchResultCard from './SearchResultCard.svelte';
+	import SearchResultCard from '../search/SearchResultCard.svelte';
 
 	import groupBy from 'object.groupby';
 

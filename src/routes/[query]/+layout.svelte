@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Localized from '$lib/components/Localized.svelte';
+	import Localized from '$lib/components/ui/Localized.svelte';
 	import MaterialSymbolsArrowBackIosNew from '~icons/material-symbols/arrow-back-ios-new';
 	import type { Snippet } from 'svelte';
 	import Header from '$lib/components/Header.svelte';
@@ -10,7 +10,7 @@
 {#snippet goBack()}
 	<a
 		href="/"
-		class="my-2 flex items-center gap-2 hover:underline no-underline text-inherit hover:text-theme-500"
+		class="my-2 flex items-center gap-2 text-inherit no-underline hover:text-theme-500 hover:underline"
 	>
 		<MaterialSymbolsArrowBackIosNew />
 		<Localized ain="Hosipire" jpn="戻る" eng="Back" />
@@ -18,7 +18,7 @@
 {/snippet}
 
 <Header />
-<main class="max-w-prose mx-auto p-4 flex flex-col gap-6">
+<main class="mx-auto flex max-w-prose flex-col gap-6 p-4">
 	{@render children()}
 	{@render goBack()}
 </main>

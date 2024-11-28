@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Localized from '$lib/components/Localized.svelte';
-	import SearchResultCard from '$lib/components/SearchResultCard.svelte';
+	import Localized from '$lib/components/ui/Localized.svelte';
+	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
 	import type { PageData } from './$types';
 	let { data }: { data: PageData } = $props();
 </script>
@@ -19,12 +19,12 @@
 			<span class="italic">{data.query}</span> a=hunara wa oka p
 		{/snippet}
 		{#snippet jpn()}
-			<span class="font-normal text-lg">
+			<span class="text-lg font-normal">
 				アイヌ語<span class="italic">{data.query}</span>の意味とは？
 			</span>
 		{/snippet}
 		{#snippet eng()}
-			<span class="font-normal text-lg">
+			<span class="text-lg font-normal">
 				What does <span class="italic">{data.query}</span> mean in Ainu?
 			</span>
 		{/snippet}

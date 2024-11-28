@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createSelect, createSeparator, melt } from '@melt-ui/svelte';
 	import type { Snippet } from 'svelte';
-	import Localized from '$lib/components/Localized.svelte';
+	import Localized from '$lib/components/ui/Localized.svelte';
 
 	let {
 		options,
@@ -59,7 +59,7 @@
 >
 
 <button
-	class="button w-full px-3 py-2 h-10 m-0 min-w-[220px] bg-white shadow-hard border border-gray-900 text-sm flex items-center justify-between hover:bg-neutral-200 focus:outline-none focus:ring-black focus:border-black focus:ring-1"
+	class="button m-0 flex h-10 w-full min-w-[220px] items-center justify-between border border-gray-900 bg-white px-3 py-2 text-sm shadow-hard hover:bg-neutral-200 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
 	use:melt={$trigger}
 	aria-label="Food"
 >
@@ -85,12 +85,12 @@
 </button>
 {#if $open}
 	<div
-		class="menu absolute z-10 flex flex-col max-h-[300px] bg-white shadow-harder outline-none"
+		class="menu absolute z-10 flex max-h-[300px] flex-col bg-white shadow-harder outline-none"
 		use:melt={$menu}
 	>
 		<div class="overflow-y-auto">
 			<button
-				class="w-full px-4 py-2 font-bold text-neutral-500 text-left capitalize bg-transparent border-none m-0 min-w-[220px] shadow-hard border border-gray-900 text-sm hover:opacity-90 hover:text-black disabled:text-black hover:bg-neutral-50 cursor-pointer"
+				class="m-0 w-full min-w-[220px] cursor-pointer border border-none border-gray-900 bg-transparent px-4 py-2 text-left text-sm font-bold capitalize text-neutral-500 shadow-hard hover:bg-neutral-50 hover:text-black hover:opacity-90 disabled:text-black"
 				disabled={($meltSelected?.length ?? 0) === options.size}
 				onclick={() => {
 					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
@@ -101,7 +101,7 @@
 			<hr use:melt={$horizontal} />
 			{#each options.entries() as [item, { label, count }]}
 				<div
-					class="relative cursor-pointer px-8 py-1 text-transform capitalize text-sm bg-white hover:bg-neutral-50"
+					class="text-transform relative cursor-pointer bg-white px-8 py-1 text-sm capitalize hover:bg-neutral-50"
 					use:melt={$option({ value: item, label })}
 					class:bg-neutral-100={$isSelected(item)}
 				>
@@ -113,14 +113,14 @@
 						✔
 					</div>
 
-					{label}<span class="text-xs text-neutral-500 ml-2">{count}</span>
+					{label}<span class="ml-2 text-xs text-neutral-500">{count}</span>
 				</div>
 			{/each}
 		</div>
 
 		<hr use:melt={$horizontal} />
 		<button
-			class="py-2 px-4 option text-left bg-transparent border-none h-10 m-0 min-w-[220px] text-sm hover:bg-neutral-50 hover:text-black text-neutral-500"
+			class="option m-0 h-10 min-w-[220px] border-none bg-transparent px-4 py-2 text-left text-sm text-neutral-500 hover:bg-neutral-50 hover:text-black"
 			onclick={() => {
 				meltSelected.set([]);
 			}}

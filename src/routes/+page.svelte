@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Table from '$lib/components/Table.svelte';
-	import Localized from '$lib/components/Localized.svelte';
+	import Table from '$lib/components/table/Table.svelte';
+	import Localized from '$lib/components/ui/Localized.svelte';
 	import type { PageData } from './$types';
 
 	import GitHub from '~icons/simple-icons/github';
@@ -47,19 +47,19 @@
 	<picture class="my-4">
 		<source srcset="/android-chrome-192x192.avif" type="image/avif" />
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
-		<img src="/android-chrome-192x192.png" alt="Logo" class="w-10 h-10 md:w-40 md:h-40" />
+		<img src="/android-chrome-192x192.png" alt="Logo" class="h-10 w-10 md:h-40 md:w-40" />
 	</picture>
-	<h1 class="text-xl md:text-3xl mt-2 mb-2 md:my-1">{SITE_TITLE}</h1>
+	<h1 class="mb-2 mt-2 text-xl md:my-1 md:text-3xl">{SITE_TITLE}</h1>
 	<p
 		role="doc-subtitle"
-		class="text-base font-bold mb-4 md:text-xl md:mb-2 md:my-1 flex flex-col md:flex-row gap-2"
+		class="mb-4 flex flex-col gap-2 text-base font-bold md:my-1 md:mb-2 md:flex-row md:text-xl"
 		lang="ja"
 	>
 		<span lang="ja">現代アイヌ語翻訳用語集</span><span class="hidden md:inline"> / </span>
 		<span lang="en">Modern Ainu Translation Glossary</span>
 	</p>
 
-	<div class="my-4 md:my-8 text-sm md:text-base">
+	<div class="my-4 text-sm md:my-8 md:text-base">
 		<p>
 			Tanpe anak intennet or ta <a href={GOOGLE_SHEET_LINK} target="_blank">
 				<i>Itak-uoeroskip</i>
@@ -76,7 +76,7 @@
 			>.
 		</p>
 
-		<details class="my-4 flex flex-col gap-4 max-w-prose mx-auto text-center">
+		<details class="mx-auto my-4 flex max-w-prose flex-col gap-4 text-center">
 			<summary>
 				<Localized ain="Uepeker" jpn="詳細" eng="Details" />
 			</summary>
@@ -105,7 +105,7 @@
 			a.click();
 			loading = false;
 		}}
-		class="inline-flex items-center gap-2 mt-4 p-2 text-base"
+		class="mt-4 inline-flex items-center gap-2 p-2 text-base"
 	>
 		{#if loading}
 			<LineMdDownloadingLoop width="1.25em" height="1.25em" />
@@ -171,28 +171,28 @@
 	</p>
 
 	<h2><Localized ain="Rinko" jpn="リンク" eng="Links" /></h2>
-	<div class="flex justify-center items-center gap-4">
+	<div class="flex items-center justify-center gap-4">
 		<a
-			class="flex justify-center items-center text-neutral-600 hover:text-black"
+			class="flex items-center justify-center text-neutral-600 hover:text-black"
 			href="https://github.com/mkpoli/ainu-glossary"
 			target="_blank"
 			title="GitHub"
 			aria-label="GitHub"
 		>
-			<GitHub class="w-8 h-8" />
+			<GitHub class="h-8 w-8" />
 		</a>
 		<a
-			class="flex justify-center items-center text-neutral-600 hover:text-black"
+			class="flex items-center justify-center text-neutral-600 hover:text-black"
 			href="https://x.com/mkpoli/status/1768640802971156809?s=20"
 			target="_blank"
 			title="X"
 			aria-label="X"
 		>
-			<X class="w-8 h-8" />
+			<X class="h-8 w-8" />
 		</a>
 	</div>
 
-	<ul class="list-none p-0 flex justify-center my-4 md:flex-row flex-col md:gap-4 gap-2">
+	<ul class="my-4 flex list-none flex-col justify-center gap-2 p-0 md:flex-row md:gap-4">
 		<li></li>
 		<li>
 			<a href="https://aynu.org/" target="_blank">Aynu.org</a>
