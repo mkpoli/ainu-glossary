@@ -8,9 +8,15 @@ function latn2kana(latn: string) {
 		.replace(/\buo/g, 'uwo')
 		.replace(/\bue/g, 'uwe')
 		.replace(/\bio/g, 'iyo')
-		.replace(/\bie/g, 'iye');
+		.replace(/\bie/g, 'iye')
+		.replace(/or ta/g, 'otta')
+		.replace(/an=ye/g, 'ayye')
+		.replace(/mp/g, 'np')
+		.replace(/mm/g, 'nm');
 
-	return convertLatnToKana(processedLatn);
+	const converted = convertLatnToKana(processedLatn);
+
+	return converted.replace(/ト゚/g, 'ツ゚');
 	// return processedLatn;
 }
 
