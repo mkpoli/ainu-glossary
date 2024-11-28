@@ -3,7 +3,7 @@
 	import { formatGenre, generateColorHashFromString } from '$lib/genre';
 	import DividedSearchableTags from '../links/DividedSearchableTags.svelte';
 	import SearchableLink from '../links/SearchableLink.svelte';
-
+	import ReferenceLink from '../links/ReferenceLink.svelte';
 	let { item, sheets }: { item: Entry; sheets: Sheet[] } = $props();
 </script>
 
@@ -26,5 +26,5 @@
 		<p lang="en"><DividedSearchableTags content={item.English ?? ''} language="en" /></p>
 		<p lang="zh"><DividedSearchableTags content={item.中文 ?? ''} language="zh" /></p>
 	</div>
-	<div>{item['註 / Notes']}</div>
+	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>
 </section>

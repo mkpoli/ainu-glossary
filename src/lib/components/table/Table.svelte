@@ -9,7 +9,7 @@
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
 	import { browser } from '$app/environment';
-	import SearchResultCard from '../search/SearchResultCard.svelte';
+	import ReferenceLink from '$lib/components/links/ReferenceLink.svelte';
 
 	import groupBy from 'object.groupby';
 
@@ -144,7 +144,7 @@
 							<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
 							<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
 							<td><SearchableLink content={row.Aynu ?? ''} /></td>
-							<td>{row['註 / Notes'] ?? ''}</td>
+							<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
 						</tr>
 					{/each}
 				{/if}
@@ -165,7 +165,7 @@
 								<DividedSearchableTags content={row.日本語 ?? ''} language="ja" />
 							</p>
 							<p title="中文"><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></p>
-							<p title="註 / Notes">{row['註 / Notes'] ?? ''}</p>
+							<p title="註 / Notes"><ReferenceLink content={row['註 / Notes'] ?? ''} /></p>
 						</div>
 					{/each}
 				{:else}
