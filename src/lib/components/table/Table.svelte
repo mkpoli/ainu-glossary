@@ -15,6 +15,7 @@
 	import Switch from '../ui/Switch.svelte';
 
 	import m from '$lib/script.svelte';
+	import T from '../ui/T.svelte';
 
 	interface Props {
 		data: Entry[];
@@ -125,7 +126,7 @@
 					<th>日本語</th>
 					<th>English</th>
 					<th>中文</th>
-					<th>Aynuitak</th>
+					<th><T t="Aynuitak" /></th>
 					<th>注 / Notes</th>
 				</tr>
 			</thead>
