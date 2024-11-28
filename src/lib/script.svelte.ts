@@ -12,7 +12,11 @@ function latn2kana(latn: string) {
 		.replace(/or ta/gi, 'otta')
 		.replace(/an=ye/gi, 'ayye')
 		.replace(/mp/gi, 'np')
-		.replace(/mm/gi, 'nm');
+		.replace(/mm/gi, 'nm')
+		.replace(/b/g, 'p')
+		.replace(/d/g, 't')
+		.replace(/g/g, 'k')
+		.replace(/z/g, 'c');
 
 	try {
 		const converted = convertLatnToKana(processedLatn);
