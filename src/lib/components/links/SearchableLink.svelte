@@ -1,5 +1,5 @@
 <script lang="ts">
-	import T from '../ui/T.svelte';
+	import T from '$lib/components/ui/T.svelte';
 
 	let { content }: { content: string } = $props();
 </script>
