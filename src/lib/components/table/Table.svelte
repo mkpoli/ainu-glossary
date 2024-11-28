@@ -146,7 +146,7 @@
 					</tr>
 				{:else}
 					{#each filtered as row}
-						<tr>
+						<tr class="even:bg-gray-50">
 							<td
 								class="capitalize"
 								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
