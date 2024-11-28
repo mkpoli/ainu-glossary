@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import T from './T.svelte';
 	let {
 		ain,
 		eng,
@@ -13,18 +14,22 @@
 	} = $props();
 </script>
 
-{#snippet stringOrSnippet(value: string | Snippet<[]>)}
+{#snippet stringOrSnippet(value: string | Snippet<[]>, lang: string)}
 	{#if typeof value === 'string'}
-		{value}
+		{#if lang === 'ain'}
+			<T t={value} />
+		{:else}
+			{value}
+		{/if}
 	{:else}
 		{@render value()}
 	{/if}
 {/snippet}
 
 <span>
-	{@render stringOrSnippet(ain)}
+	{@render stringOrSnippet(ain, 'ain')}
 	{@html separator}
-	<span lang="ja">{@render stringOrSnippet(jpn)}</span>
+	<span lang="ja">{@render stringOrSnippet(jpn, 'jpn')}</span>
 	{@html separator}
-	<span lang="en">{@render stringOrSnippet(eng)}</span>
+	<span lang="en">{@render stringOrSnippet(eng, 'eng')}</span>
 </span>
