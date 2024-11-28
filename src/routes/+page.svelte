@@ -13,6 +13,7 @@
 	import { REFERENCES_URL, SITE_TITLE } from '$lib/consts';
 
 	import m from '$lib/script.svelte';
+	import T from '$lib/components/ui/T.svelte';
 
 	interface Props {
 		data: PageData;
@@ -51,7 +52,7 @@
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
 		<img src="/android-chrome-192x192.png" alt="Logo" class="h-10 w-10 md:h-40 md:w-40" />
 	</picture>
-	<h1 class="mb-2 mt-2 text-xl md:my-1 md:text-3xl">{m.t(SITE_TITLE)}</h1>
+	<h1 class="mb-2 mt-2 text-xl md:my-1 md:text-3xl"><T t={SITE_TITLE} /></h1>
 	<p
 		role="doc-subtitle"
 		class="mb-4 flex flex-col gap-2 text-base font-bold md:my-1 md:mb-2 md:flex-row md:text-xl"

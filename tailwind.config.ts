@@ -40,7 +40,8 @@ export default {
 				'Open Sans',
 				'Helvetica Neue',
 				'sans-serif'
-			]
+			],
+			ain: ['"M PLUS Rounded 1c"', '"M PLUS 1p"', 'BIZ UDPGothic', 'Noto Sans CJK JP', 'sans-serif']
 		}
 	},
 

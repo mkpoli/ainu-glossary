@@ -7,6 +7,11 @@
 		@apply font-sans;
 	}
 
+	body[lang='ain-Kana'],
+	*[lang='ain-Kana'] {
+		@apply font-ain;
+	}
+
 	h1 {
 		@apply text-2xl font-bold;
 	}
