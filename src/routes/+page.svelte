@@ -10,7 +10,7 @@
 	import LineMdDownloadingLoop from '~icons/line-md/downloading-loop';
 
 	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
-	import { SITE_TITLE } from '$lib/consts';
+	import { REFERENCES_URL, SITE_TITLE } from '$lib/consts';
 
 	interface Props {
 		data: PageData;
@@ -120,24 +120,15 @@
 		<Localized ain="Kampimoto" jpn="参考文献" eng="References" />
 	</h2>
 	<p>
-		<a
-			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
-			target="_blank">Kampimoto opitta</a
-		> nukar wa un=kore yan!
+		<a href={REFERENCES_URL} target="_blank">Kampimoto opitta</a> nukar wa un=kore yan!
 	</p>
 
 	<p lang="ja">
-		<a
-			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
-			target="_blank">参考文献の一覧</a
-		>を御覧ください。
+		<a href={REFERENCES_URL} target="_blank">参考文献の一覧</a>を御覧ください。
 	</p>
 
 	<p lang="en">
-		Please see the <a
-			href="https://docs.google.com/spreadsheets/d/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/edit?usp=sharing#gid=1835108336"
-			target="_blank">list of references</a
-		>.
+		Please see the <a href={REFERENCES_URL} target="_blank">list of references</a>.
 	</p>
 
 	<h2><Localized ain="Uesere" jpn="ライセンス" eng="License" /></h2>
