@@ -18,6 +18,7 @@ function latn2kana(latn: string) {
 		const converted = convertLatnToKana(processedLatn);
 		return converted.replace(/ト゚/g, 'ツ゚');
 	} catch (e) {
+		console.error(`Error converting Latn "${processedLatn}" to Kana`, e);
 		return processedLatn;
 	}
 }
