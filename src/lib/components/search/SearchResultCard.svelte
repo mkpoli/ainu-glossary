@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Entry, Sheet } from '$lib/data';
 	import { formatGenre, generateColorHashFromString } from '$lib/genre';
-	import DividedSearchableTags from '../table/DividedSearchableTags.svelte';
-	import SearchableLink from '../table/SearchableLink.svelte';
+	import DividedSearchableTags from '../links/DividedSearchableTags.svelte';
+	import SearchableLink from '../links/SearchableLink.svelte';
 
 	let { item, sheets }: { item: Entry; sheets: Sheet[] } = $props();
 </script>

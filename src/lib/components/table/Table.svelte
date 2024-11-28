@@ -4,8 +4,8 @@
 
 	import Select from '$lib/components/ui/Select.svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
-	import SearchableLink from '$lib/components/table/SearchableLink.svelte';
-	import DividedSearchableTags from '$lib/components/table/DividedSearchableTags.svelte';
+	import SearchableLink from '$lib/components/links/SearchableLink.svelte';
+	import DividedSearchableTags from '$lib/components/links/DividedSearchableTags.svelte';
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
 	import { browser } from '$app/environment';
