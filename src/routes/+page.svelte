@@ -64,9 +64,9 @@
 
 	<div class="my-4 text-sm md:my-8 md:text-base">
 		<p>
-			Tanpe anak intennet or ta <a href={GOOGLE_SHEET_LINK} target="_blank">
-				<i>Itak-uoeroskip</i>
-			</a> a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne.
+			<T t="Tanpe anak intennet or ta " /><a href={GOOGLE_SHEET_LINK} target="_blank">
+				<i><T t="Itak-uoeroskip" /></i>
+			</a><T t=" a=hunara wa uotutanu a=nukar easkay kuni aeywankep ne." />
 		</p>
 		<p lang="ja" class="text-xs md:text-base">
 			これは、<a href={GOOGLE_SHEET_LINK} target="_blank">元の用語集</a
