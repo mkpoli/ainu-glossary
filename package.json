@@ -45,6 +45,7 @@
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@vercel/analytics": "^1.4.1",
+		"ainconv": "^0.4.0",
 		"googleapis": "^144.0.0",
 		"object.groupby": "^1.0.3"
 	}

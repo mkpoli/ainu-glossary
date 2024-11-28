@@ -12,6 +12,9 @@
 	import ReferenceLink from '$lib/components/links/ReferenceLink.svelte';
 
 	import groupBy from 'object.groupby';
+	import Switch from '../ui/Switch.svelte';
+
+	import m from '$lib/script.svelte';
 
 	interface Props {
 		data: Entry[];
@@ -105,6 +108,11 @@
 		<span class="text-right text-xs md:text-left md:text-base"
 			>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span
 		>
+	</div>
+	<div class="query-form col-span-4 flex items-center justify-center">
+		<Switch onchange={(checked) => (m.script = checked ? 'Kana' : 'Latn')}>
+			Romanci{#snippet on()}カタカナ{/snippet}
+		</Switch>
 	</div>
 </div>
 
