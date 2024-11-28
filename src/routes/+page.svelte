@@ -10,6 +10,7 @@
 	import LineMdDownloadingLoop from '~icons/line-md/downloading-loop';
 
 	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
+	import { SITE_TITLE } from '$lib/consts';
 
 	interface Props {
 		data: PageData;
@@ -31,9 +32,9 @@
 </script>
 
 <svelte:head>
-	<title>Tane an Aynuitak-kotupte Itak-uoeroskip</title>
+	<title>{SITE_TITLE}</title>
 	<meta name="description" content={DESCRIPTION_SHORT} />
-	<meta name="og:title" content="Tane an Aynuitak-kotupte Itak-uoeroskip" />
+	<meta name="og:title" content={SITE_TITLE} />
 	<meta name="og:description" content={DESCRIPTION_SHORT} />
 	<meta name="og:image" content="/screenshot.png" />
 	<meta
@@ -48,7 +49,7 @@
 		<source srcset="/android-chrome-192x192.webp" type="image/webp" />
 		<img src="/android-chrome-192x192.png" alt="Logo" class="w-10 h-10 md:w-40 md:h-40" />
 	</picture>
-	<h1 class="text-xl md:text-3xl mt-2 mb-2 md:my-1">Tane an Aynuitak-kotupte Itak-uoeroskip</h1>
+	<h1 class="text-xl md:text-3xl mt-2 mb-2 md:my-1">{SITE_TITLE}</h1>
 	<p
 		role="doc-subtitle"
 		class="text-base font-bold mb-4 md:text-xl md:mb-2 md:my-1 flex flex-col md:flex-row gap-2"
