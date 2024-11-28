@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table from '$lib/components/table/Table.svelte';
+	import Table from '$lib/components/Table.svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
 	import type { PageData } from './$types';
 
