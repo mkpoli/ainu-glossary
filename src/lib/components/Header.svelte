@@ -22,22 +22,23 @@
 		</h1>
 	</div>
 	<div class="flex w-full flex-col items-center justify-between gap-2">
-		<div class="flex items-stretch gap-2">
+		<form
+			onsubmit={(e) => {
+				e.preventDefault();
+				goto(`/${search}`);
+			}}
+			class="flex items-stretch gap-2"
+		>
 			<input
 				type="search"
 				placeholder={`${m.t('Ihunara')} / 検索 / Search`}
 				class="h-full w-64 flex-1"
 				bind:value={search}
 			/>
-			<button
-				class="h-full"
-				onclick={() => {
-					goto(`/${search}`);
-				}}
-			>
+			<button class="h-full" type="submit">
 				<MaterialSymbolsSearch />
 			</button>
-		</div>
+		</form>
 		<ScriptSwitch short />
 	</div>
 </header>
