@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Entry, Sheet } from '$lib/data';
 	import { formatGenre, generateColorHashFromString } from '$lib/genre';
-	import DividedSearchableTags from '../links/DividedSearchableTags.svelte';
+	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
 	import SearchableLink from '../links/SearchableLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
 	import type { FuseResultMatch } from 'fuse.js';
@@ -31,21 +31,21 @@
 	</div>
 	<div>
 		<p lang="ja">
-			<DividedSearchableTags
+			<SegmentedTranslationLink
 				content={item.日本語 ?? ''}
 				language="ja"
 				highlight={highlights['日本語']}
 			/>
 		</p>
 		<p lang="en">
-			<DividedSearchableTags
+			<SegmentedTranslationLink
 				content={item.English ?? ''}
 				language="en"
 				highlight={highlights['English']}
 			/>
 		</p>
 		<p lang="zh">
-			<DividedSearchableTags
+			<SegmentedTranslationLink
 				content={item.中文 ?? ''}
 				language="zh"
 				highlight={highlights['中文']}

@@ -5,7 +5,7 @@
 	import Select from '$lib/components/ui/Select.svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
 	import SearchableLink from '$lib/components/links/SearchableLink.svelte';
-	import DividedSearchableTags from '$lib/components/links/DividedSearchableTags.svelte';
+	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
 	import ReferenceLink from '$lib/components/links/ReferenceLink.svelte';
 	import ScriptSwitch from '$lib/components/controls/ScriptSwitch.svelte';
 	import T from '$lib/components/ui/T.svelte';
@@ -144,9 +144,9 @@
 								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
 									formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
 							>
-							<td><DividedSearchableTags content={row.日本語 ?? ''} language="ja" /></td>
-							<td><DividedSearchableTags content={row.English ?? ''} language="en" /></td>
-							<td><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></td>
+							<td><SegmentedTranslationLink content={row.日本語 ?? ''} language="ja" /></td>
+							<td><SegmentedTranslationLink content={row.English ?? ''} language="en" /></td>
+							<td><SegmentedTranslationLink content={row.中文 ?? ''} language="zh" /></td>
 							<td><SearchableLink content={row.Aynu ?? ''} /></td>
 							<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
 						</tr>
@@ -163,12 +163,14 @@
 						<div class="border border-black p-2">
 							<h3 class="m-0 font-bold"><SearchableLink content={row.Aynu ?? ''} /></h3>
 							<p title="English">
-								<DividedSearchableTags content={row.English ?? ''} language="en" />
+								<SegmentedTranslationLink content={row.English ?? ''} language="en" />
 							</p>
 							<p title="日本語">
-								<DividedSearchableTags content={row.日本語 ?? ''} language="ja" />
+								<SegmentedTranslationLink content={row.日本語 ?? ''} language="ja" />
 							</p>
-							<p title="中文"><DividedSearchableTags content={row.中文 ?? ''} language="zh" /></p>
+							<p title="中文">
+								<SegmentedTranslationLink content={row.中文 ?? ''} language="zh" />
+							</p>
 							<p title="註 / Notes"><ReferenceLink content={row['註 / Notes'] ?? ''} /></p>
 						</div>
 					{/each}
