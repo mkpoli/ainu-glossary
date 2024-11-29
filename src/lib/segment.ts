@@ -3,7 +3,7 @@ export function isInSegment(index: number, range: [number, number]): boolean {
 }
 
 export function isPlaceholderLike(text: string): boolean {
-	return Boolean(text.match(/^[VN]\d|YYYY|MM|DD|HH|SS$/));
+	return Boolean(text.match(/^[VNS]\d|YYYY|MM|DD|HH|SS$/));
 }
 
 export function segmentAinu(text: string): Intl.SegmentData[] {
