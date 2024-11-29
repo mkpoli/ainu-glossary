@@ -15,23 +15,31 @@
 	/>
 </svelte:head>
 
+{#snippet italicIfLatn(text: string)}
+	{#if text.match(/^[a-zA-Záíúéó='’]+$/)}
+		<i class="italic">{text}</i>
+	{:else}
+		{text}
+	{/if}
+{/snippet}
+
 <h1 class="text-2xl font-bold">
 	<Localized separator="<br/>">
 		{#snippet ain()}
 			{#if m.script === 'Latn'}
-				“<span class="italic"><T t={data.query} /></span>”<T t=" hunara wa oka p" />
+				“{@render italicIfLatn(data.query)}”<T t=" hunara wa oka p" />
 			{:else}
-				「<T t={data.query} />」<T t=" hunara wa oka p" />
+				「{@render italicIfLatn(data.query)}」<T t=" hunara wa oka p" />
 			{/if}
 		{/snippet}
 		{#snippet jpn()}
 			<span class="text-lg font-normal">
-				アイヌ語<span class="italic">{data.query}</span>の意味とは？
+				アイヌ語<span class="italic">{@render italicIfLatn(data.query)}</span>の意味とは？
 			</span>
 		{/snippet}
 		{#snippet eng()}
 			<span class="text-lg font-normal">
-				What does <span class="italic">{data.query}</span> mean in Ainu?
+				What does <span class="italic">{@render italicIfLatn(data.query)}</span> mean in Ainu?
 			</span>
 		{/snippet}
 	</Localized>
