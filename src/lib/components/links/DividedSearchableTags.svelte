@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { segmentWithHighlightIndices } from '$lib/segment';
 	import type { FuseResultMatch } from 'fuse.js';
 
 	let {
@@ -8,37 +9,32 @@
 	}: {
 		content: string;
 		language: string;
-		highlight: readonly FuseResultMatch[];
+		highlight: readonly FuseResultMatch[] | undefined;
 	} = $props();
-	const segmenter = new Intl.Segmenter(language, { granularity: 'word' });
-	console.log('highlight', highlight);
+
+	let highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
 </script>
 
-<span class="relative">
-	{#each highlight as h}
-		{#each h.indices as i}
-			<span
-				class="absolute bottom-1 h-1 bg-yellow-500/20"
-				style={`left: ${i[0]}${language === 'ja' ? 'em' : 'ch'}; width: ${i[1] - i[0]}${language === 'ja' ? 'em' : 'ch'}`}
-			></span>
-		{/each}
-	{/each}
-	{#each segmenter.segment(content) as segment}
-		{#if segment.segment.match(/^[VNA]\d$/)}
-			{segment.segment}
-		{:else}
-			<a href={`/${language}/${segment.segment}`} tabindex="-1">{segment.segment}</a>
-		{/if}
-	{/each}
-</span>
-
-<style>
-	a {
-		text-decoration: none;
-		color: inherit;
-	}
-
-	a:hover {
-		text-decoration: underline;
-	}
-</style>
+{#each segmentWithHighlightIndices(content, language, highlightedIndices) as segment}
+	{#if segment.segment.match(/^[VNA]\d$/)}
+		{segment.segment}
+	{:else}
+		<a
+			href={`/${language}/${segment.segment}`}
+			tabindex="-1"
+			class="text-inherit no-underline hover:underline"
+		>
+			{#each segment.subsegments as { highlighted, content }}
+				{#if highlighted}
+					<span
+						class="relative after:absolute after:bottom-1 after:left-0 after:right-0 after:-z-10 after:h-1 after:bg-theme-400/40 after:content-['']"
+					>
+						{content}</span
+					>
+				{:else}
+					{content}
+				{/if}
+			{/each}
+		</a>
+	{/if}
+{/each}
