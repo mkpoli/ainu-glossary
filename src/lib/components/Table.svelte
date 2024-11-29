@@ -114,6 +114,19 @@
 	<ScriptSwitch />
 </div>
 
+{#snippet notFound()}
+	<div class="flex flex-col items-center gap-2">
+		<Localized ain="A=hunara hike ka isam" jpn="検索結果がありません" eng="No results found" />
+		<button
+			onclick={() => {
+				goto(`/${query}`);
+			}}
+		>
+			<Localized ain="Homar ihunara wa inkar" jpn="曖昧検索を試す" eng="Try fuzzy search" />
+		</button>
+	</div>
+{/snippet}
+
 <div class="w-full overflow-x-auto">
 	{#if isLargeScreen}
 		<table class="m-0 w-full border-collapse overflow-x-auto text-sm md:text-base">
@@ -130,13 +143,9 @@
 			<tbody>
 				{#if filtered.length === 0}
 					<tr>
-						<td colspan="6" class="text-center"
-							><Localized
-								ain="A=hunara hike ka isam"
-								jpn="検索結果がありません"
-								eng="No results found"
-							/></td
-						>
+						<td colspan="6" class="text-center">
+							{@render notFound()}
+						</td>
 					</tr>
 				{:else}
 					{#each filtered as row}
@@ -177,13 +186,7 @@
 						</div>
 					{/each}
 				{:else}
-					<p>
-						<Localized
-							ain="A=hunara hike ka isam"
-							jpn="検索結果がありません"
-							eng="No results found"
-						/>
-					</p>
+					{@render notFound()}
 				{/if}
 			{/each}
 		</div>
