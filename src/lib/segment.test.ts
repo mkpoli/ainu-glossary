@@ -3,7 +3,8 @@ import {
 	getRelativeHighlightIndicesInRange,
 	segmentWithHighlightIndices,
 	segment,
-	subdivideSegments
+	subdivideSegments,
+	segmentAinu
 } from './segment';
 import { expect, it, describe } from 'bun:test';
 
@@ -212,6 +213,17 @@ describe('segmentWithHighlightIndices', () => {
 				segment: '!',
 				subsegments: [{ highlighted: true, content: '!' }]
 			}
+		]);
+	});
+});
+
+describe('segmentAinu', () => {
+	it('should return the correct segments', () => {
+		expect(segmentAinu('aenuwapto ononno!')).toEqual([
+			{ index: 0, input: 'aenuwapto ononno!', segment: 'aenuwapto', isWordLike: true },
+			{ index: 9, input: 'aenuwapto ononno!', segment: ' ', isWordLike: false },
+			{ index: 10, input: 'aenuwapto ononno!', segment: 'ononno', isWordLike: true },
+			{ index: 16, input: 'aenuwapto ononno!', segment: '!', isWordLike: false }
 		]);
 	});
 });

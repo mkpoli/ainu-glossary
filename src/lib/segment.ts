@@ -2,9 +2,29 @@ export function isInSegment(index: number, range: [number, number]): boolean {
 	return index >= range[0] && index <= range[1];
 }
 
+export function segmentAinu(text: string): Intl.SegmentData[] {
+	let length = 0;
+	return text
+		.split(/([\s,\{\}\?\-\(\)!]+)/u)
+		.filter(Boolean)
+		.map((segment) => {
+			const result = {
+				index: length,
+				input: text,
+				segment,
+				isWordLike:
+					Boolean(segment.match(/^[VN]\d|YYYY|MM|DD|HH|SS$/)) ||
+					Boolean(segment.match(/^[a-zA-Záíúéó='’]+$/))
+			} as Intl.SegmentData;
+			length += segment.length;
+			return result;
+		});
+}
+
 export function segment(text: string, language: string): Intl.SegmentData[] {
-	const segmenter = new Intl.Segmenter(language, { granularity: 'word' });
-	return [...segmenter.segment(text)];
+	return language === 'ain'
+		? segmentAinu(text)
+		: [...new Intl.Segmenter(language, { granularity: 'word' }).segment(text)];
 }
 
 export function getRelativeHighlightIndicesInRange(
