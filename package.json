@@ -2,7 +2,7 @@
 	"name": "my-app",
 	"version": "0.0.1",
 	"devDependencies": {
-		"@iconify/json": "^2.2.276",
+		"@iconify/json": "^2.2.277",
 		"@melt-ui/pp": "^0.3.2",
 		"@melt-ui/svelte": "^0.86.2",
 		"@smithy/types": "^3.7.1",
@@ -11,7 +11,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.1",
 		"@types/bun": "^1.1.14",
 		"@types/eslint": "^9.6.1",
-		"@types/node": "^22.10.0",
+		"@types/node": "^22.10.1",
 		"@types/object.groupby": "^1.0.4",
 		"@typescript-eslint/eslint-plugin": "^8.16.0",
 		"@typescript-eslint/parser": "^8.16.0",
