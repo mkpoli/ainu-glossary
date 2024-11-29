@@ -1,3 +1,4 @@
+import { segment } from '$lib/segment';
 import { downloadData } from '$lib/server/data';
 
 function isWord(word: string): boolean {
@@ -32,10 +33,13 @@ function extractLinkableWords(content: string): string[] {
 }
 
 function extractLinkableWordsWithLanguage(content: string, language: string): string[] {
-	const segmenter = new Intl.Segmenter(language, { granularity: 'word' });
-	return Array.from(segmenter.segment(content))
-		.map((segment) => segment.segment)
-		.filter(isWord);
+	return [
+		...segment(content, language).map((segment) => segment.segment),
+		...content
+			.split(/[\p{P}\p{S}]+/u)
+			.filter(isWord)
+			.map((word) => word.trim())
+	].filter(isWord);
 }
 
 function generateSitemap(hostname: string, urls: string[]) {
