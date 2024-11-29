@@ -34,12 +34,12 @@
 		{/snippet}
 		{#snippet jpn()}
 			<span class="text-lg font-normal">
-				アイヌ語<span class="italic">{@render italicIfLatn(data.query)}</span>の意味とは？
+				アイヌ語で「{@render italicIfLatn(data.query)}」の意味とは？
 			</span>
 		{/snippet}
 		{#snippet eng()}
 			<span class="text-lg font-normal">
-				What does <span class="italic">{@render italicIfLatn(data.query)}</span> mean in Ainu?
+				What does “{@render italicIfLatn(data.query)}” mean in Ainu?
 			</span>
 		{/snippet}
 	</Localized>
