@@ -27,4 +27,12 @@
 	a {
 		@apply text-theme-800 hover:text-theme-500 underline underline-offset-1;
 	}
+
+	ruby {
+		@apply inline-flex flex-col-reverse items-center gap-0;
+	}
+
+	rt {
+		@apply text-sm;
+	}
 }

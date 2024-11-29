@@ -41,7 +41,7 @@
 						{#if m.script === 'Kana' && segment.match(/^[a-zA-Záíúéó='’]+$/)}
 							<ruby>
 								<T t={segment} />
-								<rt class="text-sm">{@render highlightedText(true)}</rt>
+								<rt>{@render highlightedText(true)}</rt>
 							</ruby>
 						{:else}
 							{@render highlightedText()}
