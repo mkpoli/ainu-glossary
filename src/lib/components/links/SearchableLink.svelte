@@ -1,6 +1,6 @@
 <script lang="ts">
 	import T from '$lib/components/ui/T.svelte';
-	import { segmentWithHighlightIndices } from '$lib/segment';
+	import { isPlaceholderLike, segmentWithHighlightIndices } from '$lib/segment';
 	import type { FuseResultMatch } from 'fuse.js';
 	import m from '$lib/script.svelte';
 	let {
@@ -12,7 +12,7 @@
 
 <span class="relative z-20">
 	{#each segmentWithHighlightIndices(content, 'ain', highlightedIndices) as { segment, subsegments }}
-		{#if segment.match(/^[VNA]\d|YYYY|MM|DD|HH|SS$/)}
+		{#if isPlaceholderLike(segment)}
 			{segment}
 		{:else if segment.match(/^[a-zA-Záíúéó='’ ]+$/)}
 			{#if segment.includes('=')}

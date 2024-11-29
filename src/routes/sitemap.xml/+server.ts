@@ -1,8 +1,8 @@
-import { segment } from '$lib/segment';
+import { isPlaceholderLike, segment } from '$lib/segment';
 import { downloadData } from '$lib/server/data';
 
 function isWord(word: string): boolean {
-	if (word.match(/^[VNA]\d$/)) {
+	if (isPlaceholderLike(word)) {
 		return false;
 	}
 	if (word.match(/^[\p{P}\p{S}]+$/u)) {

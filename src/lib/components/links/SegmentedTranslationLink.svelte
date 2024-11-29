@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { segmentWithHighlightIndices } from '$lib/segment';
+	import { isPlaceholderLike, segmentWithHighlightIndices } from '$lib/segment';
 	import type { FuseResultMatch } from 'fuse.js';
 
 	let {
@@ -16,7 +16,7 @@
 </script>
 
 {#each segmentWithHighlightIndices(content, language, highlightedIndices) as segment}
-	{#if segment.segment.match(/^[VNA]\d$/)}
+	{#if isPlaceholderLike(segment.segment)}
 		{segment.segment}
 	{:else}
 		<a
