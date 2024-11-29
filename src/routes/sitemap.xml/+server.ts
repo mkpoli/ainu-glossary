@@ -1,10 +1,20 @@
 import { downloadData } from '$lib/server/data';
 
+function isWord(word: string): boolean {
+	if (word.match(/^[VNA]\d$/)) {
+		return false;
+	}
+	if (word.match(/^[\p{P}\p{S}]+$/u)) {
+		return false;
+	}
+	return word.trim().length > 0;
+}
+
 function extractLinkableWords(content: string): string[] {
 	const words = content.split(/([\s,\{\}]+)/u);
 
 	return words.filter((word) => {
-		if (word.match(/^[VNA]\d$/)) {
+		if (!isWord(word)) {
 			return false;
 		}
 
@@ -25,15 +35,7 @@ function extractLinkableWordsWithLanguage(content: string, language: string): st
 	const segmenter = new Intl.Segmenter(language, { granularity: 'word' });
 	return Array.from(segmenter.segment(content))
 		.map((segment) => segment.segment)
-		.filter((word) => {
-			if (word.match(/^[VNA]\d$/)) {
-				return false;
-			}
-			if (word.match(/\p{P}/u)) {
-				return false;
-			}
-			return word.trim().length > 0;
-		});
+		.filter(isWord);
 }
 
 function generateSitemap(hostname: string, urls: string[]) {
