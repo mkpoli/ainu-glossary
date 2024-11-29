@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import { convertLatnToKana } from 'ainconv';
 export type Script = 'Kana' | 'Latn';
 
-function latn2kana(latn: string) {
+export function latn2kana(latn: string) {
 	const processedLatn = latn
 		.replace(/-/g, ' ')
 		.replace(/\buo/gi, 'uwo')

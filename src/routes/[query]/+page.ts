@@ -2,17 +2,22 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { fetchData, type Entry } from '$lib/data';
 
+import { latn2kana } from '$lib/script.svelte';
+
 import Fuse, { type FuseResultMatch } from 'fuse.js';
 
 export const load: PageLoad = async ({ params: { query }, fetch }) => {
 	const { table, sheets } = await fetchData(fetch);
 
-	const fuse = new Fuse(table, {
-		includeScore: true,
-		includeMatches: true,
-		threshold: 0.3,
-		keys: ['Aynu', 'English', '日本語']
-	});
+	const fuse = new Fuse(
+		table.map((entry) => ({ ...entry, カナ: latn2kana(entry.Aynu ?? '') })),
+		{
+			includeScore: true,
+			includeMatches: true,
+			threshold: 0.3,
+			keys: ['Aynu', 'English', '日本語', 'カナ']
+		}
+	);
 
 	const found = fuse.search(query) as {
 		item: Entry;
