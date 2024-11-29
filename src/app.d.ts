@@ -4,7 +4,10 @@ import '@types/nodes';
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			other?: Entry[];
+			sheets?: Sheet[];
+		}
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}

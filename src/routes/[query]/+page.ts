@@ -23,7 +23,11 @@ export const load: PageLoad = async ({ params: { query }, fetch }) => {
 	);
 
 	if (!found.length) {
-		error(404, 'Not found');
+		error(404, {
+			message: 'Not found',
+			other: table.sort(() => Math.random() - 0.5).slice(0, 5),
+			sheets
+		});
 	}
 
 	return {
