@@ -7,7 +7,7 @@
 		content,
 		highlight
 	}: { content: string; highlight: readonly FuseResultMatch[] | undefined } = $props();
-	const highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
+	let highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
 </script>
 
 <span class="relative z-20">

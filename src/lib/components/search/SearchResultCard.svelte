@@ -12,7 +12,7 @@
 		matches
 	}: { item: Entry; sheets: Sheet[]; matches: readonly FuseResultMatch[] | undefined } = $props();
 
-	const highlights = groupBy(matches ?? [], (match) => match.key ?? '');
+	let highlights = $derived(groupBy(matches ?? [], (match) => match.key ?? ''));
 </script>
 
 <section

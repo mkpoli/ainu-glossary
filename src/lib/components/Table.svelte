@@ -14,6 +14,8 @@
 	import type { Entry, Sheet } from '$lib/data';
 	import { browser } from '$app/environment';
 
+	import { goto } from '$app/navigation';
+
 	import groupBy from 'object.groupby';
 
 	interface Props {
