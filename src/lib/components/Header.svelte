@@ -2,9 +2,13 @@
 	import { SITE_TITLE } from '$lib/consts';
 	import ScriptSwitch from '$lib/components/controls/ScriptSwitch.svelte';
 	import T from '$lib/components/ui/T.svelte';
+	import MaterialSymbolsSearch from '~icons/material-symbols/search';
+	import m from '$lib/script.svelte';
+	import { goto } from '$app/navigation';
+	let search = $state('');
 </script>
 
-<header class="mx-auto flex max-w-prose flex-col items-center justify-center gap-2">
+<header class="mx-auto mb-4 flex max-w-prose flex-col items-center justify-center gap-2">
 	<div class="flex items-center gap-2">
 		<picture class="my-4">
 			<source srcset="/android-chrome-192x192.avif" type="image/avif" />
@@ -17,7 +21,23 @@
 			>
 		</h1>
 	</div>
-	<div class="ml-auto mr-0 self-end">
+	<div class="flex w-full flex-col items-center justify-between gap-2">
+		<div class="flex items-stretch gap-2">
+			<input
+				type="search"
+				placeholder={`${m.t('Ihunara')} / 検索 / Search`}
+				class="h-full w-64 flex-1"
+				bind:value={search}
+			/>
+			<button
+				class="h-full"
+				onclick={() => {
+					goto(`/${search}`);
+				}}
+			>
+				<MaterialSymbolsSearch />
+			</button>
+		</div>
 		<ScriptSwitch short />
 	</div>
 </header>
