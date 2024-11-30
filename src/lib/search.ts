@@ -9,6 +9,7 @@ export type Language = 'ain' | 'en' | 'ja' | 'zh';
 export interface SearchResult {
 	item: Entry;
 	matches?: readonly FuseResultMatch[];
+	refIndex: number;
 }
 
 export class SearchIndex {
@@ -53,7 +54,8 @@ export class SearchIndex {
 	}
 
 	search(query: string, inside: Entry[] | undefined = undefined): SearchResult[] {
-		if (!query) return this.table.map((item) => ({ item, matches: undefined }));
+		if (!query)
+			return this.table.map((item, index) => ({ item, matches: undefined, refIndex: index }));
 		return this.fuse
 			.search(query)
 			.filter((result) =>
