@@ -3,11 +3,18 @@
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
 	import Footer from '$lib/components/Footer.svelte';
+	import m, { isScript } from '$lib/script.svelte';
+
 	interface Props {
 		children?: import('svelte').Snippet;
+		data: {
+			script: string;
+		};
 	}
+	let { data, children }: Props = $props();
 
-	let { children }: Props = $props();
+	m.script = isScript(data.script) ? data.script : 'Latn';
+
 	inject({ mode: dev ? 'development' : 'production' });
 </script>
 

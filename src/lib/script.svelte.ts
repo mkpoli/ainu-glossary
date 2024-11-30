@@ -1,6 +1,11 @@
 import { browser } from '$app/environment';
 import { convertLatnToKana } from 'ainconv';
+
 export type Script = 'Kana' | 'Latn';
+export const AVAILABLE_SCRIPTS: Script[] = ['Kana', 'Latn'];
+export function isScript(script: any): script is Script {
+	return AVAILABLE_SCRIPTS.includes(script as Script);
+}
 
 export function latn2kana(latn: string) {
 	const processedLatn = latn
@@ -43,7 +48,8 @@ function createScriptManager() {
 			script = value;
 			if (browser) {
 				document.documentElement.lang = value === 'Kana' ? 'ain-Kana' : 'ain-Latn';
-				localStorage.setItem('ain-script', value);
+				document.cookie = `ain-script=${value}; max-age=31536000; path=/`;
+
 				console.info(`Ainu script set to ${value}`);
 			}
 		},
