@@ -18,7 +18,13 @@
 <section
 	class="grid grid-cols-[1fr_auto] items-start gap-4 border border-black px-6 py-4 shadow-hard"
 >
-	<h2 class="m-0"><SearchableLink content={item.Aynu ?? ''} highlight={highlights['Aynu']} /></h2>
+	<h2 class="m-0">
+		<SearchableLink
+			content={item.Aynu ?? ''}
+			highlight={highlights['Aynu']}
+			highlightKana={highlights['カナ']}
+		/>
+	</h2>
 	<div class="flex justify-end gap-2">
 		<!-- Genre -->
 		<div

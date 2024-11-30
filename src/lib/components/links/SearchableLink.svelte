@@ -5,8 +5,13 @@
 	import m from '$lib/script.svelte';
 	let {
 		content,
-		highlight
-	}: { content: string; highlight: readonly FuseResultMatch[] | undefined } = $props();
+		highlight,
+		highlightKana
+	}: {
+		content: string;
+		highlight: readonly FuseResultMatch[] | undefined;
+		highlightKana: readonly FuseResultMatch[] | undefined;
+	} = $props();
 	let highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
 </script>
 
@@ -18,7 +23,7 @@
 			{#if segment.includes('=')}
 				{#each segment.split(/(=)/) as part}
 					{#if ['a', 'an', '='].includes(part)}
-						<T t={part} />
+						<T t={part} {highlightKana} />
 					{:else}
 						<a href={`/${part}`} tabindex="-1"><T t={part} /></a>
 					{/if}
@@ -47,7 +52,7 @@
 							{@render highlightedText()}
 						{/if}
 					{:else}
-						<T t={segment} />
+						<T t={segment} {highlightKana} />
 					{/if}
 				</a>
 			{/if}
