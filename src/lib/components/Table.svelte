@@ -4,7 +4,7 @@
 
 	import Select from '$lib/components/ui/Select.svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
-	import SearchableLink from '$lib/components/links/SearchableLink.svelte';
+	import SearchableLink from '$lib/components/links/SegmentedAinuLink.svelte';
 	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
 	import ReferenceLink from '$lib/components/links/ReferenceLink.svelte';
 	import ScriptSwitch from '$lib/components/controls/ScriptSwitch.svelte';

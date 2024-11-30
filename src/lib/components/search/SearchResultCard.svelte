@@ -2,7 +2,7 @@
 	import type { Entry, Sheet } from '$lib/data';
 	import { formatGenre, generateColorHashFromString } from '$lib/genre';
 	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
-	import SearchableLink from '../links/SearchableLink.svelte';
+	import SearchableLink from '$lib/components/links/SegmentedAinuLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
 	import type { Segment } from '$lib/segment';
 	import type { AugmentedLanguage } from '$lib/search';
