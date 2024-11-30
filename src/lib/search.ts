@@ -42,7 +42,9 @@ export class SearchIndex {
 					return latn2kana(segment);
 				})
 				.join('')
-				.replace(', ', '、');
+				.replace(/, /g, '、')
+				.replace(/\.\.\./g, '…')
+				.replace(/\.[$ ]/g, '。');
 			return {
 				...entry,
 				カナ,
