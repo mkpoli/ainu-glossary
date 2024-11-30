@@ -1,4 +1,5 @@
 import Fuse, { type FuseResultMatch } from 'fuse.js';
+import * as WanaKana from 'wanakana';
 
 import type { Entry } from './data';
 import { latn2kana } from './script.svelte';
@@ -27,16 +28,20 @@ export class SearchIndex {
 	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
 		let augmentedTable: AugmentedEntry[] = table;
 		if (languages.includes('ain')) {
-			augmentedTable = augmentedTable.map((entry) => ({
-				...entry,
-				カナ: segment(entry.Aynu ?? '', 'ain')
+			augmentedTable = augmentedTable.map((entry) => {
+				const カナ = segment(entry.Aynu ?? '', 'ain')
 					.filter(
 						({ segment }) =>
 							!isPlaceholderLike(segment) && !segment.split('=').some(isPlaceholderLike)
 					)
 					.map(({ segment }) => latn2kana(segment))
-					.join('')
-			}));
+					.join('');
+				return {
+					...entry,
+					カナ,
+					ひら: WanaKana.toHiragana(カナ)
+				};
+			});
 		}
 		this.table = augmentedTable;
 		this.fuse = new Fuse(augmentedTable, {
@@ -46,7 +51,7 @@ export class SearchIndex {
 			keys: languages.flatMap(
 				(lang) =>
 					({
-						ain: ['Aynu', 'カナ'],
+						ain: ['Aynu', 'カナ', 'ひら'],
 						ja: ['日本語'],
 						en: ['English'],
 						zh: ['中文']
@@ -122,8 +127,9 @@ export class SearchIndex {
 					zh: false
 				}
 			}));
+
 		return this.fuse
-			.search(query)
+			.search(query.normalize('NFKC'))
 			.filter((result) =>
 				inside ? inside.some((item) => SearchIndex.entryEquals(item, result.item)) : true
 			)
@@ -132,7 +138,7 @@ export class SearchIndex {
 					result.matches?.map(({ indices, key }) => ({ indices, key })) ?? [],
 					(match) => match.key ?? ''
 				) as Record<
-					'Aynu' | '日本語' | 'English' | '中文' | 'カナ',
+					'Aynu' | '日本語' | 'English' | '中文' | 'カナ' | 'ひら',
 					readonly { indices: readonly [number, number][]; key: string | undefined }[] | undefined
 				>;
 				console.log(highlights);
@@ -144,11 +150,10 @@ export class SearchIndex {
 							'ain',
 							highlights.Aynu?.flatMap(({ indices }) => indices) ?? []
 						),
-						'ain-Kana': segmentWithHighlightIndices(
-							result.item.カナ ?? '',
-							'ain-Kana',
-							highlights.カナ?.flatMap(({ indices }) => indices) ?? []
-						),
+						'ain-Kana': segmentWithHighlightIndices(result.item.カナ ?? '', 'ain-Kana', [
+							...(highlights.カナ?.flatMap(({ indices }) => indices) ?? []),
+							...(highlights.ひら?.flatMap(({ indices }) => indices) ?? [])
+						]),
 						en: segmentWithHighlightIndices(
 							result.item.English ?? '',
 							'en',

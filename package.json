@@ -49,6 +49,7 @@
 		"ainconv": "0.5.1",
 		"fuse.js": "^7.0.0",
 		"googleapis": "^144.0.0",
-		"object.groupby": "^1.0.3"
+		"object.groupby": "^1.0.3",
+		"wanakana": "^5.3.1"
 	}
 }
