@@ -59,13 +59,13 @@
 	/>
 	<meta property="og:title" content={SITE_TITLE} />
 	<meta property="og:description" content={DESCRIPTION_SHORT} />
-	<meta property="og:image" content="/screenshot.png" />
+	<meta property="og:image" content="https://itak.aynu.org/screenshot.png" />
 	<meta property="og:url" content="https://itak.aynu.org/" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={SITE_TITLE_JA_EN} />
 	<meta name="twitter:description" content={SITE_TITLE} />
 	<meta name="twitter:creator" content="@mkpoli" />
-	<meta name="twitter:image" content="/screenshot.png" />
+	<meta name="twitter:image" content="https://itak.aynu.org/screenshot.png" />
 </svelte:head>
 
 <main class="flex flex-col items-center justify-center gap-1 p-4 text-center">

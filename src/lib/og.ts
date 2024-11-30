@@ -1,6 +1,9 @@
+import { page } from '$app/stores';
+import { get } from 'svelte/store';
+
 export function generateOgImageURL(latn: string, kana: string): string {
-	const searchParams = new URLSearchParams();
-	searchParams.set('latn', latn);
-	searchParams.set('kana', kana);
-	return `/api/ogp?${searchParams.toString()}`;
+	const url = new URL(`/api/ogp`, get(page).url);
+	url.searchParams.set('latn', latn);
+	url.searchParams.set('kana', kana);
+	return url.toString();
 }
