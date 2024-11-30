@@ -12,7 +12,13 @@
 	import LineMdDownloadingLoop from '~icons/line-md/downloading-loop';
 
 	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
-	import { REFERENCES_URL, SITE_TITLE, SITE_TITLE_EN, SITE_TITLE_JA } from '$lib/consts';
+	import {
+		REFERENCES_URL,
+		SITE_TITLE,
+		SITE_TITLE_EN,
+		SITE_TITLE_JA,
+		SITE_TITLE_JA_EN
+	} from '$lib/consts';
 
 	import m from '$lib/script.svelte';
 	import T from '$lib/components/ui/T.svelte';
@@ -54,6 +60,10 @@
 		name="keywords"
 		content="アイヌ語, 現代アイヌ語, 翻訳用語集, 詞典, 辞典, 言語復興, 辭書, Ainu, Modern Ainu, Translation Glossary, Ainu Language, Language Revitalization, Dictionary, Ainu Dictionary"
 	/>
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={SITE_TITLE_JA_EN} />
+	<meta name="twitter:creator" content="@mkpoli" />
+	<meta name="twitter:image" content="/screenshot.png" />
 </svelte:head>
 
 <main class="flex flex-col items-center justify-center gap-1 p-4 text-center">
