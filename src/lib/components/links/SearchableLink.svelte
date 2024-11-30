@@ -49,7 +49,7 @@
 	</ruby>
 {/snippet}
 
-<span class="relative z-20">
+<span class="relative z-20" lang={`ain-${m.script}`}>
 	{#if m.script === 'Latn'}
 		{#if hasHighlightInKana}
 			{@render diagraphicHighlight(segmentsLatn, segmentsKana)}
