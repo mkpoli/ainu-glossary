@@ -41,7 +41,8 @@
 			{id}
 			aria-labelledby={`${id}-label`}
 		>
-			<span class="thumb absolute left-0 top-px block rounded-full bg-white transition"></span>
+			<span class="thumb absolute left-0 top-px block rounded-full bg-white shadow-hard transition"
+			></span>
 		</button>
 		<input use:melt={$input} />
 		{#if on}

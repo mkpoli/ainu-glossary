@@ -97,7 +97,7 @@
 				name="search"
 				id="search"
 				bind:value={query}
-				class="m-0 h-10 w-full min-w-[220px] border border-gray-900 bg-white p-2 text-sm shadow-hard focus:border-black focus:ring-black"
+				class="m-0 h-10 w-full min-w-[220px] border border-gray-900 bg-white p-2 text-sm shadow-hard hover:bg-neutral-200 focus:border-black focus:ring-black"
 			/>
 			<a
 				class="absolute bottom-0 right-0 top-0 z-10 flex items-center justify-center border-none bg-transparent p-2 text-inherit shadow-none hover:bg-transparent hover:text-theme-600 hover:shadow-none {Boolean(
