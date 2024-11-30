@@ -17,7 +17,15 @@
 		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。アイヌ語で「{word}」はどう言えばいい？似たような表現・言い換えも紹介します。'
 	};
 
-	let [latn, kana] = $derived([data.found[0].item.Aynu ?? '', data.found[0].item.カナ ?? '']);
+	let [latn, kana] = $derived([
+		data.found[0].item.Aynu?.split(/[\p{P}\p{S}]+/u)
+			.filter(Boolean)
+			.at(0) ?? '',
+		data.found[0].item.カナ
+			?.split(/[\s\p{P}\p{S}]+/u)
+			.filter(Boolean)
+			.at(0) ?? ''
+	]);
 
 	const TERMS_JSONLD = [
 		{
