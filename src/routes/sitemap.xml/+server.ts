@@ -1,7 +1,8 @@
 import { isPlaceholderLike, segment } from '$lib/segment';
 import { downloadData } from '$lib/server/data';
 
-import { cjk2zhs, cjkConv } from 'cjk-conv';
+import { cjk2zhs } from 'cjk-conv';
+import { latn2kana } from '$lib/script.svelte';
 
 function isWord(word: string): boolean {
 	if (isPlaceholderLike(word)) {
@@ -71,7 +72,11 @@ export async function GET() {
 	const { table } = await downloadData();
 	const urls: Set<string> = new Set(
 		table.flatMap((item) => [
-			...(item.Aynu ? extractLinkableWords(item.Aynu).map((word) => `/${word}`) : []),
+			...(item.Aynu
+				? extractLinkableWords(item.Aynu)
+						.flatMap((latn) => [latn, latn2kana(latn)])
+						.map((word) => `/${word}`)
+				: []),
 			...(item.日本語
 				? extractLinkableWordsWithLanguage(item.日本語, 'ja').map((word) => `/ja/${word}`)
 				: []),
