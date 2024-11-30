@@ -182,11 +182,11 @@
 									segmentsKana={segments['ain-Kana']}
 								/>
 							</h3>
-							<p title="English">
-								<SegmentedTranslationLink segments={segments.en} language="en" />
-							</p>
 							<p title="日本語">
 								<SegmentedTranslationLink segments={segments.ja} language="ja" />
+							</p>
+							<p title="English">
+								<SegmentedTranslationLink segments={segments.en} language="en" />
 							</p>
 							<p title="中文">
 								<SegmentedTranslationLink segments={segments.zh} language="zh" />
