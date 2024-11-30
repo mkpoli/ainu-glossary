@@ -6,6 +6,10 @@ export function isPlaceholderLike(text: string): boolean {
 	return Boolean(text.match(/^[VNS]\d|YYYY|MM|DD|HH|SS$/));
 }
 
+export function isNonWordLike(text: string): boolean {
+	return Boolean(text.match(/^[\p{P}\p{S}\s]+$/u));
+}
+
 export function segmentAinu(text: string): Intl.SegmentData[] {
 	let length = 0;
 	return text
@@ -16,7 +20,10 @@ export function segmentAinu(text: string): Intl.SegmentData[] {
 				index: length,
 				input: text,
 				segment,
-				isWordLike: isPlaceholderLike(segment) || Boolean(segment.match(/^[a-zA-Záíúéó='’]+$/))
+				isWordLike:
+					isPlaceholderLike(segment) ||
+					isNonWordLike(segment) ||
+					Boolean(segment.match(/^[a-zA-Záíúéó='’]+$/))
 			} as Intl.SegmentData;
 			length += segment.length;
 			return result;

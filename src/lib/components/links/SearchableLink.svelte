@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Segment } from '$lib/segment';
+	import { type Segment, isNonWordLike } from '$lib/segment';
 	import m from '$lib/script.svelte';
 	let {
 		hasHighlightInLatn,
@@ -34,16 +34,24 @@
 	<ruby>
 		<span>
 			{#each primarySegments as { segment, subsegments }}
-				<a href={`/${segment}`}>
-					{@render highlightedText(subsegments)}
-				</a>
+				{#if isNonWordLike(segment)}
+					{segment}
+				{:else}
+					<a href={`/${segment}`}>
+						{@render highlightedText(subsegments)}
+					</a>
+				{/if}
 			{/each}
 		</span>
 		<rt>
 			{#each secondarySegments as { segment, subsegments }}
-				<a href={`/${segment}`}>
-					{@render highlightedText(subsegments)}
-				</a>
+				{#if isNonWordLike(segment)}
+					{segment}
+				{:else}
+					<a href={`/${segment}`}>
+						{@render highlightedText(subsegments)}
+					</a>
+				{/if}
 			{/each}
 		</rt>
 	</ruby>
@@ -55,9 +63,13 @@
 			{@render diagraphicHighlight(segmentsLatn, segmentsKana)}
 		{:else}
 			{#each segmentsLatn as { segment, subsegments }}
-				<a href={`/${segment}`}>
-					{@render highlightedText(subsegments)}
-				</a>
+				{#if isNonWordLike(segment)}
+					{segment}
+				{:else}
+					<a href={`/${segment}`}>
+						{@render highlightedText(subsegments)}
+					</a>
+				{/if}
 			{/each}
 		{/if}
 	{:else if m.script === 'Kana'}
@@ -65,9 +77,13 @@
 			{@render diagraphicHighlight(segmentsKana, segmentsLatn)}
 		{:else}
 			{#each segmentsKana as { segment, subsegments }}
-				<a href={`/${segment}`}>
-					{@render highlightedText(subsegments)}
-				</a>
+				{#if isNonWordLike(segment)}
+					{segment}
+				{:else}
+					<a href={`/${segment}`}>
+						{@render highlightedText(subsegments)}
+					</a>
+				{/if}
 			{/each}
 		{/if}
 	{/if}

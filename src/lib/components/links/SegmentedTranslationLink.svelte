@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isPlaceholderLike, type Segment } from '$lib/segment';
+	import { isPlaceholderLike, isNonWordLike, type Segment } from '$lib/segment';
 
 	let {
 		segments,
@@ -11,7 +11,7 @@
 </script>
 
 {#each segments as segment}
-	{#if isPlaceholderLike(segment.segment)}
+	{#if isPlaceholderLike(segment.segment) || isNonWordLike(segment.segment)}
 		{segment.segment}
 	{:else}
 		<a
