@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { fetchData } from '$lib/data';
-import { SearchIndex, type Language } from '$lib/search';
+import { pickRandom, SearchIndex, type Language } from '$lib/search';
 
 function isValidLanguage(lang: string): lang is 'en' | 'ja' | 'zh' {
 	return ['en', 'ja', 'zh'].includes(lang);
@@ -20,7 +20,7 @@ export const load: PageLoad = async ({ params: { query, subquery }, fetch }) => 
 	if (!found.length) {
 		error(404, {
 			message: 'Not found',
-			other: table.sort(() => Math.random() - 0.5).slice(0, 5),
+			other: pickRandom(table),
 			sheets
 		});
 	}
