@@ -15,9 +15,7 @@
 
 	m.script = isScript(data.script) ? data.script : 'Latn';
 
-	if (!dev) {
-		inject({ mode: dev ? 'development' : 'production' });
-	}
+	inject({ mode: dev ? 'development' : 'production' });
 </script>
 
 {@render children?.()}
