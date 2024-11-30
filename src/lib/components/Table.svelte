@@ -68,9 +68,6 @@
 	);
 	let filtered: SearchResult[] = $derived(searchIndex.search(query, dataFilteredByCategories));
 
-	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
-	$inspect('isLargeScreen', isLargeScreen);
-
 	let groupedBySheetName = $derived(groupBy(filtered, ({ item }) => item.sheetName));
 	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
@@ -138,85 +135,82 @@
 {/snippet}
 
 <div class="w-full overflow-x-auto">
-	{#if isLargeScreen}
-		<table class="m-0 w-full border-collapse overflow-x-auto text-sm md:text-base">
-			<thead>
+	<table class="m-0 hidden w-full border-collapse overflow-x-auto text-sm md:table md:text-base">
+		<thead>
+			<tr>
+				<th>類型 / Type</th>
+				<th>日本語</th>
+				<th>English</th>
+				<th>中文</th>
+				<th><T t="Aynuitak" /></th>
+				<th>注 / Notes</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#if filtered.length === 0}
 				<tr>
-					<th>類型 / Type</th>
-					<th>日本語</th>
-					<th>English</th>
-					<th>中文</th>
-					<th><T t="Aynuitak" /></th>
-					<th>注 / Notes</th>
+					<td colspan="6" class="text-center">
+						{@render notFound()}
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				{#if filtered.length === 0}
-					<tr>
-						<td colspan="6" class="text-center">
-							{@render notFound()}
+			{:else}
+				{#each filtered as { item: row, hasHighlightedSegments, segments }}
+					<tr class="even:bg-gray-50">
+						<td
+							class="capitalize"
+							title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
+								formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
+						>
+						<td><SegmentedTranslationLink segments={segments.ja} language="ja" /></td>
+						<td><SegmentedTranslationLink segments={segments.en} language="en" /></td>
+						<td><SegmentedTranslationLink segments={segments.zh} language="zh" /></td>
+						<td>
+							<SearchableLink
+								hasHighlightInLatn={hasHighlightedSegments.ain}
+								hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
+								segmentsLatn={segments.ain}
+								segmentsKana={segments['ain-Kana']}
+							/>
 						</td>
+						<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
 					</tr>
-				{:else}
-					{#each filtered as { item: row, hasHighlightedSegments, segments }}
-						<tr class="even:bg-gray-50">
-							<td
-								class="capitalize"
-								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
-									formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
-							>
-							<td><SegmentedTranslationLink segments={segments.ja} language="ja" /></td>
-							<td><SegmentedTranslationLink segments={segments.en} language="en" /></td>
-							<td><SegmentedTranslationLink segments={segments.zh} language="zh" /></td>
-							<td>
-								<SearchableLink
-									hasHighlightInLatn={hasHighlightedSegments.ain}
-									hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
-									segmentsLatn={segments.ain}
-									segmentsKana={segments['ain-Kana']}
-								/>
-							</td>
-							<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
-						</tr>
-					{/each}
-				{/if}
-			</tbody>
-		</table>
-	{:else}
-		<div class="flex flex-col">
-			{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
-				<h2 class="m-0 my-2 capitalize">{sheetName.replaceAll('_', ' ')}</h2>
-				{#if rows}
-					{#each rows as { item: row, hasHighlightedSegments, segments }}
-						<div class="border border-black p-2">
-							<h3 class="m-0 font-bold">
-								<SearchableLink
-									hasHighlightInLatn={hasHighlightedSegments.ain}
-									hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
-									segmentsLatn={segments.ain}
-									segmentsKana={segments['ain-Kana']}
-								/>
-							</h3>
-							<p title="日本語">
-								<SegmentedTranslationLink segments={segments.ja} language="ja" />
-							</p>
-							<p title="English">
-								<SegmentedTranslationLink segments={segments.en} language="en" />
-							</p>
-							<p title="中文">
-								<SegmentedTranslationLink segments={segments.zh} language="zh" />
-							</p>
-							<p title="註 / Notes">
-								<ReferenceLink content={row['註 / Notes'] ?? ''} />
-							</p>
-						</div>
-					{/each}
-				{:else}
-					{@render notFound()}
-				{/if}
-			{/each}
-		</div>
-	{/if}
+				{/each}
+			{/if}
+		</tbody>
+	</table>
+	<div class="flex flex-col md:hidden">
+		{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
+			<h2 class="m-0 my-2 capitalize">{sheetName.replaceAll('_', ' ')}</h2>
+			{#if rows}
+				{#each rows as { item: row, hasHighlightedSegments, segments }}
+					<div class="border border-black p-2">
+						<h3 class="m-0 font-bold">
+							<SearchableLink
+								hasHighlightInLatn={hasHighlightedSegments.ain}
+								hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
+								segmentsLatn={segments.ain}
+								segmentsKana={segments['ain-Kana']}
+							/>
+						</h3>
+						<p title="日本語">
+							<SegmentedTranslationLink segments={segments.ja} language="ja" />
+						</p>
+						<p title="English">
+							<SegmentedTranslationLink segments={segments.en} language="en" />
+						</p>
+						<p title="中文">
+							<SegmentedTranslationLink segments={segments.zh} language="zh" />
+						</p>
+						<p title="註 / Notes">
+							<ReferenceLink content={row['註 / Notes'] ?? ''} />
+						</p>
+					</div>
+				{/each}
+			{:else}
+				{@render notFound()}
+			{/if}
+		{/each}
+	</div>
 </div>
 
 <style lang="postcss">
