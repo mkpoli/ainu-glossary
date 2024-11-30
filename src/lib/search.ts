@@ -30,11 +30,18 @@ export class SearchIndex {
 		if (languages.includes('ain')) {
 			augmentedTable = augmentedTable.map((entry) => {
 				const カナ = segment(entry.Aynu ?? '', 'ain')
-					.filter(
-						({ segment }) =>
-							!isPlaceholderLike(segment) && !segment.split('=').some(isPlaceholderLike)
-					)
-					.map(({ segment }) => latn2kana(segment))
+					.map(({ segment }) => {
+						if (isPlaceholderLike(segment)) {
+							return segment;
+						}
+						if (segment.includes('=')) {
+							return segment
+								.split('=')
+								.map((s) => (isPlaceholderLike(s) ? s : latn2kana(s)))
+								.join('=');
+						}
+						return latn2kana(segment);
+					})
 					.join('');
 				return {
 					...entry,
