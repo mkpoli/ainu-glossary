@@ -2,22 +2,30 @@ import Fuse, { type FuseResultMatch } from 'fuse.js';
 
 import type { Entry } from './data';
 import { latn2kana } from './script.svelte';
-import { isPlaceholderLike, segment } from './segment';
+import { isPlaceholderLike, segment, segmentWithHighlightIndices, type Segment } from './segment';
+import groupBy from 'object.groupby';
 
 export type Language = 'ain' | 'en' | 'ja' | 'zh';
+export type AugmentedLanguage = Language | 'ain-Kana';
 
 export interface SearchResult {
 	item: Entry;
-	matches?: readonly FuseResultMatch[];
+	// matches?: readonly FuseResultMatch[];
 	refIndex: number;
+	segments: Record<AugmentedLanguage, readonly Segment[]>;
+	hasHighlightedSegments: Record<AugmentedLanguage, boolean>;
 }
 
+export type AugmentedEntry = Entry & {
+	カナ?: string;
+};
+
 export class SearchIndex {
-	private readonly fuse: Fuse<Entry>;
-	private readonly table: Entry[];
+	private readonly fuse: Fuse<AugmentedEntry>;
+	private readonly table: AugmentedEntry[];
 
 	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
-		let augmentedTable = table;
+		let augmentedTable: AugmentedEntry[] = table;
 		if (languages.includes('ain')) {
 			augmentedTable = augmentedTable.map((entry) => ({
 				...entry,
@@ -53,13 +61,191 @@ export class SearchIndex {
 		);
 	}
 
-	search(query: string, inside: Entry[] | undefined = undefined): SearchResult[] {
+	search(query: string, inside: AugmentedEntry[] | undefined = undefined): SearchResult[] {
 		if (!query)
-			return this.table.map((item, index) => ({ item, matches: undefined, refIndex: index }));
+			return this.table.map((item, index) => ({
+				item,
+				// matches: undefined,
+				refIndex: index,
+				segments: {
+					ain: segment(item.Aynu ?? '', 'ain').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					'ain-Kana': segment(item.カナ ?? '', 'ain-Kana').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					en: segment(item.English ?? '', 'en').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					ja: segment(item.日本語 ?? '', 'ja').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					zh: segment(item.中文 ?? '', 'zh').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					}))
+				},
+				hasHighlightedSegments: {
+					ain: false,
+					'ain-Kana': false,
+					en: false,
+					ja: false,
+					zh: false
+				}
+			}));
 		return this.fuse
 			.search(query)
 			.filter((result) =>
 				inside ? inside.some((item) => SearchIndex.entryEquals(item, result.item)) : true
-			);
+			)
+			.map((result) => {
+				const highlights = groupBy(
+					result.matches?.map(({ indices, key }) => ({ indices, key })) ?? [],
+					(match) => match.key ?? ''
+				) as Record<
+					'Aynu' | '日本語' | 'English' | '中文' | 'カナ',
+					readonly { indices: readonly [number, number][]; key: string | undefined }[] | undefined
+				>;
+				console.log(highlights);
+				return {
+					...result,
+					segments: {
+						ain: segmentWithHighlightIndices(
+							result.item.Aynu ?? '',
+							'ain',
+							highlights.Aynu?.flatMap(({ indices }) => indices) ?? []
+						),
+						'ain-Kana': segmentWithHighlightIndices(
+							result.item.カナ ?? '',
+							'ain-Kana',
+							highlights.カナ?.flatMap(({ indices }) => indices) ?? []
+						),
+						en: segmentWithHighlightIndices(
+							result.item.English ?? '',
+							'en',
+							highlights.English?.flatMap(({ indices }) => indices) ?? []
+						),
+						ja: segmentWithHighlightIndices(
+							result.item.日本語 ?? '',
+							'ja',
+							highlights.日本語?.flatMap(({ indices }) => indices) ?? []
+						),
+						zh: segmentWithHighlightIndices(
+							result.item.中文 ?? '',
+							'zh',
+							highlights.中文?.flatMap(({ indices }) => indices) ?? []
+						)
+					},
+					hasHighlightedSegments: {
+						ain: !!highlights.Aynu,
+						'ain-Kana': !!highlights.カナ,
+						en: !!highlights.English,
+						ja: !!highlights.日本語,
+						zh: !!highlights.中文
+					}
+				};
+			});
 	}
+}
+
+export function pickRandom(table: readonly Entry[], count: number = 5): SearchResult[] {
+	return table
+		.toSorted(() => Math.random() - 0.5)
+		.slice(0, count)
+		.map((item, index) => {
+			const kana = segment(item.Aynu ?? '', 'ain')
+				.filter(
+					({ segment }) =>
+						!isPlaceholderLike(segment) && !segment.split('=').some(isPlaceholderLike)
+				)
+				.map(({ segment }) => latn2kana(segment))
+				.join('');
+			return {
+				item,
+				refIndex: index,
+				segments: {
+					ain: segment(item.Aynu ?? '', 'ain').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					'ain-Kana': segment(kana, 'ain-Kana').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					en: segment(item.English ?? '', 'en').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					ja: segment(item.日本語 ?? '', 'ja').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					})),
+					zh: segment(item.中文 ?? '', 'zh').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
+					}))
+				},
+				hasHighlightedSegments: {
+					ain: false,
+					'ain-Kana': false,
+					en: false,
+					ja: false,
+					zh: false
+				}
+			} satisfies SearchResult;
+		});
 }

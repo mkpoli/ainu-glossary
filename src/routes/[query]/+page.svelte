@@ -46,7 +46,7 @@
 </h1>
 
 <output class="flex flex-col gap-6">
-	{#each data.found as { item, matches }}
-		<SearchResultCard {item} sheets={data.sheets} {matches} />
+	{#each data.found as { item, segments, hasHighlightedSegments }}
+		<SearchResultCard {item} sheets={data.sheets} {segments} {hasHighlightedSegments} />
 	{/each}
 </output>

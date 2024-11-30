@@ -1,17 +1,15 @@
 <script lang="ts">
 	import m from '$lib/script.svelte';
-	import { segmentWithHighlightIndices } from '$lib/segment';
-	import type { FuseResultMatch } from 'fuse.js';
+	import type { Segment } from '$lib/segment';
 
-	let { t, highlightKana }: { t: string; highlightKana?: readonly FuseResultMatch[] } = $props();
-	let highlightedIndicesKana = $derived(
-		highlightKana ? highlightKana.flatMap((h) => h.indices) : []
-	);
+	let { t }: { t: string | readonly Segment[] } = $props();
 </script>
 
 <span class="font-ain">
-	{#if highlightKana}
-		{#each segmentWithHighlightIndices(m.t(t), 'ain-Kana', highlightedIndicesKana) as { subsegments }}
+	{#if typeof t === 'string'}
+		{m.t(t)}
+	{:else}
+		{#each t as { subsegments }}
 			{#each subsegments as { highlighted, content }}
 				{#if highlighted}
 					<span
@@ -23,7 +21,5 @@
 				{/if}
 			{/each}
 		{/each}
-	{:else}
-		{m.t(t)}
 	{/if}
 </span>

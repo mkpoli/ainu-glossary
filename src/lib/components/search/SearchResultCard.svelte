@@ -4,15 +4,19 @@
 	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
 	import SearchableLink from '../links/SearchableLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
-	import type { FuseResultMatch } from 'fuse.js';
-	import groupBy from 'object.groupby';
+	import type { Segment } from '$lib/segment';
+	import type { AugmentedLanguage } from '$lib/search';
 	let {
 		item,
 		sheets,
-		matches
-	}: { item: Entry; sheets: Sheet[]; matches: readonly FuseResultMatch[] | undefined } = $props();
-
-	let highlights = $derived(groupBy(matches ?? [], (match) => match.key ?? ''));
+		segments,
+		hasHighlightedSegments
+	}: {
+		item: Entry;
+		sheets: Sheet[];
+		segments: Record<AugmentedLanguage, readonly Segment[]>;
+		hasHighlightedSegments: Record<AugmentedLanguage, boolean>;
+	} = $props();
 </script>
 
 <section
@@ -20,9 +24,10 @@
 >
 	<h2 class="m-0">
 		<SearchableLink
-			content={item.Aynu ?? ''}
-			highlight={highlights['Aynu']}
-			highlightKana={highlights['カナ']}
+			segmentsLatn={segments.ain}
+			segmentsKana={segments['ain-Kana']}
+			hasHighlightInLatn={hasHighlightedSegments.ain}
+			hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
 		/>
 	</h2>
 	<div class="flex justify-end gap-2">
@@ -37,25 +42,13 @@
 	</div>
 	<div>
 		<p lang="ja">
-			<SegmentedTranslationLink
-				content={item.日本語 ?? ''}
-				language="ja"
-				highlight={highlights['日本語']}
-			/>
+			<SegmentedTranslationLink segments={segments.ja} language="ja" />
 		</p>
 		<p lang="en">
-			<SegmentedTranslationLink
-				content={item.English ?? ''}
-				language="en"
-				highlight={highlights['English']}
-			/>
+			<SegmentedTranslationLink segments={segments.en} language="en" />
 		</p>
 		<p lang="zh">
-			<SegmentedTranslationLink
-				content={item.中文 ?? ''}
-				language="zh"
-				highlight={highlights['中文']}
-			/>
+			<SegmentedTranslationLink segments={segments.zh} language="zh" />
 		</p>
 	</div>
 	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>

@@ -143,40 +143,22 @@
 						</td>
 					</tr>
 				{:else}
-					{#each filtered as { item: row, matches }}
-						{@const highlights = groupBy(matches ?? [], (match) => match.key ?? '')}
+					{#each filtered as { item: row, hasHighlightedSegments, segments }}
 						<tr class="even:bg-gray-50">
 							<td
 								class="capitalize"
 								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
 									formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
 							>
-							<td
-								><SegmentedTranslationLink
-									content={row.日本語 ?? ''}
-									language="ja"
-									highlight={highlights.日本語}
-								/></td
-							>
-							<td
-								><SegmentedTranslationLink
-									content={row.English ?? ''}
-									language="en"
-									highlight={highlights.English}
-								/></td
-							>
-							<td
-								><SegmentedTranslationLink
-									content={row.中文 ?? ''}
-									language="zh"
-									highlight={highlights.中文}
-								/></td
-							>
+							<td><SegmentedTranslationLink segments={segments.ja} language="ja" /></td>
+							<td><SegmentedTranslationLink segments={segments.en} language="en" /></td>
+							<td><SegmentedTranslationLink segments={segments.zh} language="zh" /></td>
 							<td>
 								<SearchableLink
-									content={row.Aynu ?? ''}
-									highlight={highlights.Aynu}
-									highlightKana={highlights.カナ}
+									hasHighlightInLatn={hasHighlightedSegments.ain}
+									hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
+									segmentsLatn={segments.ain}
+									segmentsKana={segments['ain-Kana']}
 								/>
 							</td>
 							<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
@@ -190,38 +172,28 @@
 			{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
 				<h2 class="m-0 my-2 capitalize">{sheetName.replaceAll('_', ' ')}</h2>
 				{#if rows}
-					{#each rows as { item: row, matches }}
-						{@const highlights = groupBy(matches ?? [], (match) => match.key ?? '')}
+					{#each rows as { item: row, hasHighlightedSegments, segments }}
 						<div class="border border-black p-2">
 							<h3 class="m-0 font-bold">
 								<SearchableLink
-									content={row.Aynu ?? ''}
-									highlight={highlights.Aynu}
-									highlightKana={highlights.カナ}
+									hasHighlightInLatn={hasHighlightedSegments.ain}
+									hasHighlightInKana={hasHighlightedSegments['ain-Kana']}
+									segmentsLatn={segments.ain}
+									segmentsKana={segments['ain-Kana']}
 								/>
 							</h3>
 							<p title="English">
-								<SegmentedTranslationLink
-									content={row.English ?? ''}
-									language="en"
-									highlight={highlights.English}
-								/>
+								<SegmentedTranslationLink segments={segments.en} language="en" />
 							</p>
 							<p title="日本語">
-								<SegmentedTranslationLink
-									content={row.日本語 ?? ''}
-									language="ja"
-									highlight={highlights.日本語}
-								/>
+								<SegmentedTranslationLink segments={segments.ja} language="ja" />
 							</p>
 							<p title="中文">
-								<SegmentedTranslationLink
-									content={row.中文 ?? ''}
-									language="zh"
-									highlight={highlights.中文}
-								/>
+								<SegmentedTranslationLink segments={segments.zh} language="zh" />
 							</p>
-							<p title="註 / Notes"><ReferenceLink content={row['註 / Notes'] ?? ''} /></p>
+							<p title="註 / Notes">
+								<ReferenceLink content={row['註 / Notes'] ?? ''} />
+							</p>
 						</div>
 					{/each}
 				{:else}

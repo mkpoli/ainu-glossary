@@ -1,21 +1,16 @@
 <script lang="ts">
-	import { isPlaceholderLike, segmentWithHighlightIndices } from '$lib/segment';
-	import type { FuseResultMatch } from 'fuse.js';
+	import { isPlaceholderLike, type Segment } from '$lib/segment';
 
 	let {
-		content,
-		language,
-		highlight
+		segments,
+		language
 	}: {
-		content: string;
+		segments: readonly Segment[];
 		language: string;
-		highlight: readonly FuseResultMatch[] | undefined;
 	} = $props();
-
-	let highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
 </script>
 
-{#each segmentWithHighlightIndices(content, language, highlightedIndices) as segment}
+{#each segments as segment}
 	{#if isPlaceholderLike(segment.segment)}
 		{segment.segment}
 	{:else}

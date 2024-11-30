@@ -1,65 +1,76 @@
 <script lang="ts">
-	import T from '$lib/components/ui/T.svelte';
-	import { isPlaceholderLike, segmentWithHighlightIndices } from '$lib/segment';
-	import type { FuseResultMatch } from 'fuse.js';
+	import { type Segment } from '$lib/segment';
 	import m from '$lib/script.svelte';
 	let {
-		content,
-		highlight,
-		highlightKana
+		hasHighlightInLatn,
+		hasHighlightInKana,
+		segmentsLatn,
+		segmentsKana
 	}: {
-		content: string;
-		highlight: readonly FuseResultMatch[] | undefined;
-		highlightKana: readonly FuseResultMatch[] | undefined;
+		hasHighlightInLatn: boolean;
+		hasHighlightInKana: boolean;
+		segmentsLatn: readonly Segment[];
+		segmentsKana: readonly Segment[];
 	} = $props();
-	let highlightedIndices = $derived(highlight ? highlight.flatMap((h) => h.indices) : []);
 </script>
 
-<span class="relative z-20">
-	{#each segmentWithHighlightIndices(content, 'ain', highlightedIndices) as { segment, subsegments }}
-		{#if isPlaceholderLike(segment)}
-			{segment}
-		{:else if segment.match(/^[a-zA-Záíúéó='’ ]+$/)}
-			{#if segment.includes('=')}
-				{#each segment.split(/(=)/) as part}
-					{#if ['a', 'an', '='].includes(part)}
-						<T t={part} {highlightKana} />
-					{:else}
-						<a href={`/${part}`} tabindex="-1"><T t={part} /></a>
-					{/if}
-				{/each}
-			{:else}
-				<a href={`/${segment}`} tabindex="-1">
-					{#if highlight}
-						{#snippet highlightedText(small: boolean = false)}
-							{#each subsegments as { highlighted, content }}
-								{#if highlighted}
-									<span
-										class="relative after:absolute after:bottom-1 after:left-0 after:right-0 after:-z-10 after:h-1 after:bg-theme-400/40 after:content-['']"
-										class:after:h-[0.2rem]={small}>{content}</span
-									>
-								{:else}
-									{content}
-								{/if}
-							{/each}
-						{/snippet}
-						{#if m.script === 'Kana' && segment.match(/^[a-zA-Záíúéó='’]+$/)}
-							<ruby>
-								<T t={segment} />
-								<rt>{@render highlightedText(true)}</rt>
-							</ruby>
-						{:else}
-							{@render highlightedText()}
-						{/if}
-					{:else}
-						<T t={segment} {highlightKana} />
-					{/if}
-				</a>
-			{/if}
+{#snippet highlightedText(subsegments: Segment['subsegments'], small: boolean = false)}
+	{#each subsegments as { highlighted, content }}
+		{#if highlighted}
+			<span
+				class="relative after:absolute after:bottom-1 after:left-0 after:right-0 after:-z-10 after:h-1 after:bg-theme-400/40 after:content-['']"
+				class:after:h-[0.2rem]={small}>{content}</span
+			>
 		{:else}
-			{segment}
+			{content}
 		{/if}
 	{/each}
+{/snippet}
+
+{#snippet diagraphicHighlight(
+	primarySegments: readonly Segment[],
+	secondarySegments: readonly Segment[]
+)}
+	<ruby>
+		<span>
+			{#each primarySegments as { segment, subsegments }}
+				<a href={`/${segment}`}>
+					{@render highlightedText(subsegments)}
+				</a>
+			{/each}
+		</span>
+		<rt>
+			{#each secondarySegments as { segment, subsegments }}
+				<a href={`/${segment}`}>
+					{@render highlightedText(subsegments)}
+				</a>
+			{/each}
+		</rt>
+	</ruby>
+{/snippet}
+
+<span class="relative z-20">
+	{#if m.script === 'Latn'}
+		{#if hasHighlightInKana}
+			{@render diagraphicHighlight(segmentsLatn, segmentsKana)}
+		{:else}
+			{#each segmentsLatn as { segment, subsegments }}
+				<a href={`/${segment}`}>
+					{@render highlightedText(subsegments)}
+				</a>
+			{/each}
+		{/if}
+	{:else if m.script === 'Kana'}
+		{#if hasHighlightInLatn}
+			{@render diagraphicHighlight(segmentsKana, segmentsLatn)}
+		{:else}
+			{#each segmentsKana as { segment, subsegments }}
+				<a href={`/${segment}`}>
+					{@render highlightedText(subsegments)}
+				</a>
+			{/each}
+		{/if}
+	{/if}
 </span>
 
 <style>

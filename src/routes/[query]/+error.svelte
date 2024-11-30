@@ -13,8 +13,13 @@
 	<h2>
 		<Localized ain="Mosma an pe" jpn="他の項目を見てみましょう" eng="Check out others" />
 	</h2>
-	{#each $page?.error?.other ?? [] as item}
-		<SearchResultCard {item} sheets={$page?.error?.sheets ?? []} matches={[]} />
+	{#each $page?.error?.other ?? [] as { item, segments, hasHighlightedSegments }}
+		<SearchResultCard
+			{item}
+			sheets={$page?.error?.sheets ?? []}
+			{segments}
+			{hasHighlightedSegments}
+		/>
 	{/each}
 {:else}
 	<h1>500 Internal Server Error</h1>

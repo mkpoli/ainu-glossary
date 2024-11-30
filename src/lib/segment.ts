@@ -49,7 +49,7 @@ export function segment(text: string, language: string): Intl.SegmentData[] {
 }
 
 export function getRelativeHighlightIndicesInRange(
-	highlightedIndices: [number, number][],
+	highlightedIndices: readonly [number, number][],
 	segment: { index: number; segment: string }
 ): [number, number][] {
 	return highlightedIndices
@@ -102,7 +102,7 @@ export interface Segment {
 export function segmentWithHighlightIndices(
 	text: string,
 	language: string,
-	highlightedIndices: [number, number][]
+	highlightedIndices: readonly [number, number][]
 ): Segment[] {
 	const segments = segment(text, language);
 	return segments.map((s) => {
