@@ -73,9 +73,10 @@
 	<meta name="description" content={PAGE_DESCRIPTION} />
 	<meta property="og:description" content={PAGE_DESCRIPTION} />
 	<meta property="og:image" content={generateOgImageURL(latn, kana)} />
+	<meta property="og:url" content={`https://itak.aynu.org/${data.query}`} />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={PAGE_TITLE} />
-	<meta name="twitter:description" content={SITE_TITLE} />
+	<meta name="twitter:description" content={PAGE_DESCRIPTION} />
 	<meta name="twitter:creator" content="@mkpoli" />
 	<meta name="twitter:image" content={generateOgImageURL(latn, kana)} />
 </svelte:head>

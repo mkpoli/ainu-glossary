@@ -53,13 +53,14 @@
 <svelte:head>
 	<title>{m.t(SITE_TITLE)}</title>
 	<meta name="description" content={DESCRIPTION_SHORT} />
-	<meta property="og:title" content={SITE_TITLE} />
-	<meta property="og:description" content={DESCRIPTION_SHORT} />
-	<meta property="og:image" content="/screenshot.png" />
 	<meta
 		name="keywords"
 		content="アイヌ語, 現代アイヌ語, 翻訳用語集, 詞典, 辞典, 言語復興, 辭書, Ainu, Modern Ainu, Translation Glossary, Ainu Language, Language Revitalization, Dictionary, Ainu Dictionary"
 	/>
+	<meta property="og:title" content={SITE_TITLE} />
+	<meta property="og:description" content={DESCRIPTION_SHORT} />
+	<meta property="og:image" content="/screenshot.png" />
+	<meta property="og:url" content="https://itak.aynu.org/" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={SITE_TITLE_JA_EN} />
 	<meta name="twitter:description" content={SITE_TITLE} />
