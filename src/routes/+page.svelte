@@ -3,6 +3,8 @@
 	import Localized from '$lib/components/ui/Localized.svelte';
 	import type { PageData } from './$types';
 
+	import website from '$lib/semantic/website.json';
+
 	import GitHub from '~icons/simple-icons/github';
 	import X from '~icons/simple-icons/x';
 
@@ -14,6 +16,7 @@
 
 	import m from '$lib/script.svelte';
 	import T from '$lib/components/ui/T.svelte';
+	import { browser } from '$app/environment';
 
 	interface Props {
 		data: PageData;
@@ -32,6 +35,13 @@
 
 	const DESCRIPTION_SHORT =
 		'現代的なアイヌ語の使用のための、伝統的な表現および新語の両方を取り入れた、活きるオンライン分類対訳辞書 | A Categorized Multilingual Online Lexicon for Modern Ainu';
+
+	if (browser) {
+		const script = document.createElement('script');
+		script.type = 'application/ld+json';
+		script.innerHTML = JSON.stringify(website);
+		document.head.appendChild(script);
+	}
 </script>
 
 <svelte:head>

@@ -6,6 +6,7 @@
 	import T from '$lib/components/ui/T.svelte';
 	let { data }: { data: PageData } = $props();
 	import { latn2kana, kana2latn } from '$lib/script.svelte';
+	import { browser } from '$app/environment';
 	function getPairedText(text: string): [string, string] {
 		if (data.query.match(/^[a-zA-Záíúéó='’]+$/)) {
 			return [data.query, latn2kana(data.query)];
@@ -17,6 +18,48 @@
 		return [data.query, ''];
 	}
 	let [latn, kana] = $derived(getPairedText(data.query));
+
+	const TERMS_JSONLD = [
+		{
+			'@context': 'https://schema.org'
+		},
+		{
+			'@type': 'WebSite',
+			name: '現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary',
+			alternateName: ['Tane an Aynuitak-kotupte Itak-uoeroskip', 'Itak-uoeroskip'],
+			url: 'https://itak.aynu.org/',
+			potentialAction: [
+				{
+					'@type': 'SearchAction',
+					target: {
+						'@type': 'EntryPoint',
+						urlTemplate: 'https://itak.aynu.org/{search_term_string}'
+					},
+					'query-input': 'required name=search_term_string'
+				}
+			]
+		},
+		{
+			'@type': ['DefinedTermSet', 'WebPage'],
+			'@id': `https://itak.aynu.org/${data.query}`,
+			name: '現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary',
+			alternateName: ['Tane an Aynuitak-kotupte Itak-uoeroskip', 'Itak-uoeroskip']
+		},
+		...data.found.map(({ item }) => ({
+			'@type': 'DefinedTerm',
+			'@id': `https://itak.aynu.org/${item.Aynu}`,
+			description: [item.カナ, item.日本語, item.English, item.中文, item['註 / Notes']]
+				.filter(Boolean)
+				.join('\n'),
+			inDefinedTermSet: `https://itak.aynu.org/${data.query}`
+		}))
+	];
+	if (browser) {
+		const script = document.createElement('script');
+		script.type = 'application/ld+json';
+		script.innerHTML = JSON.stringify(TERMS_JSONLD);
+		document.head.appendChild(script);
+	}
 </script>
 
 <svelte:head>

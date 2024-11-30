@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
 
 	let { data } = $props();
@@ -16,6 +17,49 @@
 	};
 
 	let [latn, kana] = $derived([data.found[0].item.Aynu, data.found[0].item.カナ]);
+
+	const TERMS_JSONLD = [
+		{
+			'@context': 'https://schema.org'
+		},
+		{
+			'@type': 'WebSite',
+			name: '現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary',
+			alternateName: ['Tane an Aynuitak-kotupte Itak-uoeroskip', 'Itak-uoeroskip'],
+			url: 'https://itak.aynu.org/',
+			potentialAction: [
+				{
+					'@type': 'SearchAction',
+					target: {
+						'@type': 'EntryPoint',
+						urlTemplate: 'https://itak.aynu.org/{search_term_string}'
+					},
+					'query-input': 'required name=search_term_string'
+				}
+			]
+		},
+		{
+			'@type': ['DefinedTermSet', 'WebPage'],
+			'@id': `https://itak.aynu.org/${data.query}/${data.subquery}`,
+			name: '現代アイヌ語翻訳用語集 / Modern Ainu Translation Glossary',
+			alternateName: ['Tane an Aynuitak-kotupte Itak-uoeroskip', 'Itak-uoeroskip'],
+			url: `https://itak.aynu.org/${data.query}/${data.subquery}`
+		},
+		...data.found.map(({ item }) => ({
+			'@type': 'DefinedTerm',
+			'@id': `https://itak.aynu.org/${item.Aynu}`,
+			description: [item.カナ, item.日本語, item.English, item.中文, item['註 / Notes']]
+				.filter(Boolean)
+				.join('\n'),
+			inDefinedTermSet: `https://itak.aynu.org/${data.query}/${data.subquery}`
+		}))
+	];
+	if (browser) {
+		const script = document.createElement('script');
+		script.type = 'application/ld+json';
+		script.innerHTML = JSON.stringify(TERMS_JSONLD);
+		document.head.appendChild(script);
+	}
 </script>
 
 <svelte:head>
