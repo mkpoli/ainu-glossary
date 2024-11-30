@@ -12,7 +12,7 @@
 	import LineMdDownloadingLoop from '~icons/line-md/downloading-loop';
 
 	import { GOOGLE_SHEET_LINK, type Entry } from '$lib/data';
-	import { REFERENCES_URL, SITE_TITLE } from '$lib/consts';
+	import { REFERENCES_URL, SITE_TITLE, SITE_TITLE_EN, SITE_TITLE_JA } from '$lib/consts';
 
 	import m from '$lib/script.svelte';
 	import T from '$lib/components/ui/T.svelte';
@@ -68,8 +68,8 @@
 		class="mb-4 flex flex-col text-base font-bold md:my-1 md:mb-2 md:flex-row md:gap-2 md:text-xl"
 		lang="ja"
 	>
-		<span lang="ja">現代アイヌ語翻訳用語集</span><span class="hidden md:inline"> / </span>
-		<span lang="en">Modern Ainu Translation Glossary</span>
+		<span lang="ja">{SITE_TITLE_JA}</span><span class="hidden md:inline"> / </span>
+		<span lang="en">{SITE_TITLE_EN}</span>
 	</p>
 
 	<div class="my-2 text-sm md:my-4 md:my-8 md:text-base">
