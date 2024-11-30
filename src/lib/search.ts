@@ -10,7 +10,7 @@ export type Language = 'ain' | 'en' | 'ja' | 'zh';
 export type AugmentedLanguage = Language | 'ain-Kana';
 
 export interface SearchResult {
-	item: Entry;
+	item: AugmentedEntry;
 	// matches?: readonly FuseResultMatch[];
 	refIndex: number;
 	segments: Record<AugmentedLanguage, readonly Segment[]>;

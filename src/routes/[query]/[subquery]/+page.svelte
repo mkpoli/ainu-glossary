@@ -14,12 +14,15 @@
 		zh: '這頁解釋了阿伊努語中「{word}」的說法。阿伊努語怎麼說「{word}」? 阿伊努語中「{word}」是什麼？還有一些類似的表現和替代詞等等。',
 		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。アイヌ語で「{word}」はどう言えばいい？似たような表現・言い換えも紹介します。'
 	};
+
+	let [latn, kana] = $derived([data.found[0].item.Aynu, data.found[0].item.カナ]);
 </script>
 
 <svelte:head>
 	<title>{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</title>
 
 	<meta name="description" content={DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)} />
+	<meta property="og:image" content={`/api/ogp?latn=${latn}&kana=${kana}`} />
 </svelte:head>
 
 <h1 class="m-0">{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</h1>

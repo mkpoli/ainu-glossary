@@ -5,6 +5,18 @@
 	import m from '$lib/script.svelte';
 	import T from '$lib/components/ui/T.svelte';
 	let { data }: { data: PageData } = $props();
+	import { latn2kana, kana2latn } from '$lib/script.svelte';
+	function getPairedText(text: string): [string, string] {
+		if (data.query.match(/^[a-zA-Záíúéó='’]+$/)) {
+			return [data.query, latn2kana(data.query)];
+		} else if (
+			data.query.match(/^[\p{Script=Hiragana}\p{Script_Extensions=Katakana}\s\p{L}\p{N}]+$/u)
+		) {
+			return [kana2latn(data.query), data.query];
+		}
+		return [data.query, ''];
+	}
+	let [latn, kana] = $derived(getPairedText(data.query));
 </script>
 
 <svelte:head>
@@ -13,6 +25,15 @@
 		name="description"
 		content="アイヌ語で{data.query}ってどういう意味？{data.query}は何のことを指すの？意味や使い方について解説します | What does {data.query} mean in Ainu? How to use {data.query} in Ainu?"
 	/>
+	<meta
+		property="og:title"
+		content={`アイヌ語で${data.query}とは？ What is ${data.query} in Ainu?`}
+	/>
+	<meta
+		name="og:description"
+		content={`アイヌ語で${data.query}ってどういう意味？${data.query}は何のことを指すの？意味や使い方について解説します | What does ${data.query} mean in Ainu? How to use ${data.query} in Ainu?`}
+	/>
+	<meta property="og:image" content={`/api/ogp?latn=${latn}&kana=${kana}`} />
 </svelte:head>
 
 {#snippet italicIfLatn(text: string)}

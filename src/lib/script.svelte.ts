@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
-import { convertLatnToKana } from 'ainconv';
+import { convertKanaToLatn, convertLatnToKana } from 'ainconv';
+import { segment } from './segment';
 
 export type Script = 'Kana' | 'Latn';
 export const AVAILABLE_SCRIPTS: Script[] = ['Kana', 'Latn'];
@@ -32,6 +33,12 @@ export function latn2kana(latn: string) {
 		console.error(`Error converting Latn "${latn}" to Kana`, e);
 		return processedLatn;
 	}
+}
+
+export function kana2latn(kana: string) {
+	return segment(kana, 'ain-Kana')
+		.map((segment) => convertKanaToLatn(segment.segment))
+		.join('');
 }
 
 function createScriptManager() {
