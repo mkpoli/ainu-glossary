@@ -23,10 +23,29 @@ export function segmentAinu(text: string): Intl.SegmentData[] {
 		});
 }
 
+export function segmentKatakana(text: string): Intl.SegmentData[] {
+	let length = 0;
+	return text
+		.split(/([\p{Script=Katakana}]+)/u)
+		.filter(Boolean)
+		.map((segment) => {
+			const result = {
+				index: length,
+				input: text,
+				segment,
+				isWordLike: Boolean(segment.match(/^[\p{Script=Katakana}]+$/u))
+			} as Intl.SegmentData;
+			length += segment.length;
+			return result;
+		});
+}
+
 export function segment(text: string, language: string): Intl.SegmentData[] {
 	return language === 'ain'
 		? segmentAinu(text)
-		: [...new Intl.Segmenter(language, { granularity: 'word' }).segment(text)];
+		: language === 'ain-Kana'
+			? segmentKatakana(text)
+			: [...new Intl.Segmenter(language, { granularity: 'word' }).segment(text)];
 }
 
 export function getRelativeHighlightIndicesInRange(

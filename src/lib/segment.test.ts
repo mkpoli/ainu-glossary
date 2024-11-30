@@ -5,7 +5,8 @@ import {
 	segment,
 	subdivideSegments,
 	segmentAinu,
-	isPlaceholderLike
+	isPlaceholderLike,
+	segmentKatakana
 } from './segment';
 import { expect, it, describe } from 'bun:test';
 
@@ -239,6 +240,50 @@ describe('segmentAinu', () => {
 			{ index: 9, input: 'aenuwapto ononno!', segment: ' ', isWordLike: false },
 			{ index: 10, input: 'aenuwapto ononno!', segment: 'ononno', isWordLike: true },
 			{ index: 16, input: 'aenuwapto ononno!', segment: '!', isWordLike: false }
+		]);
+		expect(segmentKatakana('カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ')).toEqual([
+			{
+				index: 0,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: 'カンピヌイェクㇽ',
+				isWordLike: true
+			},
+			{
+				index: 8,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: ' ',
+				isWordLike: false
+			},
+			{
+				index: 9,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: 'ウタㇻ',
+				isWordLike: true
+			},
+			{
+				index: 12,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: ' ',
+				isWordLike: false
+			},
+			{
+				index: 13,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: 'ウタサタサ',
+				isWordLike: true
+			},
+			{
+				index: 18,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: ' ',
+				isWordLike: false
+			},
+			{
+				index: 19,
+				input: 'カンピヌイェクㇽ ウタㇻ ウタサタサ ウシ',
+				segment: 'ウシ',
+				isWordLike: true
+			}
 		]);
 	});
 });
