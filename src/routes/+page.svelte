@@ -62,6 +62,7 @@
 	/>
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={SITE_TITLE_JA_EN} />
+	<meta name="twitter:description" content={SITE_TITLE} />
 	<meta name="twitter:creator" content="@mkpoli" />
 	<meta name="twitter:image" content="/screenshot.png" />
 </svelte:head>
