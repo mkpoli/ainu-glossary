@@ -1,13 +1,13 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { fetchData, type Entry } from '$lib/data';
-
-import { search } from '$lib/search';
+import { SearchIndex, type Language } from '$lib/search';
 
 export const load: PageLoad = async ({ params: { query }, fetch }) => {
 	const { table, sheets } = await fetchData(fetch);
 
-	const found = search(query, ['ain', 'en', 'ja', 'zh'], table);
+	const searchIndex = new SearchIndex(table, ['ain', 'en', 'ja', 'zh']);
+	const found = searchIndex.search(query);
 
 	if (!found.length) {
 		error(404, {

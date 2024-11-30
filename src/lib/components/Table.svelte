@@ -17,8 +17,7 @@
 	import { goto } from '$app/navigation';
 
 	import groupBy from 'object.groupby';
-	import { search } from '$lib/search';
-	import type { FuseResultMatch } from 'fuse.js';
+	import { SearchIndex, type SearchResult } from '$lib/search';
 
 	interface Props {
 		data: Entry[];
@@ -26,6 +25,8 @@
 	}
 
 	let { data, sheets }: Props = $props();
+
+	let searchIndex = $derived(new SearchIndex(data, ['ain', 'en', 'ja', 'zh']));
 
 	let allCategories: Map<
 		string,
@@ -61,14 +62,7 @@
 			return selectedCategories?.some((category) => category.value === row.sheetName);
 		})
 	);
-	let filtered: {
-		item: Entry;
-		matches?: readonly FuseResultMatch[];
-	}[] = $derived(
-		query
-			? search(query, ['ain', 'en', 'ja', 'zh'], dataFilteredByCategories)
-			: dataFilteredByCategories.map((item) => ({ item, matches: undefined }))
-	);
+	let filtered: SearchResult[] = $derived(searchIndex.search(query, dataFilteredByCategories));
 
 	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
 	$inspect('isLargeScreen', isLargeScreen);
