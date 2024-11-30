@@ -17,6 +17,8 @@
 	import { goto } from '$app/navigation';
 
 	import groupBy from 'object.groupby';
+	import { search } from '$lib/search';
+	import type { FuseResultMatch } from 'fuse.js';
 
 	interface Props {
 		data: Entry[];
@@ -54,25 +56,24 @@
 	$inspect('selectedCategories', selectedCategories);
 
 	let query: string = $state('');
-	let filtered = $derived(
-		data
-			.filter((row: any) => {
-				return selectedCategories?.some((category) => category.value === row.sheetName);
-			})
-			.filter((row: any) => {
-				return Object.values(row).some((value: any) => {
-					if (typeof value === 'string') {
-						return value.toLowerCase().includes(query.toLowerCase());
-					}
-					return false;
-				});
-			})
+	let dataFilteredByCategories = $derived(
+		data.filter((row) => {
+			return selectedCategories?.some((category) => category.value === row.sheetName);
+		})
+	);
+	let filtered: {
+		item: Entry;
+		matches: readonly FuseResultMatch[] | undefined;
+	}[] = $derived(
+		query
+			? search(query, ['ain', 'en', 'ja', 'zh'], dataFilteredByCategories)
+			: dataFilteredByCategories.map((item) => ({ item, matches: undefined }))
 	);
 
 	let isLargeScreen = $state(browser ? window.innerWidth >= 768 : false);
 	$inspect('isLargeScreen', isLargeScreen);
 
-	let groupedBySheetName = $derived(groupBy(filtered, (row) => row.sheetName));
+	let groupedBySheetName = $derived(groupBy(filtered, ({ item }) => item.sheetName));
 	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
 
@@ -148,17 +149,42 @@
 						</td>
 					</tr>
 				{:else}
-					{#each filtered as row}
+					{#each filtered as { item: row, matches }}
+						{@const highlights = groupBy(matches ?? [], (match) => match.key ?? '')}
 						<tr class="even:bg-gray-50">
 							<td
 								class="capitalize"
 								title={sheets.find((sheet) => sheet.sheetName === row.sheetName)?.description ??
 									formatGenre(row.sheetName)}>{formatGenre(row.sheetName)}</td
 							>
-							<td><SegmentedTranslationLink content={row.日本語 ?? ''} language="ja" /></td>
-							<td><SegmentedTranslationLink content={row.English ?? ''} language="en" /></td>
-							<td><SegmentedTranslationLink content={row.中文 ?? ''} language="zh" /></td>
-							<td><SearchableLink content={row.Aynu ?? ''} /></td>
+							<td
+								><SegmentedTranslationLink
+									content={row.日本語 ?? ''}
+									language="ja"
+									highlight={highlights.日本語}
+								/></td
+							>
+							<td
+								><SegmentedTranslationLink
+									content={row.English ?? ''}
+									language="en"
+									highlight={highlights.English}
+								/></td
+							>
+							<td
+								><SegmentedTranslationLink
+									content={row.中文 ?? ''}
+									language="zh"
+									highlight={highlights.中文}
+								/></td
+							>
+							<td>
+								<SearchableLink
+									content={row.Aynu ?? ''}
+									highlight={highlights.Aynu}
+									highlightKana={highlights.カナ}
+								/>
+							</td>
 							<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
 						</tr>
 					{/each}
@@ -170,17 +196,36 @@
 			{#each Object.entries(groupedBySheetName) as [sheetName, rows]}
 				<h2 class="m-0 my-2 capitalize">{sheetName.replaceAll('_', ' ')}</h2>
 				{#if rows}
-					{#each rows as row}
+					{#each rows as { item: row, matches }}
+						{@const highlights = groupBy(matches ?? [], (match) => match.key ?? '')}
 						<div class="border border-black p-2">
-							<h3 class="m-0 font-bold"><SearchableLink content={row.Aynu ?? ''} /></h3>
+							<h3 class="m-0 font-bold">
+								<SearchableLink
+									content={row.Aynu ?? ''}
+									highlight={highlights.Aynu}
+									highlightKana={highlights.カナ}
+								/>
+							</h3>
 							<p title="English">
-								<SegmentedTranslationLink content={row.English ?? ''} language="en" />
+								<SegmentedTranslationLink
+									content={row.English ?? ''}
+									language="en"
+									highlight={highlights.English}
+								/>
 							</p>
 							<p title="日本語">
-								<SegmentedTranslationLink content={row.日本語 ?? ''} language="ja" />
+								<SegmentedTranslationLink
+									content={row.日本語 ?? ''}
+									language="ja"
+									highlight={highlights.日本語}
+								/>
 							</p>
 							<p title="中文">
-								<SegmentedTranslationLink content={row.中文 ?? ''} language="zh" />
+								<SegmentedTranslationLink
+									content={row.中文 ?? ''}
+									language="zh"
+									highlight={highlights.中文}
+								/>
 							</p>
 							<p title="註 / Notes"><ReferenceLink content={row['註 / Notes'] ?? ''} /></p>
 						</div>
