@@ -63,7 +63,7 @@
 	);
 	let filtered: {
 		item: Entry;
-		matches: readonly FuseResultMatch[] | undefined;
+		matches?: readonly FuseResultMatch[];
 	}[] = $derived(
 		query
 			? search(query, ['ain', 'en', 'ja', 'zh'], dataFilteredByCategories)
