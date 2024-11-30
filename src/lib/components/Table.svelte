@@ -72,8 +72,6 @@
 	$inspect('groupedBySheetName', groupedBySheetName);
 </script>
 
-<svelte:window on:resize={() => (isLargeScreen = browser ? window.innerWidth >= 768 : false)} />
-
 <div
 	class="query-form-container mb-10 flex w-full flex-col gap-2 md:grid md:w-max md:grid-cols-[auto_1fr_1.5fr_1fr] md:items-center md:gap-4 md:whitespace-nowrap md:text-left"
 >
