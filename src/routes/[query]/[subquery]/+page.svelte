@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
+	import { generateOgImageURL } from '$lib/og.js';
 
 	let { data } = $props();
 
@@ -16,7 +17,7 @@
 		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。アイヌ語で「{word}」はどう言えばいい？似たような表現・言い換えも紹介します。'
 	};
 
-	let [latn, kana] = $derived([data.found[0].item.Aynu, data.found[0].item.カナ]);
+	let [latn, kana] = $derived([data.found[0].item.Aynu ?? '', data.found[0].item.カナ ?? '']);
 
 	const TERMS_JSONLD = [
 		{
@@ -66,7 +67,7 @@
 	<title>{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</title>
 
 	<meta name="description" content={DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)} />
-	<meta property="og:image" content={`/api/ogp?latn=${latn}&kana=${kana}`} />
+	<meta property="og:image" content={generateOgImageURL(latn, kana)} />
 </svelte:head>
 
 <h1 class="m-0">{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</h1>
