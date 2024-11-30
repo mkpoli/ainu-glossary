@@ -5,6 +5,7 @@
 	import MaterialSymbolsSearch from '~icons/material-symbols/search';
 	import m from '$lib/script.svelte';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	let search = $state('');
 </script>
 
@@ -31,7 +32,9 @@
 		>
 			<input
 				type="search"
-				placeholder={`${m.t('Ihunara')} / 検索 / Search`}
+				placeholder={decodeURI(
+					$page.url.pathname.split('/').at(-1) ?? m.localized('Ihunara', '検索', 'Search')
+				)}
 				class="h-full w-64 flex-1"
 				bind:value={search}
 			/>
