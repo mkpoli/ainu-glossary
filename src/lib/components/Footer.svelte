@@ -10,7 +10,7 @@
 		<a
 			href="https://discord.gg/sJRXq3Gspm"
 			target="_blank"
-			title={m.localized('Discord ouekarpa', 'コミュニティ', 'Community')}
+			title={m.localized('-{Discord}- ouekarpa', 'コミュニティ', 'Community')}
 			><Discord class="h-6 w-6" /></a
 		>
 	</p>
