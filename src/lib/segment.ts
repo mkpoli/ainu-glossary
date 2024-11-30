@@ -26,7 +26,7 @@ export function segmentAinu(text: string): Intl.SegmentData[] {
 export function segmentKatakana(text: string): Intl.SegmentData[] {
 	let length = 0;
 	return text
-		.split(/([\p{Script=Katakana}]+)/u)
+		.split(/([\p{Script=Katakana}]+|[\p{P}\p{S}]+|[\p{L}\p{M}\p{N}]+)/u)
 		.filter(Boolean)
 		.map((segment) => {
 			const result = {
