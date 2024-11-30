@@ -91,17 +91,19 @@ export function subdivideSegments(
 	return subsegments;
 }
 
-export function segmentWithHighlightIndices(
-	text: string,
-	language: string,
-	highlightedIndices: [number, number][]
-): {
+export interface Segment {
 	segment: string;
 	subsegments: {
 		highlighted: boolean;
 		content: string;
 	}[];
-}[] {
+}
+
+export function segmentWithHighlightIndices(
+	text: string,
+	language: string,
+	highlightedIndices: [number, number][]
+): Segment[] {
 	const segments = segment(text, language);
 	return segments.map((s) => {
 		const segmentHighlights = getRelativeHighlightIndicesInRange(highlightedIndices, s);
