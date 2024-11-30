@@ -1,6 +1,6 @@
 import Fuse, { type FuseResultMatch } from 'fuse.js';
 import * as WanaKana from 'wanakana';
-
+import * as cjkConv from 'cjk-conv';
 import type { Entry } from './data';
 import { latn2kana } from './script.svelte';
 import { isPlaceholderLike, segment, segmentWithHighlightIndices, type Segment } from './segment';
@@ -20,6 +20,7 @@ export interface SearchResult {
 export type AugmentedEntry = Entry & {
 	カナ?: string;
 	ひら?: string;
+	简体?: string;
 };
 
 export class SearchIndex {
@@ -48,7 +49,8 @@ export class SearchIndex {
 			return {
 				...entry,
 				カナ,
-				ひら: WanaKana.toHiragana(カナ)
+				ひら: WanaKana.toHiragana(カナ),
+				简体: cjkConv.cjk2zhs(entry.中文 ?? '')
 			};
 		});
 		this.table = augmentedTable;
@@ -62,7 +64,7 @@ export class SearchIndex {
 						ain: ['Aynu', 'カナ', 'ひら'],
 						ja: ['日本語'],
 						en: ['English'],
-						zh: ['中文']
+						zh: ['中文', '简体']
 					})[lang] ?? []
 			)
 		});
@@ -146,7 +148,7 @@ export class SearchIndex {
 					result.matches?.map(({ indices, key }) => ({ indices, key })) ?? [],
 					(match) => match.key ?? ''
 				) as Record<
-					'Aynu' | '日本語' | 'English' | '中文' | 'カナ' | 'ひら',
+					'Aynu' | '日本語' | 'English' | '中文' | 'カナ' | 'ひら' | '简体',
 					readonly { indices: readonly [number, number][]; key: string | undefined }[] | undefined
 				>;
 
@@ -172,11 +174,10 @@ export class SearchIndex {
 							'ja',
 							highlights.日本語?.flatMap(({ indices }) => indices) ?? []
 						),
-						zh: segmentWithHighlightIndices(
-							result.item.中文 ?? '',
-							'zh',
-							highlights.中文?.flatMap(({ indices }) => indices) ?? []
-						)
+						zh: segmentWithHighlightIndices(result.item.中文 ?? '', 'zh', [
+							...(highlights.中文?.flatMap(({ indices }) => indices) ?? []),
+							...(highlights.简体?.flatMap(({ indices }) => indices) ?? [])
+						])
 					},
 					hasHighlightedSegments: {
 						ain: !!highlights.Aynu,
