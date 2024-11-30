@@ -47,6 +47,19 @@ function createScriptManager() {
 		},
 		get t() {
 			return t;
+		},
+		localized(ain: string, jpn: string, eng: string, separator = ' / ') {
+			const transliterated = ain
+				.split(/(-\{.+?\}-)/)
+				.map((segment) => {
+					if (segment.startsWith('-{')) {
+						return segment.slice(2, -2);
+					}
+					return this.t(segment);
+				})
+				.join('');
+
+			return `${transliterated}${separator}${jpn}${separator}${eng}`;
 		}
 	};
 }

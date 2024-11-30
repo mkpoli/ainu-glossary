@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Discord from '~icons/simple-icons/discord';
+	import m from '$lib/script.svelte';
 </script>
 
 <hr />
@@ -9,7 +10,8 @@
 		<a
 			href="https://discord.gg/sJRXq3Gspm"
 			target="_blank"
-			title="Discord ouekarpa / Community / コミュニティ"><Discord class="w-6 h-6" /></a
+			title={m.localized('Discord ouekarpa', 'コミュニティ', 'Community')}
+			><Discord class="h-6 w-6" /></a
 		>
 	</p>
 </footer>

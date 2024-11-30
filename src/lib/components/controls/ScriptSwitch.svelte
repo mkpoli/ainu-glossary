@@ -9,9 +9,9 @@
 		checked={m.script === 'Kana'}
 		onchange={(checked) => (m.script = checked ? 'Kana' : 'Latn')}
 	>
-		<span title={`${m.t('Romanci')} / ローマ字 / Latin`}>{short ? 'A' : 'Romanci'}</span>
+		<span title={m.localized('Romanci', 'ローマ字', 'Latin')}>{short ? 'A' : 'Romanci'}</span>
 		{#snippet on()}
-			<span title={`${m.t('Katakana')} / カタカナ / Kana`}>{short ? 'カ' : 'カタカナ'}</span>
+			<span title={m.localized('Katakana', 'カタカナ', 'Kana')}>{short ? 'カ' : 'カタカナ'}</span>
 		{/snippet}
 	</Switch>
 </div>

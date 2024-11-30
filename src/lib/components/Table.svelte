@@ -19,6 +19,8 @@
 	import groupBy from 'object.groupby';
 	import { SearchIndex, type SearchResult } from '$lib/search';
 
+	import m from '$lib/script.svelte';
+
 	interface Props {
 		data: Entry[];
 		sheets: Sheet[];
