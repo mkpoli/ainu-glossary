@@ -73,6 +73,7 @@
 	<meta property="og:description" content={PAGE_DESCRIPTION} />
 	<meta property="og:image" content={generateOgImageURL(latn, kana)} />
 	<meta property="og:url" content={`https://itak.aynu.org/${data.query}/${data.subquery}`} />
+	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={PAGE_TITLE} />
 	<meta name="twitter:description" content={PAGE_DESCRIPTION} />

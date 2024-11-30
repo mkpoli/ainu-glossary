@@ -61,6 +61,7 @@
 	<meta property="og:description" content={SITE_TITLE_JA_EN} />
 	<meta property="og:image" content="https://itak.aynu.org/screenshot.png" />
 	<meta property="og:url" content="https://itak.aynu.org/" />
+	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={SITE_TITLE_JA_EN} />
 	<meta name="twitter:description" content={SITE_TITLE} />
