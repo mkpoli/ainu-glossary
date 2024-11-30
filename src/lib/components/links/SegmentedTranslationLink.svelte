@@ -17,7 +17,7 @@
 		<a
 			href={`/${language}/${segment.segment}`}
 			tabindex="-1"
-			class="text-inherit no-underline hover:underline"
+			class="text-inherit no-underline hover:text-inherit hover:underline"
 		>
 			{#each segment.subsegments as { highlighted, content }}
 				{#if highlighted}
