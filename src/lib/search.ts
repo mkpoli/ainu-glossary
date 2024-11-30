@@ -19,6 +19,7 @@ export interface SearchResult {
 
 export type AugmentedEntry = Entry & {
 	カナ?: string;
+	ひら?: string;
 };
 
 export class SearchIndex {
@@ -26,30 +27,28 @@ export class SearchIndex {
 	private readonly table: AugmentedEntry[];
 
 	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
-		let augmentedTable: AugmentedEntry[] = table;
-		if (languages.includes('ain')) {
-			augmentedTable = augmentedTable.map((entry) => {
-				const カナ = segment(entry.Aynu ?? '', 'ain')
-					.map(({ segment }) => {
-						if (isPlaceholderLike(segment)) {
-							return segment;
-						}
-						if (segment.includes('=')) {
-							return segment
-								.split('=')
-								.map((s) => (isPlaceholderLike(s) ? s : latn2kana(s)))
-								.join('=');
-						}
-						return latn2kana(segment);
-					})
-					.join('');
-				return {
-					...entry,
-					カナ,
-					ひら: WanaKana.toHiragana(カナ)
-				};
-			});
-		}
+		const augmentedTable: AugmentedEntry[] = table.map((entry) => {
+			const カナ = segment(entry.Aynu ?? '', 'ain')
+				.map(({ segment }) => {
+					if (isPlaceholderLike(segment)) {
+						return segment;
+					}
+					if (segment.includes('=')) {
+						return segment
+							.split('=')
+							.map((s) => (isPlaceholderLike(s) ? s : latn2kana(s)))
+							.join('=');
+					}
+					return latn2kana(segment);
+				})
+				.join('')
+				.replace(', ', '、');
+			return {
+				...entry,
+				カナ,
+				ひら: WanaKana.toHiragana(カナ)
+			};
+		});
 		this.table = augmentedTable;
 		this.fuse = new Fuse(augmentedTable, {
 			includeScore: true,
@@ -148,7 +147,7 @@ export class SearchIndex {
 					'Aynu' | '日本語' | 'English' | '中文' | 'カナ' | 'ひら',
 					readonly { indices: readonly [number, number][]; key: string | undefined }[] | undefined
 				>;
-				console.log(highlights);
+
 				return {
 					...result,
 					segments: {
