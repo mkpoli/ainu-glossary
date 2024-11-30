@@ -8,6 +8,7 @@
 	import { latn2kana, kana2latn } from '$lib/script.svelte';
 	import { browser } from '$app/environment';
 	import { generateOgImageURL } from '$lib/og';
+	import { SITE_TITLE } from '$lib/consts';
 	function getPairedText(text: string): [string, string] {
 		if (data.query.match(/^[a-zA-Záíúéó='’]+$/)) {
 			return [data.query, latn2kana(data.query)];
@@ -61,23 +62,22 @@
 		script.innerHTML = JSON.stringify(TERMS_JSONLD);
 		document.head.appendChild(script);
 	}
+
+	const PAGE_TITLE = `アイヌ語で${data.query}とは？ What is ${data.query} in Ainu?`;
+	const PAGE_DESCRIPTION = `アイヌ語で${data.query}ってどういう意味？${data.query}は何のことを指すの？意味や使い方について解説します | What does ${data.query} mean in Ainu? How to use ${data.query} in Ainu?`;
 </script>
 
 <svelte:head>
-	<title>アイヌ語で{data.query}とは？ What is {data.query} in Ainu?</title>
-	<meta
-		name="description"
-		content="アイヌ語で{data.query}ってどういう意味？{data.query}は何のことを指すの？意味や使い方について解説します | What does {data.query} mean in Ainu? How to use {data.query} in Ainu?"
-	/>
-	<meta
-		property="og:title"
-		content={`アイヌ語で${data.query}とは？ What is ${data.query} in Ainu?`}
-	/>
-	<meta
-		property="og:description"
-		content={`アイヌ語で${data.query}ってどういう意味？${data.query}は何のことを指すの？意味や使い方について解説します | What does ${data.query} mean in Ainu? How to use ${data.query} in Ainu?`}
-	/>
+	<title>{PAGE_TITLE}</title>
+	<meta property="og:title" content={PAGE_TITLE} />
+	<meta name="description" content={PAGE_DESCRIPTION} />
+	<meta property="og:description" content={PAGE_DESCRIPTION} />
 	<meta property="og:image" content={generateOgImageURL(latn, kana)} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={PAGE_TITLE} />
+	<meta name="twitter:description" content={SITE_TITLE} />
+	<meta name="twitter:creator" content="@mkpoli" />
+	<meta name="twitter:image" content={generateOgImageURL(latn, kana)} />
 </svelte:head>
 
 {#snippet italicIfLatn(text: string)}

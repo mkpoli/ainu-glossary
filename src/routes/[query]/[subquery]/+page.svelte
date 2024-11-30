@@ -61,17 +61,25 @@
 		script.innerHTML = JSON.stringify(TERMS_JSONLD);
 		document.head.appendChild(script);
 	}
+
+	const PAGE_TITLE = TRANSLATIONS[data.query].replaceAll('{word}', data.subquery);
+	const PAGE_DESCRIPTION = DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery);
 </script>
 
 <svelte:head>
-	<title>{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</title>
-
-	<meta name="description" content={DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)} />
+	<title>{PAGE_TITLE}</title>
+	<meta name="description" content={PAGE_DESCRIPTION} />
+	<meta property="og:title" content={PAGE_TITLE} />
+	<meta property="og:description" content={PAGE_DESCRIPTION} />
 	<meta property="og:image" content={generateOgImageURL(latn, kana)} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={PAGE_TITLE} />
+	<meta name="twitter:description" content={PAGE_DESCRIPTION} />
+	<meta name="twitter:image" content={generateOgImageURL(latn, kana)} />
 </svelte:head>
 
-<h1 class="m-0">{TRANSLATIONS[data.query].replaceAll('{word}', data.subquery)}</h1>
-<p>{DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery)}</p>
+<h1 class="m-0">{PAGE_TITLE}</h1>
+<p>{PAGE_DESCRIPTION}</p>
 
 <output class="flex flex-col gap-6">
 	{#each data.found as { item, segments, hasHighlightedSegments }}
