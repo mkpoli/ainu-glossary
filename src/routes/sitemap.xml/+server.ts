@@ -1,6 +1,8 @@
 import { isPlaceholderLike, segment } from '$lib/segment';
 import { downloadData } from '$lib/server/data';
 
+import { cjk2zhs, cjkConv } from 'cjk-conv';
+
 function isWord(word: string): boolean {
 	if (isPlaceholderLike(word)) {
 		return false;
@@ -77,7 +79,9 @@ export async function GET() {
 				? extractLinkableWordsWithLanguage(item.English, 'en').map((word) => `/en/${word}`)
 				: []),
 			...(item.中文
-				? extractLinkableWordsWithLanguage(item.中文, 'zh').map((word) => `/zh/${word}`)
+				? extractLinkableWordsWithLanguage(item.中文, 'zh-Hant')
+						.flatMap((word) => [word, cjk2zhs(word)])
+						.map((word) => `/zh/${word}`)
 				: [])
 		])
 	);
