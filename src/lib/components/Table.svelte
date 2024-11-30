@@ -21,6 +21,8 @@
 
 	import m from '$lib/script.svelte';
 
+	import PajamasExternalLink from '~icons/pajamas/external-link';
+
 	interface Props {
 		data: Entry[];
 		sheets: Sheet[];
@@ -83,13 +85,37 @@
 			<MaterialSymbolsSearch />
 			<Localized eng="Search" ain="Ihunara" jpn="検索" />
 		</label>
-		<input
-			type="text"
-			name=""
-			id="search"
-			bind:value={query}
-			class="m-0 h-10 w-full min-w-[220px] border border-gray-900 bg-white p-2 text-sm shadow-hard focus:border-black focus:ring-black"
-		/>
+		<form
+			class="relative"
+			onsubmit={(e) => {
+				e.preventDefault();
+				goto(`/${query}`);
+			}}
+		>
+			<input
+				type="text"
+				name="search"
+				id="search"
+				bind:value={query}
+				class="m-0 h-10 w-full min-w-[220px] border border-gray-900 bg-white p-2 text-sm shadow-hard focus:border-black focus:ring-black"
+			/>
+			<a
+				class="absolute bottom-0 right-0 top-0 z-10 flex items-center justify-center border-none bg-transparent p-2 text-inherit shadow-none hover:bg-transparent hover:text-theme-600 hover:shadow-none {Boolean(
+					query
+				)
+					? 'visible'
+					: 'invisible'}"
+				title={m.localized(
+					'Asir puyar or wa nukar',
+					'新しいウィンドウで見る',
+					'Open in new window'
+				)}
+				href={`/${query}`}
+				target="_blank"
+			>
+				<PajamasExternalLink />
+			</a>
+		</form>
 		<span class="text-right text-xs md:text-left md:text-base"
 			>{filtered.length} / {data.length}</span
 		>
@@ -114,13 +140,6 @@
 {#snippet notFound()}
 	<div class="flex flex-col items-center gap-2">
 		<Localized ain="A=hunara hike ka isam" jpn="検索結果がありません" eng="No results found" />
-		<button
-			onclick={() => {
-				goto(`/${query}`);
-			}}
-		>
-			<Localized ain="Homar ihunara wa inkar" jpn="曖昧検索を試す" eng="Try fuzzy search" />
-		</button>
 	</div>
 {/snippet}
 
