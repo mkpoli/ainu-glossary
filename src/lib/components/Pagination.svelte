@@ -7,7 +7,7 @@
 	import ChevronRight from '~icons/material-symbols/chevron-right';
 	import Return from '~icons/material-symbols/keyboard-return';
 
-	let rootNav: HTMLElement;
+	let rootNav: HTMLElement | null = $state(null);
 
 	let {
 		range = $bindable({ start: 0, end: 0 }),
@@ -49,8 +49,9 @@
 		gotoPage = page;
 		showInput = false;
 		tick().then(() => {
-			const scrollTo =
-				rootNav.getBoundingClientRect().bottom + window.scrollY - window.innerHeight + 20;
+			const scrollTo = rootNav
+				? rootNav.getBoundingClientRect().bottom + window.scrollY - window.innerHeight + 20
+				: window.scrollY;
 			window.scrollTo({
 				top: scrollTo,
 				behavior: 'instant'
@@ -61,7 +62,7 @@
 	let gotoPage = $state(1);
 
 	let showInput = $state(false);
-	let gotoPageInput: HTMLInputElement;
+	let gotoPageInput: HTMLInputElement | null = $state(null);
 </script>
 
 <nav
@@ -128,8 +129,8 @@
 					onclick={() => {
 						showInput = true;
 						tick().then(() => {
-							gotoPageInput.focus();
-							gotoPageInput.select();
+							gotoPageInput?.focus();
+							gotoPageInput?.select();
 						});
 					}}
 				>
