@@ -22,7 +22,7 @@
 
 	import PajamasExternalLink from '~icons/pajamas/external-link';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { decodeCategories, encodeCategories } from '$lib/categories';
+	import { CategoriesEncoder } from '$lib/categories';
 
 	interface Props {
 		data: Entry[];
@@ -48,6 +48,7 @@
 			}
 		])
 	);
+	const categoriesEncoder = new CategoriesEncoder(Array.from(allCategories.keys()));
 
 	let select:
 		| {
@@ -63,10 +64,7 @@
 		| undefined
 	>(undefined);
 
-	decodeCategories(
-		$page.url.searchParams.get('categories') ?? '',
-		Array.from(allCategories.keys())
-	).then((encoded) => {
+	categoriesEncoder.decode($page.url.searchParams.get('categories') ?? '').then((encoded) => {
 		const decodedCategories = encoded
 			.map((value) =>
 				allCategories.has(value)
@@ -77,8 +75,15 @@
 					: undefined
 			)
 			.filter((category): category is { value: string; label: string } => category !== undefined);
-		selectedCategories = decodedCategories;
-		select?.forceUpdateSelected(decodedCategories);
+		// selectedCategories =
+		// 	decodedCategories ||
+		// 	[...allCategories.entries()].map(([value, { label }]) => ({ value, label }));
+		console.log('decodedCategories', decodedCategories.length);
+		select?.forceUpdateSelected(
+			decodedCategories.length
+				? decodedCategories
+				: [...allCategories.entries()].map(([value, { label }]) => ({ value, label }))
+		);
 	});
 
 	$inspect('selectedCategories', selectedCategories);
@@ -86,10 +91,14 @@
 	let query: string = $state('');
 	let dataFilteredByCategories = $derived(
 		data.filter((row) => {
-			return selectedCategories?.some((category) => category.value === row.sheetName);
+			return selectedCategories?.some((category) => category.value === row.sheetName) ?? true;
 		})
 	);
+
+	$inspect('dataFilteredByCategories length', dataFilteredByCategories.length);
+
 	let filtered: SearchResult[] = $derived(searchIndex.search(query, dataFilteredByCategories));
+	$inspect('filtered length', filtered.length);
 
 	let groupedBySheetName = $derived(groupBy(filtered, ({ item }) => item.sheetName));
 
@@ -108,7 +117,7 @@
 			} else {
 				compiledSearchParams.set(
 					'categories',
-					await encodeCategories(selectedCategories?.map((c) => c.value) ?? [])
+					await categoriesEncoder.encode(selectedCategories?.map((c) => c.value) ?? [])
 				);
 			}
 		}
