@@ -1,6 +1,8 @@
 <script lang="ts">
 	import MaterialSymbolsSearch from '~icons/material-symbols/search';
 	import MaterialSymbolsCategoryOutline from '~icons/material-symbols/category-outline';
+	import MaterialSymbolsList from '~icons/material-symbols/format-list-bulleted';
+	import PajamasExternalLink from '~icons/pajamas/external-link';
 
 	import Select from '$lib/components/ui/Select.svelte';
 	import Localized from '$lib/components/ui/Localized.svelte';
@@ -9,18 +11,19 @@
 	import ReferenceLink from '$lib/components/links/ReferenceLink.svelte';
 	import ScriptSwitch from '$lib/components/controls/ScriptSwitch.svelte';
 	import T from '$lib/components/ui/T.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
 
 	import { goto, pushState } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	import groupBy from 'object.groupby';
 	import { SearchIndex, type SearchResult } from '$lib/search';
 
 	import m from '$lib/script.svelte';
 
-	import PajamasExternalLink from '~icons/pajamas/external-link';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { CategoriesEncoder } from '$lib/categories';
 
@@ -102,9 +105,29 @@
 	let filtered: SearchResult[] = $derived(searchIndex.search(query, dataFilteredByCategories));
 	$inspect('filtered length', filtered.length);
 
-	let groupedBySheetName = $derived(groupBy(filtered, ({ item }) => item.sheetName));
+	const itemInPageFromSearchParams = $page.url.searchParams.get('itemInPage');
+	let itemsPerPage = $state(
+		itemInPageFromSearchParams && itemInPageFromSearchParams !== 'null'
+			? Number.parseInt(itemInPageFromSearchParams)
+			: 100
+	);
+	const itemInPageOptions = [10, 25, 50, 100, 200, 500, null];
+	const currentPageFromSearchParams = $page.url.searchParams.get('page');
+	let currentPage = $state(
+		currentPageFromSearchParams && currentPageFromSearchParams !== 'null'
+			? Number.parseInt(currentPageFromSearchParams)
+			: 1
+	);
 
-	import { page } from '$app/stores';
+	let paginated = $derived(
+		filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+	);
+
+	let showingPageRange = $state({ start: 0, end: 0 });
+
+	let groupedBySheetName = $derived(
+		groupBy(itemsPerPage ? paginated : filtered, ({ item }) => item.sheetName)
+	);
 	async function compileSearchParams() {
 		const compiledSearchParams = new SvelteURLSearchParams();
 
@@ -123,6 +146,8 @@
 				);
 			}
 		}
+		compiledSearchParams.set('items', itemsPerPage.toString());
+		compiledSearchParams.set('page', currentPage.toString());
 		return compiledSearchParams;
 	}
 
@@ -190,8 +215,32 @@
 			>{selectedCategories?.length ?? allCategories.size} / {allCategories.size}</span
 		>
 	</div>
-	<ScriptSwitch />
+
+	<div class="col-span-4 flex items-center justify-center gap-4">
+		<ScriptSwitch />
+		<label
+			class="flex items-center justify-center gap-2"
+			title={m.localized('Episno sos', 'ページごとの項目数', 'Items per page')}
+		>
+			<MaterialSymbolsList />
+			<select bind:value={itemsPerPage} class="h-8 w-24 py-0 pl-2">
+				{#each itemInPageOptions as option}
+					<option value={option ?? ''}>{option ?? 'Opitta'}</option>
+				{/each}
+			</select>
+		</label>
+	</div>
 </div>
+
+{#if filtered.length !== paginated.length && itemsPerPage}
+	<p class="text-center text-gray-900">
+		<Localized
+			ain={`${showingPageRange.start}–${showingPageRange.end}pe a=nukare`}
+			jpn={`${showingPageRange.start}～${showingPageRange.end}項目を表示中`}
+			eng={`Showing ${showingPageRange.start}–${showingPageRange.end} items`}
+		/>
+	</p>
+{/if}
 
 {#snippet notFound()}
 	<div class="flex flex-col items-center gap-2">
@@ -219,7 +268,7 @@
 					</td>
 				</tr>
 			{:else}
-				{#each filtered as { item: row, hasHighlightedSegments, segments }}
+				{#each itemsPerPage ? paginated : filtered as { item: row, hasHighlightedSegments, segments }}
 					<tr class="even:bg-gray-50">
 						<td
 							class="capitalize"
@@ -277,6 +326,17 @@
 		{/each}
 	</div>
 </div>
+
+{#if itemsPerPage && filtered.length !== paginated.length}
+	{#key [itemsPerPage, filtered]}
+		<Pagination
+			perPage={itemsPerPage}
+			count={filtered.length}
+			bind:range={showingPageRange}
+			bind:page={currentPage}
+		/>
+	{/key}
+{/if}
 
 <style lang="postcss">
 	th {
