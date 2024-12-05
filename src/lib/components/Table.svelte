@@ -170,7 +170,9 @@
 			</a>
 		</form>
 		<span class="text-right text-xs md:text-left md:text-base"
-			>{filtered.length} / {data.length}</span
+			>{filtered.length} / {#if selectedCategories && selectedCategories.length !== allCategories.size}
+				{dataFilteredByCategories.length}
+				<span class="text-sm text-gray-700">({data.length})</span>{:else}{data.length}{/if}</span
 		>
 	</div>
 
