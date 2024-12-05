@@ -12,9 +12,8 @@
 
 	import { formatGenre } from '$lib/genre';
 	import type { Entry, Sheet } from '$lib/data';
-	import { browser } from '$app/environment';
 
-	import { goto } from '$app/navigation';
+	import { goto, pushState } from '$app/navigation';
 
 	import groupBy from 'object.groupby';
 	import { SearchIndex, type SearchResult } from '$lib/search';
@@ -22,6 +21,8 @@
 	import m from '$lib/script.svelte';
 
 	import PajamasExternalLink from '~icons/pajamas/external-link';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { decodeCategories, encodeCategories } from '$lib/categories';
 
 	interface Props {
 		data: Entry[];
@@ -32,32 +33,54 @@
 
 	let searchIndex = $derived(new SearchIndex(data, ['ain', 'en', 'ja', 'zh']));
 
-	let allCategories: Map<
+	const allCategories: Map<
 		string,
 		{
 			label: string;
 			count: number;
 		}
-	> = $derived(
-		new Map(
-			[...new Set(data.map((row) => row.sheetName))].map((item) => [
-				item,
-				{
-					label: item.replaceAll('_', ' '),
-					count: data.filter((row) => row.sheetName === item).length
-				}
-			])
-		)
+	> = new Map(
+		[...new Set(data.map((row) => row.sheetName))].map((item) => [
+			item,
+			{
+				label: item.replaceAll('_', ' '),
+				count: data.filter((row) => row.sheetName === item).length
+			}
+		])
 	);
 
-	let selectedCategories:
+	let select:
+		| {
+				forceUpdateSelected: (selectedCategories: { value: string; label: string }[]) => void;
+		  }
+		| undefined;
+
+	let selectedCategories = $state<
 		| {
 				value: string;
 				label: string;
 		  }[]
-		| undefined = $state(undefined);
+		| undefined
+	>(undefined);
 
-	$inspect('allCategories', allCategories);
+	decodeCategories(
+		$page.url.searchParams.get('categories') ?? '',
+		Array.from(allCategories.keys())
+	).then((encoded) => {
+		const decodedCategories = encoded
+			.map((value) =>
+				allCategories.has(value)
+					? {
+							value,
+							label: allCategories.get(value)?.label ?? value
+						}
+					: undefined
+			)
+			.filter((category): category is { value: string; label: string } => category !== undefined);
+		selectedCategories = decodedCategories;
+		select?.forceUpdateSelected(decodedCategories);
+	});
+
 	$inspect('selectedCategories', selectedCategories);
 
 	let query: string = $state('');
@@ -69,7 +92,37 @@
 	let filtered: SearchResult[] = $derived(searchIndex.search(query, dataFilteredByCategories));
 
 	let groupedBySheetName = $derived(groupBy(filtered, ({ item }) => item.sheetName));
-	$inspect('groupedBySheetName', groupedBySheetName);
+
+	import { page } from '$app/stores';
+	async function compileSearchParams() {
+		const compiledSearchParams = new SvelteURLSearchParams();
+
+		if (query) {
+			compiledSearchParams.set('query', query);
+		} else {
+			compiledSearchParams.delete('query');
+		}
+		if (selectedCategories) {
+			if (selectedCategories.length === allCategories.size) {
+				compiledSearchParams.delete('categories');
+			} else {
+				compiledSearchParams.set(
+					'categories',
+					await encodeCategories(selectedCategories?.map((c) => c.value) ?? [])
+				);
+			}
+		}
+		return compiledSearchParams;
+	}
+
+	$effect(() => {
+		(async () => {
+			const compiledSearchParams = await compileSearchParams();
+			const url = $page.url;
+			url.search = compiledSearchParams.toString();
+			pushState(url, {});
+		})();
+	});
 </script>
 
 <div
@@ -114,6 +167,7 @@
 		<Select
 			options={allCategories}
 			bind:selected={selectedCategories}
+			bind:this={select}
 			labelClass="flex items-center justify-start gap-2 md:contents"
 		>
 			<MaterialSymbolsCategoryOutline />

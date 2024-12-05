@@ -14,6 +14,10 @@
 		children
 	}: Props = $props();
 
+	export function forceUpdateSelected(selectedCategories: { value: string; label: string }[]) {
+		$meltSelected = selectedCategories;
+	}
+
 	const {
 		elements: { trigger, menu, option, label },
 		states: { selected: meltSelected, selectedLabel, open },
@@ -41,6 +45,7 @@
 		labelClass?: string;
 		labelStyle?: string;
 		selected?: { value: string; label: string }[] | undefined;
+		forceUpdateSelected?: (selectedCategories: { value: string; label: string }[]) => void;
 		children?: Snippet<[]>;
 	}
 
