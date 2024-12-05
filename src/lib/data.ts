@@ -12,6 +12,7 @@ export interface Sheet {
 	sheetName: string;
 	description: string;
 	count: number;
+	id: number;
 }
 
 export const GOOGLE_SHEET_LINK =

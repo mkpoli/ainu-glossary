@@ -89,8 +89,14 @@ export async function updateData(): Promise<void> {
 		})
 	).data
 		.values!.slice(1)
-		.map(([isContent, sheetName, description, count]) => {
-			return { isContent: isContent === 'TRUE', sheetName, description, count: parseInt(count) };
+		.map(([isContent, sheetName, description, count, id]) => {
+			return {
+				isContent: isContent === 'TRUE',
+				sheetName,
+				description,
+				count: parseInt(count),
+				id: parseInt(id)
+			};
 		});
 
 	console.info(`[updateData] all_sheets parsed ${all_sheets.length} sheets`);
