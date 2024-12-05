@@ -48,7 +48,9 @@
 			}
 		])
 	);
-	const categoriesEncoder = new CategoriesEncoder(Array.from(allCategories.keys()));
+	const categoriesEncoder = new CategoriesEncoder(
+		sheets.map((sheet) => [sheet.id, sheet.sheetName])
+	);
 
 	let select:
 		| {

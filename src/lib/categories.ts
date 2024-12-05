@@ -1,26 +1,17 @@
 export class CategoriesEncoder {
 	private bitmaskSize: number = 64;
-	private categories: string[] = [];
+	private category2id: Map<string, number>;
 
-	constructor(categories: string[], bitmaskSize: number = 64) {
+	constructor(categories: [number, string][], bitmaskSize: number = 64) {
 		this.bitmaskSize = bitmaskSize;
-		this.categories = categories;
-	}
-
-	private async getBitIndex(category: string): Promise<number> {
-		const encoder = new TextEncoder();
-		const data = encoder.encode(category);
-		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-		const hashArray = new Uint8Array(hashBuffer);
-		const index = (hashArray[0] << 8) | hashArray[1];
-		return index % this.bitmaskSize;
+		this.category2id = new Map(categories.map(([id, category]) => [category, id]));
 	}
 
 	async encode(categories: string[], bitmaskSize: number = 64): Promise<string> {
 		let bitmask = 0n;
 
 		for (const category of categories) {
-			const index = await this.getBitIndex(category);
+			const index = this.category2id.get(category) ?? 0;
 			bitmask |= 1n << BigInt(index);
 		}
 
@@ -30,12 +21,10 @@ export class CategoriesEncoder {
 			byteArray.push(Number(temp & 0xffn));
 			temp >>= 8n;
 		}
-
-		const base64String = btoa(String.fromCharCode(...byteArray.reverse()))
-			.replace(/\//g, '_')
-			.replace(/\+/g, '-')
-			.replace(/=+$/, '');
-		return base64String;
+		return btoa(String.fromCharCode(...byteArray.reverse()))
+			.replaceAll('/', '_')
+			.replaceAll('+', '-')
+			.replaceAll('=', '');
 	}
 
 	async decode(encoded: string): Promise<string[]> {
@@ -53,9 +42,8 @@ export class CategoriesEncoder {
 		}
 
 		const selectedCategories = [];
-		for (const category of this.categories) {
-			const index = await this.getBitIndex(category);
-			if ((bitmask & (BigInt(1) << BigInt(index))) !== 0n) {
+		for (const [category, id] of this.category2id) {
+			if ((bitmask & (BigInt(1) << BigInt(id))) !== 0n) {
 				selectedCategories.push(category);
 			}
 		}
