@@ -78,7 +78,7 @@ export class SearchIndex {
 
 	search(query: string, inside: AugmentedEntry[] | undefined = undefined): SearchResult[] {
 		if (!query)
-			return this.table.map((item, index) => ({
+			return (inside ?? this.table).map((item, index) => ({
 				item,
 				// matches: undefined,
 				refIndex: index,
