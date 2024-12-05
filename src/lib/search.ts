@@ -1,4 +1,4 @@
-import Fuse, { type FuseResultMatch } from 'fuse.js';
+import Fuse from 'fuse.js';
 import * as WanaKana from 'wanakana';
 import * as cjkConv from 'cjk-conv';
 import type { Entry } from './data';
@@ -27,18 +27,15 @@ export class SearchIndex {
 	private readonly fuse: Fuse<AugmentedEntry>;
 	private readonly table: AugmentedEntry[];
 
-	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
-		const augmentedTable: AugmentedEntry[] = table.map((entry) => {
+	static augmentTable(table: Entry[]): AugmentedEntry[] {
+		return table.map((entry) => {
 			const カナ = segment(entry.Aynu ?? '', 'ain')
 				.map(({ segment }) => {
 					if (isPlaceholderLike(segment)) {
 						return segment;
 					}
-					if (segment.includes('=')) {
-						return segment
-							.split('=')
-							.map((s) => (isPlaceholderLike(s) ? s : latn2kana(s)))
-							.join('=');
+					if (segment.includes('=') && segment.split('=').some(isPlaceholderLike)) {
+						return segment.split('=').map(latn2kana).join('=');
 					}
 					return latn2kana(segment);
 				})
@@ -53,6 +50,10 @@ export class SearchIndex {
 				简体: cjkConv.cjk2zhs(entry.中文 ?? '')
 			};
 		});
+	}
+
+	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
+		const augmentedTable = SearchIndex.augmentTable(table);
 		this.table = augmentedTable;
 		this.fuse = new Fuse(augmentedTable, {
 			includeScore: true,
@@ -76,9 +77,13 @@ export class SearchIndex {
 		);
 	}
 
-	search(query: string, inside: AugmentedEntry[] | undefined = undefined): SearchResult[] {
-		if (!query)
-			return (inside ?? this.table).map((item, index) => ({
+	search(query: string, inside: Entry[] | undefined = undefined): SearchResult[] {
+		if (!query) {
+			return (
+				inside
+					? this.table.filter((item) => inside.some((i) => SearchIndex.entryEquals(i, item)))
+					: this.table
+			).map((item, index) => ({
 				item,
 				// matches: undefined,
 				refIndex: index,
@@ -137,6 +142,7 @@ export class SearchIndex {
 					zh: false
 				}
 			}));
+		}
 
 		return this.fuse
 			.search(query.normalize('NFKC'))
