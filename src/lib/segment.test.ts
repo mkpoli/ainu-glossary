@@ -5,7 +5,6 @@ import {
 	segment,
 	subdivideSegments,
 	segmentAinu,
-	isPlaceholderLike,
 	segmentKatakana
 } from './segment';
 import { expect, it, describe } from 'bun:test';
@@ -17,20 +16,6 @@ describe('isInSegment', () => {
 		expect(isInSegment(2, [0, 2])).toBe(true);
 		expect(isInSegment(3, [0, 2])).toBe(false);
 		expect(isInSegment(-1, [0, 2])).toBe(false);
-	});
-});
-
-describe('isPlaceholderLike', () => {
-	it('should return true for placeholder-like strings', () => {
-		expect(isPlaceholderLike('V1')).toBe(true);
-		expect(isPlaceholderLike('N1')).toBe(true);
-		expect(isPlaceholderLike('YYYY')).toBe(true);
-		expect(isPlaceholderLike('MM')).toBe(true);
-		expect(isPlaceholderLike('DD')).toBe(true);
-		expect(isPlaceholderLike('HH')).toBe(true);
-		expect(isPlaceholderLike('SS')).toBe(true);
-		expect(isPlaceholderLike('a')).toBe(false);
-		expect(isPlaceholderLike('Hello')).toBe(false);
 	});
 });
 

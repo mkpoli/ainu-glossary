@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { isPlaceholderLike, isNonWordLike, type Segment } from '$lib/segment';
+	import { isPlaceholderLike } from '$lib/placeholder';
+	import { isNonWordLike, type Segment } from '$lib/segment';
 
 	let {
 		segments,

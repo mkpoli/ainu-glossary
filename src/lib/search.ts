@@ -3,7 +3,8 @@ import * as WanaKana from 'wanakana';
 import * as cjkConv from 'cjk-conv';
 import type { Entry } from './data';
 import { latn2kana } from './script.svelte';
-import { isPlaceholderLike, segment, segmentWithHighlightIndices, type Segment } from './segment';
+import { segment, segmentWithHighlightIndices, type Segment } from './segment';
+import { isPlaceholderLike } from './placeholder';
 import groupBy from 'object.groupby';
 
 export type Language = 'ain' | 'en' | 'ja' | 'zh';

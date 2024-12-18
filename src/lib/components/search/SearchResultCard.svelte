@@ -8,7 +8,7 @@
 	import type { Segment } from '$lib/segment';
 	import type { AugmentedLanguage } from '$lib/search';
 	import Localized from '../ui/Localized.svelte';
-
+	import { removePlaceholders } from '$lib/placeholder';
 	import m from '$lib/script.svelte';
 	let {
 		item,
@@ -21,10 +21,6 @@
 		segments: Record<AugmentedLanguage, readonly Segment[]>;
 		hasHighlightedSegments: Record<AugmentedLanguage, boolean>;
 	} = $props();
-
-	function removePlaceholders(text: string) {
-		return text.replace(/[VNS]\d|YYYY|MM|DD|HH|SS/gm, '');
-	}
 </script>
 
 <section

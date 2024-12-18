@@ -1,9 +1,7 @@
+import { isPlaceholderLike } from './placeholder';
+
 export function isInSegment(index: number, range: [number, number]): boolean {
 	return index >= range[0] && index <= range[1];
-}
-
-export function isPlaceholderLike(text: string): boolean {
-	return Boolean(text.match(/^[VNS]\d|YYYY|MM|DD|HH|SS$/));
 }
 
 export function isNonWordLike(text: string): boolean {

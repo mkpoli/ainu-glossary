@@ -1,4 +1,5 @@
-import { isPlaceholderLike, segment } from '$lib/segment';
+import { isPlaceholderLike } from '$lib/placeholder';
+import { segment } from '$lib/segment';
 import { downloadData } from '$lib/server/data';
 
 import { cjk2zhs } from 'cjk-conv';
