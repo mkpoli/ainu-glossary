@@ -4,8 +4,12 @@
 	import SegmentedTranslationLink from '$lib/components/links/SegmentedTranslationLink.svelte';
 	import SearchableLink from '$lib/components/links/SegmentedAinuLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
+	import KampisosIcon from '$lib/components/icons/Kampisos.svg.svelte';
 	import type { Segment } from '$lib/segment';
 	import type { AugmentedLanguage } from '$lib/search';
+	import Localized from '../ui/Localized.svelte';
+
+	import m from '$lib/script.svelte';
 	let {
 		item,
 		sheets,
@@ -17,6 +21,10 @@
 		segments: Record<AugmentedLanguage, readonly Segment[]>;
 		hasHighlightedSegments: Record<AugmentedLanguage, boolean>;
 	} = $props();
+
+	function removePlaceholders(text: string) {
+		return text.replace(/[VNS]\d|YYYY|MM|DD|HH|SS/gm, '');
+	}
 </script>
 
 <section
@@ -52,4 +60,22 @@
 		</p>
 	</div>
 	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>
+	<div class="col-span-2 flex">
+		<!-- class="button-like-link" -->
+		<a
+			href={`https://kampisos.aynu.io/search?q=${removePlaceholders(
+				segments.ain.map(({ segment }) => segment).join('')
+			)}`}
+			target="_blank"
+			class="flex items-center gap-2 border border-black px-2 py-1 text-[#111C1B] no-underline shadow-hard hover:bg-neutral-100 hover:text-inherit hover:underline hover:no-underline hover:underline-offset-4"
+			title={m.localized(
+				'Kampisos or ta itaksay a=nukar',
+				'Kampisosで例文を見る',
+				'See example sentences in Kampisos'
+			)}
+		>
+			<KampisosIcon class="h-6 w-6" />
+			<Localized ain="Itaksay" jpn="例文" eng="Examples" />
+		</a>
+	</div>
 </section>
