@@ -26,6 +26,8 @@
 
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { CategoriesEncoder } from '$lib/categories';
+	import Kampisos from './icons/Kampisos.svg.svelte';
+	import { removePlaceholders } from '$lib/placeholder';
 
 	interface Props {
 		data: Entry[];
@@ -258,6 +260,7 @@
 				<th>中文</th>
 				<th><T t="Aynuitak" /></th>
 				<th>注 / Notes</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -287,6 +290,22 @@
 							/>
 						</td>
 						<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
+						<td
+							><a
+								href={`https://kampisos.aynu.io/search?q=${encodeURIComponent(
+									removePlaceholders(segments.ain.map(({ segment }) => segment).join(' '))
+								)}`}
+								target="_blank"
+								class="text-[#111C1B]"
+								title={m.localized(
+									'Kampisos or ta itaksay a=nukar',
+									'Kampisosで例文を見る',
+									'See example sentences in Kampisos'
+								)}
+							>
+								<Kampisos class="h-4 w-4" />
+							</a></td
+						>
 					</tr>
 				{/each}
 			{/if}

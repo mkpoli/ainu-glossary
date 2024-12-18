@@ -59,8 +59,8 @@
 	<div class="col-span-2 flex">
 		<!-- class="button-like-link" -->
 		<a
-			href={`https://kampisos.aynu.io/search?q=${removePlaceholders(
-				segments.ain.map(({ segment }) => segment).join('')
+			href={`https://kampisos.aynu.io/search?q=${encodeURIComponent(
+				removePlaceholders(segments.ain.map(({ segment }) => segment).join(''))
 			)}`}
 			target="_blank"
 			class="flex items-center gap-2 border border-black px-2 py-1 text-[#111C1B] no-underline shadow-hard hover:bg-neutral-100 hover:text-inherit hover:underline hover:no-underline hover:underline-offset-4"
