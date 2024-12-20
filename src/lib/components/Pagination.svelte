@@ -44,19 +44,23 @@
 		}
 	});
 
+	let pageChangeClicked = $state(false);
+
 	$effect(() => {
 		page;
 		gotoPage = page;
 		showInput = false;
-		tick().then(() => {
-			const scrollTo = rootNav
-				? rootNav.getBoundingClientRect().bottom + window.scrollY - window.innerHeight + 20
-				: window.scrollY;
-			window.scrollTo({
-				top: scrollTo,
-				behavior: 'instant'
+		if (pageChangeClicked) {
+			tick().then(() => {
+				const scrollTo = rootNav
+					? rootNav.getBoundingClientRect().bottom + window.scrollY - window.innerHeight + 20
+					: window.scrollY;
+				window.scrollTo({
+					top: scrollTo,
+					behavior: 'instant'
+				});
 			});
-		});
+		}
 	});
 
 	let gotoPage = $state(1);
