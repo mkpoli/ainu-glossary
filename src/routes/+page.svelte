@@ -220,8 +220,11 @@
 		<!-- * [https://dict.aynu.org/ Aynuitak-Eonnekunnep -{(dict.aynu.org)}-]
 		* [https://itak.aynu.org/ Tane an Aynuitak-kotupte Itak-uoeroskip -{(itak.aynu.org)}-]
 		* [https://site.aynu.org/ Aynuitak Inuypa Ukosammaani Sayto -{(site.aynu.org)}-] -->
-		<li>
+		<!-- <li>
 			<a href="https://dict.aynu.org/" target="_blank">Aynuitak-Eonnekunnep</a>
+		</li> -->
+		<li>
+			<a href="https://itah.aynu.org/" target="_blank">Aynu Itah</a>
 		</li>
 		<li>
 			<a href="https://site.aynu.org/" target="_blank">Aynuitak Inuypa Ukosammaani Sayto</a>
