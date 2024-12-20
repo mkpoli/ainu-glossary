@@ -43,13 +43,15 @@
 		{
 			label: string;
 			count: number;
+			description?: string;
 		}
 	> = new Map(
 		[...new Set(data.map((row) => row.sheetName))].map((item) => [
 			item,
 			{
 				label: item.replaceAll('_', ' '),
-				count: data.filter((row) => row.sheetName === item).length
+				count: data.filter((row) => row.sheetName === item).length,
+				description: sheets.find((sheet) => sheet.sheetName === item)?.description ?? undefined
 			}
 		])
 	);
@@ -67,6 +69,7 @@
 		| {
 				value: string;
 				label: string;
+				description?: string;
 		  }[]
 		| undefined
 	>(undefined);

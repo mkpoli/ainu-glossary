@@ -39,6 +39,7 @@
 			{
 				label: string;
 				count: number;
+				description?: string;
 			}
 		>;
 		label?: string;
@@ -106,11 +107,12 @@
 				<Localized ain="Opitta" jpn="全て" eng="All" />
 			</button>
 			<hr use:melt={$horizontal} />
-			{#each options.entries() as [item, { label, count }]}
+			{#each options.entries() as [item, { label, count, description }]}
 				<div
 					class="text-transform relative cursor-pointer bg-white px-8 py-1 text-sm capitalize hover:bg-neutral-50"
 					use:melt={$option({ value: item, label })}
 					class:bg-neutral-100={$isSelected(item)}
+					title={description}
 				>
 					<div
 						class="check {$isSelected(item)
