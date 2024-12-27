@@ -8,7 +8,7 @@ import { isPlaceholderLike } from './placeholder';
 import groupBy from 'object.groupby';
 
 export type Language = 'ain' | 'en' | 'ja' | 'zh';
-export type AugmentedLanguage = Language | 'ain-Kana';
+export type AugmentedLanguage = Language | 'ain-Kana' | 'zh-HanS';
 
 export interface SearchResult {
 	item: AugmentedEntry;
@@ -133,6 +133,15 @@ export class SearchIndex {
 								content: segment
 							}
 						]
+					})),
+					'zh-HanS': segment(item.简体 ?? '', 'zh-HanS').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
 					}))
 				},
 				hasHighlightedSegments: {
@@ -140,7 +149,8 @@ export class SearchIndex {
 					'ain-Kana': false,
 					en: false,
 					ja: false,
-					zh: false
+					zh: false,
+					'zh-HanS': false
 				}
 			}));
 		}
@@ -181,17 +191,25 @@ export class SearchIndex {
 							'ja',
 							highlights.日本語?.flatMap(({ indices }) => indices) ?? []
 						),
-						zh: segmentWithHighlightIndices(result.item.中文 ?? '', 'zh', [
-							...(highlights.中文?.flatMap(({ indices }) => indices) ?? []),
-							...(highlights.简体?.flatMap(({ indices }) => indices) ?? [])
-						])
+						zh: segmentWithHighlightIndices(
+							result.item.中文 ?? '',
+							'zh',
+							highlights.中文?.flatMap(({ indices }) => indices) ?? []
+						),
+						'zh-HanS': segmentWithHighlightIndices(
+							result.item.简体 ?? '',
+							'zh-HanS',
+							highlights.简体?.flatMap(({ indices }) => indices) ?? []
+						)
 					},
 					hasHighlightedSegments: {
 						ain: !!highlights.Aynu,
 						'ain-Kana': !!highlights.カナ,
 						en: !!highlights.English,
 						ja: !!highlights.日本語,
-						zh: !!highlights.中文
+						zh: !!highlights.中文,
+						'zh-HanS': !!highlights.简体,
+						'zh-HanT': !!highlights.中文
 					}
 				};
 			});
@@ -210,6 +228,7 @@ export function pickRandom(table: readonly Entry[], count: number = 5): SearchRe
 				)
 				.map(({ segment }) => latn2kana(segment))
 				.join('');
+			const hans = cjkConv.cjk2zhs(item.中文 ?? '');
 			return {
 				item,
 				refIndex: index,
@@ -258,6 +277,15 @@ export function pickRandom(table: readonly Entry[], count: number = 5): SearchRe
 								content: segment
 							}
 						]
+					})),
+					'zh-HanS': segment(hans ?? '', 'zh-HanS').map(({ segment }) => ({
+						segment,
+						subsegments: [
+							{
+								highlighted: false,
+								content: segment
+							}
+						]
 					}))
 				},
 				hasHighlightedSegments: {
@@ -265,7 +293,8 @@ export function pickRandom(table: readonly Entry[], count: number = 5): SearchRe
 					'ain-Kana': false,
 					en: false,
 					ja: false,
-					zh: false
+					zh: false,
+					'zh-HanS': false
 				}
 			} satisfies SearchResult;
 		});

@@ -52,7 +52,11 @@
 			<SegmentedTranslationLink segments={segments.en} language="en" />
 		</p>
 		<p lang="zh">
-			<SegmentedTranslationLink segments={segments.zh} language="zh" />
+			{#if hasHighlightedSegments['zh-HanS'] && !hasHighlightedSegments.zh}
+				<SegmentedTranslationLink segments={segments['zh-HanS']} language="zh" />
+			{:else}
+				<SegmentedTranslationLink segments={segments.zh} language="zh" />
+			{/if}
 		</p>
 	</div>
 	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>

@@ -283,7 +283,13 @@
 						>
 						<td><SegmentedTranslationLink segments={segments.ja} language="ja" /></td>
 						<td><SegmentedTranslationLink segments={segments.en} language="en" /></td>
-						<td><SegmentedTranslationLink segments={segments.zh} language="zh" /></td>
+						<td>
+							{#if hasHighlightedSegments['zh-HanS'] && !hasHighlightedSegments.zh}
+								<SegmentedTranslationLink segments={segments['zh-HanS']} language="zh" />
+							{:else}
+								<SegmentedTranslationLink segments={segments.zh} language="zh" />
+							{/if}
+						</td>
 						<td>
 							<SearchableLink
 								hasHighlightInLatn={hasHighlightedSegments.ain}
