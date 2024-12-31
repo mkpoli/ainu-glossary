@@ -96,17 +96,17 @@
 		class="menu absolute z-10 flex max-h-[300px] flex-col bg-white shadow-harder outline-none"
 		use:melt={$menu}
 	>
+		<button
+			class="m-0 w-full min-w-[220px] cursor-pointer border border-none border-gray-900 bg-transparent px-4 py-2 text-left text-sm font-bold capitalize text-neutral-500 shadow-hard hover:bg-neutral-50 hover:text-black hover:opacity-90 disabled:text-black"
+			disabled={($meltSelected?.length ?? 0) === options.size}
+			onclick={() => {
+				meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
+			}}
+		>
+			<Localized ain="Opitta" jpn="全て" eng="All" />
+		</button>
+		<hr use:melt={$horizontal} />
 		<div class="overflow-y-auto">
-			<button
-				class="m-0 w-full min-w-[220px] cursor-pointer border border-none border-gray-900 bg-transparent px-4 py-2 text-left text-sm font-bold capitalize text-neutral-500 shadow-hard hover:bg-neutral-50 hover:text-black hover:opacity-90 disabled:text-black"
-				disabled={($meltSelected?.length ?? 0) === options.size}
-				onclick={() => {
-					meltSelected.set([...options.entries()].map(([value, { label }]) => ({ value, label })));
-				}}
-			>
-				<Localized ain="Opitta" jpn="全て" eng="All" />
-			</button>
-			<hr use:melt={$horizontal} />
 			{#each options.entries() as [item, { label, count, description }]}
 				<div
 					class="text-transform relative cursor-pointer bg-white px-8 py-1 text-sm capitalize hover:bg-neutral-50"
