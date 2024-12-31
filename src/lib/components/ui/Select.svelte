@@ -105,7 +105,7 @@
 </button>
 {#if $open}
 	<div
-		class="menu absolute z-10 flex max-h-[300px] flex-col bg-white shadow-harder outline-none"
+		class="menu absolute z-50 flex max-h-[300px] flex-col bg-white shadow-harder outline-none"
 		use:melt={$menu}
 	>
 		<button
