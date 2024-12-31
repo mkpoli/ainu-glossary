@@ -59,6 +59,18 @@
 	} = createSeparator({
 		orientation: 'horizontal'
 	});
+
+	let search = $state('');
+	let filteredOptions = $derived(
+		[...options.entries()].filter(([value, { label }]) =>
+			label.toLowerCase().includes(search.toLowerCase())
+		)
+	);
+
+	$effect(() => {
+		$meltSelected;
+		search = '';
+	});
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control - $label contains the 'for' attribute -->
@@ -107,7 +119,8 @@
 		</button>
 		<hr use:melt={$horizontal} />
 		<div class="overflow-y-auto">
-			{#each options.entries() as [item, { label, count, description }]}
+			<input type="search" bind:value={search} />
+			{#each filteredOptions as [item, { label, count, description }]}
 				<div
 					class="text-transform relative cursor-pointer bg-white px-8 py-1 text-sm capitalize hover:bg-neutral-50"
 					use:melt={$option({ value: item, label })}
