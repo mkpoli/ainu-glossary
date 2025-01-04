@@ -1,30 +1,91 @@
-import {
-	PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-	PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
-	PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-	PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT,
-	PRIVATE_GOOGLE_API_TYPE,
-	PRIVATE_GOOGLE_API_PROJECT_ID,
-	PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
-	PRIVATE_GOOGLE_API_PRIVATE_KEY,
-	PRIVATE_GOOGLE_API_CLIENT_EMAIL,
-	PRIVATE_GOOGLE_API_CLIENT_ID
-} from '$env/static/private';
 import type { Entry, Sheet } from '$lib/data';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { google } from 'googleapis';
-const auth = new google.auth.GoogleAuth({
-	// keyFile: PRIVATE_GOOGLE_APPLICATION_CREDENTIALS,
-	credentials: {
+
+let googleCredentials: {
+	type: string;
+	project_id: string;
+	private_key_id: string;
+	private_key: string;
+	client_email: string;
+	client_id: string;
+};
+let cloudflareCredentials: {
+	accessKeyId: string;
+	secretAccessKey: string;
+	bucket: string;
+	endpoint: string;
+};
+
+try {
+	const {
+		PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
+		PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
+		PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+		PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT,
+		PRIVATE_GOOGLE_API_TYPE,
+		PRIVATE_GOOGLE_API_PROJECT_ID,
+		PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
+		PRIVATE_GOOGLE_API_PRIVATE_KEY,
+		PRIVATE_GOOGLE_API_CLIENT_EMAIL,
+		PRIVATE_GOOGLE_API_CLIENT_ID
+	} = await import('$env/static/private');
+	googleCredentials = {
 		type: PRIVATE_GOOGLE_API_TYPE,
 		project_id: PRIVATE_GOOGLE_API_PROJECT_ID,
 		private_key_id: PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
 		private_key: PRIVATE_GOOGLE_API_PRIVATE_KEY,
 		client_email: PRIVATE_GOOGLE_API_CLIENT_EMAIL,
 		client_id: PRIVATE_GOOGLE_API_CLIENT_ID
-	},
-	scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
-});
+	};
+
+	cloudflareCredentials = {
+		accessKeyId: PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
+		secretAccessKey: PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
+		bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+		endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
+	};
+} catch (e) {
+	// Use dot env
+
+	const {
+		PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
+		PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
+		PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+		PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT,
+		PRIVATE_GOOGLE_API_TYPE,
+		PRIVATE_GOOGLE_API_PROJECT_ID,
+		PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
+		PRIVATE_GOOGLE_API_PRIVATE_KEY,
+		PRIVATE_GOOGLE_API_CLIENT_EMAIL,
+		PRIVATE_GOOGLE_API_CLIENT_ID
+	} = import.meta.env;
+
+	googleCredentials = {
+		type: PRIVATE_GOOGLE_API_TYPE,
+		project_id: PRIVATE_GOOGLE_API_PROJECT_ID,
+		private_key_id: PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
+		private_key: PRIVATE_GOOGLE_API_PRIVATE_KEY,
+		client_email: PRIVATE_GOOGLE_API_CLIENT_EMAIL,
+		client_id: PRIVATE_GOOGLE_API_CLIENT_ID
+	};
+
+	cloudflareCredentials = {
+		accessKeyId: PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
+		secretAccessKey: PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
+		bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+		endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
+	};
+}
+
+function createAuth(credentials: Credentials) {
+	return new google.auth.GoogleAuth({
+		credentials,
+		scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+	});
+}
+
+const auth = createAuth(googleCredentials);
 
 import type { NodeJsClient } from '@smithy/types';
 
@@ -32,12 +93,12 @@ const docs = google.sheets({ version: 'v4', auth });
 import { Buffer } from 'node:buffer';
 
 const s3 = new S3Client({
-	region: 'us-east-1',
+	region: 'auto',
 	credentials: {
-		accessKeyId: PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-		secretAccessKey: PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY
+		accessKeyId: cloudflareCredentials.accessKeyId,
+		secretAccessKey: cloudflareCredentials.secretAccessKey
 	},
-	endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
+	endpoint: cloudflareCredentials.endpoint
 }) as NodeJsClient<S3Client>;
 
 export async function downloadTextFile(key: string): Promise<string> {
@@ -151,7 +212,7 @@ export async function updateData(): Promise<void> {
 
 	await s3.send(
 		new PutObjectCommand({
-			Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+			Bucket: cloudflareCredentials.bucket,
 			Key: 'table.json',
 			Body: JSON.stringify(all_content_sheets_data_flattened),
 			ContentType: 'application/json'
@@ -160,7 +221,7 @@ export async function updateData(): Promise<void> {
 
 	await s3.send(
 		new PutObjectCommand({
-			Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
+			Bucket: cloudflareCredentials.bucket,
 			Key: 'sheets.json',
 			Body: JSON.stringify(all_content_sheets),
 			ContentType: 'application/json'
