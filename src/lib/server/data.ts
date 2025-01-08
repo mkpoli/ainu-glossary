@@ -2,20 +2,23 @@ import type { Entry, Sheet } from '$lib/data';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { google } from 'googleapis';
 
-let googleCredentials: {
+interface GoogleCredentials {
 	type: string;
 	project_id: string;
 	private_key_id: string;
 	private_key: string;
 	client_email: string;
 	client_id: string;
-};
-let cloudflareCredentials: {
+}
+let googleCredentials: GoogleCredentials;
+
+interface CloudflareCredentials {
 	accessKeyId: string;
 	secretAccessKey: string;
 	bucket: string;
 	endpoint: string;
-};
+}
+let cloudflareCredentials: CloudflareCredentials;
 
 try {
 	const {
@@ -78,7 +81,7 @@ try {
 	};
 }
 
-function createAuth(credentials: Credentials) {
+function createAuth(credentials: GoogleCredentials) {
 	return new google.auth.GoogleAuth({
 		credentials,
 		scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -103,7 +106,10 @@ const s3 = new S3Client({
 
 export async function downloadTextFile(key: string): Promise<string> {
 	const result = await s3.send(
-		new GetObjectCommand({ Bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET, Key: key })
+		new GetObjectCommand({
+			Bucket: cloudflareCredentials.bucket,
+			Key: key
+		})
 	);
 
 	const chunks: Uint8Array[] = [];
