@@ -49,6 +49,7 @@
 		"@vercel/analytics": "^1.4.1",
 		"ainconv": "0.5.1",
 		"cjk-conv": "^1.2.149",
+		"cloudflare-workers-and-google-oauth": "^2.0.0",
 		"fuse.js": "^7.0.0",
 		"googleapis": "^144.0.0",
 		"object.groupby": "^1.0.3",
@@ -56,5 +57,6 @@
 		"satori-html": "^0.3.2",
 		"sharp": "^0.33.5",
 		"wanakana": "^5.3.1"
-	}
+	},
+	"packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
