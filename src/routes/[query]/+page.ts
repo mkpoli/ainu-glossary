@@ -3,7 +3,10 @@ import type { PageLoad } from './$types';
 import { fetchData } from '$lib/data';
 import { pickRandom, SearchIndex } from '$lib/search';
 
-export const load: PageLoad = async ({ params: { query }, fetch }) => {
+export const load: PageLoad = async ({ params: { query }, fetch, setHeaders }) => {
+	setHeaders({
+		'Cache-Control': 'public, max-age=3600, s-maxage=86400'
+	});
 	const { table, sheets } = await fetchData(fetch);
 
 	const searchIndex = new SearchIndex(table, ['ain', 'en', 'ja', 'zh']);

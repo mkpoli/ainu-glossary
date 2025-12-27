@@ -10,7 +10,8 @@ export const GET: RequestHandler = async ({ request, fetch }) => {
 
 	return new Response(png, {
 		headers: {
-			'Content-Type': 'image/png'
+			'Content-Type': 'image/png',
+			'Cache-Control': 'public, max-age=604800, s-maxage=31536000'
 		}
 	});
 };
