@@ -1,29 +1,17 @@
 {
-	"compatibility_date": "2025-07-21",
-	"name": "ainu-glossary-cron-data-update",
-	"main": "workers/cron-maintenance.ts",
-	"triggers": {
-		"crons": ["0 3 * * 1"]
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "ainu-glossary",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_date": "2026-07-01",
+	"compatibility_flags": ["nodejs_als", "nodejs_compat"],
+	"workers_dev": true,
+	"preview_urls": true,
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
 	},
-	"vars": {
-		"GAPI_PROJECT_ID": "ainu-glossary",
-		"GAPI_CLIENT_EMAIL": "ainu-glossary@ainu-glossary.iam.gserviceaccount.com",
-		"GAPI_CLIENT_ID": "107739430156359609815",
-		"GAPI_API_AUTH_URI": "https://accounts.google.com/o/oauth2/auth",
-		"GAPI_API_TOKEN_URI": "https://oauth2.googleapis.com/token",
-		"GAPI_API_AUTH_PROVIDER_X509_CERT_URL": "https://www.googleapis.com/oauth2/v1/certs",
-		"GAPI_API_CLIENT_X509_CERT_URL": "https://www.googleapis.com/robot/v1/metadata/x509/ainu-glossary%40ainu-glossary.iam.gserviceaccount.com",
-		"GAPI_API_UNIVERSE_DOMAIN": "googleapis.com",
-		"GDOCS_SPREADSHEET_ID": "1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE"
-	},
+	"routes": [{ "pattern": "itak.aynu.org", "custom_domain": true }],
 	"observability": {
-		"enabled": true,
-		"head_sampling_rate": 1
-	},
-	"r2_buckets": [
-		{
-			"binding": "GLOSSARY_BUCKET",
-			"bucket_name": "ainu-glossary"
-		}
-	]
+		"enabled": true
+	}
 }
