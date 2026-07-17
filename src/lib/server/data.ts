@@ -1,6 +1,6 @@
 import type { Entry, Sheet } from '$lib/data';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { google } from 'googleapis';
+import { getGoogleAccessToken } from './google-auth';
 
 interface GoogleCredentials {
 	type: string;
@@ -81,18 +81,21 @@ try {
 	};
 }
 
-function createAuth(credentials: GoogleCredentials) {
-	return new google.auth.GoogleAuth({
-		credentials,
-		scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+const SHEETS_API = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+async function sheetsApi<T>(path: string): Promise<T> {
+	const token = await getGoogleAccessToken(googleCredentials, SHEETS_SCOPE);
+	const response = await fetch(`${SHEETS_API}${path}`, {
+		headers: { Authorization: `Bearer ${token}` }
 	});
+	if (!response.ok) {
+		throw new Error(`Sheets API ${path} failed: ${response.status} ${await response.text()}`);
+	}
+	return response.json() as Promise<T>;
 }
 
-const auth = createAuth(googleCredentials);
-
 import type { NodeJsClient } from '@smithy/types';
-
-const docs = google.sheets({ version: 'v4', auth });
 import { Buffer } from 'node:buffer';
 
 const s3 = new S3Client({
@@ -131,15 +134,13 @@ export async function downloadData(): Promise<{ table: Entry[]; sheets: Sheet[] 
 export async function updateData(): Promise<void> {
 	console.info('[updateData] Start');
 
-	const sheets = await docs.spreadsheets.get({
-		spreadsheetId: '1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE'
-	});
+	const sheets = await sheetsApi<{
+		sheets?: { properties?: { title?: string } }[];
+	}>('/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE');
 
 	console.info('[updateData] Sheets fetched');
 
-	const all_sheets_sheet = sheets.data.sheets?.find(
-		(sheet) => sheet.properties?.title === 'all_sheets'
-	);
+	const all_sheets_sheet = sheets.sheets?.find((sheet) => sheet.properties?.title === 'all_sheets');
 
 	console.info('[updateData] all_sheets sheet found');
 
@@ -150,11 +151,10 @@ export async function updateData(): Promise<void> {
 	console.info('[updateData] all_sheets sheet values fetched');
 
 	const all_sheets = (
-		await docs.spreadsheets.values.get({
-			spreadsheetId: '1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE',
-			range: 'all_sheets'
-		})
-	).data
+		await sheetsApi<{ values?: string[][] }>(
+			'/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/values/all_sheets'
+		)
+	)
 		.values!.slice(1)
 		.map(([isContent, sheetName, description, count, id]) => {
 			return {
@@ -180,12 +180,9 @@ export async function updateData(): Promise<void> {
 	console.info(`[updateData] Fetching ${all_content_sheets.length} content sheets`);
 
 	for (const sheet of all_content_sheets) {
-		const sheet_data = (
-			await docs.spreadsheets.values.get({
-				spreadsheetId: '1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE',
-				range: sheet.sheetName
-			})
-		).data;
+		const sheet_data = await sheetsApi<{ values?: string[][] }>(
+			`/1zV0gl4TWV5fkf2r9i_1P1jmH_p7LOzbhZQgm7mPwDdE/values/${encodeURIComponent(sheet.sheetName)}`
+		);
 
 		const sheet_data_values = sheet_data.values!.slice(1).map((row) => {
 			return row.reduce((acc, cell, i) => {
