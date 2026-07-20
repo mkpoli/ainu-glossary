@@ -19,7 +19,11 @@ export const GET: RequestHandler = async () => {
 	}
 };
 
-export const POST: RequestHandler = async (request) => {
+export const POST: RequestHandler = async ({ request, platform }) => {
+	const key = request.headers.get('x-admin-key');
+	if (!platform?.env?.ADMIN_KEY || key !== platform.env.ADMIN_KEY) {
+		return json({ error: 'unauthorized' }, { status: 401 });
+	}
 	try {
 		await updateData();
 		return json({ success: true });
