@@ -14,6 +14,8 @@ declare global {
 		interface Platform {
 			env: {
 				ASSETS: { fetch: typeof fetch };
+				/** Secret shared with trusted callers to trigger a data refresh. */
+				ADMIN_KEY: string;
 			};
 		}
 	}
