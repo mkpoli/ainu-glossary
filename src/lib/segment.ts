@@ -46,11 +46,27 @@ export function segmentKatakana(text: string): Intl.SegmentData[] {
 }
 
 export function segment(text: string, language: string): Intl.SegmentData[] {
-	return language === 'ain'
-		? segmentAinu(text)
-		: language === 'ain-Kana'
-			? segmentKatakana(text)
-			: [...new Intl.Segmenter(language, { granularity: 'word' }).segment(text)];
+	if (language === 'ain') return segmentAinu(text);
+	if (language === 'ain-Kana') return segmentKatakana(text);
+	// Intl.Segmenter is unavailable in Firefox 115 ESR — fall back to a simple
+	// whitespace/punctuation split that produces the same Intl.SegmentData shape.
+	if (typeof Intl.Segmenter === 'undefined') {
+		let index = 0;
+		return text
+			.split(/([\s.,;:!?\-(){}[\]"']+)/u)
+			.filter(Boolean)
+			.map((segment) => {
+				const result = {
+					index,
+					input: text,
+					segment,
+					isWordLike: !isNonWordLike(segment)
+				} as Intl.SegmentData;
+				index += segment.length;
+				return result;
+			});
+	}
+	return [...new Intl.Segmenter(language, { granularity: 'word' }).segment(text)];
 }
 
 export function getRelativeHighlightIndicesInRange(
