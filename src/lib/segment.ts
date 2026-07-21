@@ -53,7 +53,7 @@ export function segment(text: string, language: string): Intl.SegmentData[] {
 	if (typeof Intl.Segmenter === 'undefined') {
 		let index = 0;
 		return text
-			.split(/([\s.,;:!?\-(){}[\]"']+)/u)
+			.split(/([\p{P}\p{S}\s]+)/u)
 			.filter(Boolean)
 			.map((segment) => {
 				const result = {
