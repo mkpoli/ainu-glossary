@@ -114,3 +114,14 @@ it('keeps apostrophes and person markers in the first variant', () => {
 	] as unknown as Parameters<typeof entryPageTitle>[0]['found'];
 	expect(entryPageTitle({ lang: 'ja', query: '思う', found: one })).toContain('a=ramu（アラム）');
 });
+
+it('prefers the entry whose translation list holds the query as an exact item', () => {
+	const mk = (Aynu: string, カナ: string, 日本語: string) =>
+		({ item: { Aynu, カナ, 日本語, sheetName: 'x' }, refIndex: 0, segments: {}, hasHighlightedSegments: {} }) as unknown as SearchResult;
+	const found = [
+		mk('hap, hinna, hioy’oy', 'ハㇷ゚、ヒンナ、ヒオイオイ', 'ありがとう！'),
+		mk('iyayraykere, iyayiraykere, ionkamire', 'イヤイライケレ、イヤイライケレ、イオンカミレ', 'ありがとう、感謝します、ありがとうございます')
+	];
+	expect(entryPageTitle({ lang: 'ja', query: 'ありがとう', found })).toContain('は iyayraykere（イヤイライケレ）');
+	expect(entryPageDescription({ lang: 'ja', query: 'ありがとう', found })).toContain('ほかに hap, hinna, hioy’oy');
+});

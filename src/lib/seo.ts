@@ -65,13 +65,52 @@ interface HeadwordParams {
 
 export type EntryPageParams = TranslationParams | HeadwordParams;
 
+const FIELD_BY_LANG = { ja: '日本語', en: 'English', zh: '中文' } as const;
+
+function listItems(field: string | undefined): string[] {
+	return (field ?? '')
+		.split(/[、,，;；/／]+/u)
+		.map((item) => item.trim())
+		.filter(Boolean);
+}
+
+function stripTrailingPunctuation(text: string): string {
+	return text.replace(/[\s.。!！?？…]+$/u, '');
+}
+
+/**
+ * Order results for the snippet: an entry whose translation list contains the
+ * query as an exact item comes first (so ありがとう picks the entry glossed
+ * 「ありがとう、感謝します」 over the one glossed 「ありがとう！」), then entries
+ * matching once trailing punctuation is ignored, then the search order.
+ */
+export function orderForSnippet(
+	lang: EntryPageLang,
+	query: string,
+	found: readonly SearchResult[]
+): readonly SearchResult[] {
+	const q = query.trim().toLowerCase();
+	const qBare = stripTrailingPunctuation(q);
+	const rank = (result: SearchResult): number => {
+		const items = listItems(result.item[FIELD_BY_LANG[lang]]).map((item) => item.toLowerCase());
+		if (items.includes(q)) return 0;
+		if (items.some((item) => stripTrailingPunctuation(item) === qBare)) return 1;
+		return 2;
+	};
+	return found
+		.map((result, index) => ({ result, index, rank: rank(result) }))
+		.sort((x, y) => x.rank - y.rank || x.index - y.index)
+		.map(({ result }) => result);
+}
+
 export function entryPageTitle(params: EntryPageParams): string {
 	if (params.lang === 'ain') {
 		const { latn, kana } = params;
 		return truncateTitle(`${latn}（${kana}）の意味 — アイヌ語 | Itak-uoeroskip`, SITE_SUFFIX_EN);
 	}
 
-	const { lang, query, found } = params;
+	const { lang, query } = params;
+	const found = orderForSnippet(lang, query, params.found);
 	const a = firstAynuSegment(found[0]?.item.Aynu);
 	const k = firstKanaSegment(found[0]?.item.カナ);
 
@@ -97,7 +136,8 @@ export function entryPageDescription(params: EntryPageParams): string {
 		return truncateAtBoundary(description, DESCRIPTION_MAX);
 	}
 
-	const { lang, query, found } = params;
+	const { lang, query } = params;
+	const found = orderForSnippet(lang, query, params.found);
 	const a = firstAynuSegment(found[0]?.item.Aynu);
 	const k = firstKanaSegment(found[0]?.item.カナ);
 	const n = found.length;

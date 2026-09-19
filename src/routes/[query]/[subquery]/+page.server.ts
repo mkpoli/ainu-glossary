@@ -4,6 +4,7 @@ import { getGlossary } from '$lib/server/glossary';
 import { pickRandom, type Language } from '$lib/search';
 import { fetchExamples, deriveExampleExpr } from '$lib/server/corpus';
 import { removePlaceholders } from '$lib/placeholder';
+import { orderForSnippet } from '$lib/seo';
 
 function isValidLanguage(lang: string): lang is 'en' | 'ja' | 'zh' {
 	return ['en', 'ja', 'zh'].includes(lang);
@@ -19,7 +20,8 @@ export const load: PageServerLoad = async ({ params: { query, subquery }, setHea
 	});
 	const { table, sheets, index } = await getGlossary();
 
-	const found = index([query as Language]).search(subquery);
+	// Same order the title uses, so the first card is the word in the snippet.
+	const found = orderForSnippet(query, subquery, index([query as Language]).search(subquery));
 
 	if (!found.length) {
 		error(404, {
