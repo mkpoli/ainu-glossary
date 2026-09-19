@@ -3,20 +3,9 @@
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
 	import Examples from '$lib/components/Examples.svelte';
 	import { generateOgImageURL } from '$lib/og.js';
+	import { entryPageTitle, entryPageDescription } from '$lib/seo';
 
 	let { data } = $props();
-
-	const TRANSLATIONS = {
-		en: 'How to say "{word}" in Ainu?',
-		zh: '如何用阿伊努語說「{word}」?',
-		ja: '「{word}」はアイヌ語でなんて言う？'
-	};
-
-	const DESCRIPTIONS = {
-		en: "This page explains the expression of '{word}' in Ainu. How do you say '{word}' in the Ainu language? What is '{word}' in Ainu? Similar expressions and alternative phrases are also introduced.",
-		zh: '這頁解釋了阿伊努語中「{word}」的說法。阿伊努語怎麼說「{word}」? 阿伊努語中「{word}」是什麼？還有一些類似的表現和替代詞等等。',
-		ja: 'このページでは、アイヌ語で「{word}」の言い方について解説します。アイヌ語で「{word}」はどう言えばいい？似たような表現・言い換えも紹介します。'
-	};
 
 	let [latn, kana] = $derived([
 		data.found[0].item.Aynu?.split(/[\p{P}\p{S}]+/u)
@@ -71,8 +60,12 @@
 		document.head.appendChild(script);
 	}
 
-	const PAGE_TITLE = TRANSLATIONS[data.query].replaceAll('{word}', data.subquery);
-	const PAGE_DESCRIPTION = DESCRIPTIONS[data.query].replaceAll('{word}', data.subquery);
+	const PAGE_TITLE = entryPageTitle({ lang: data.query, query: data.subquery, found: data.found });
+	const PAGE_DESCRIPTION = entryPageDescription({
+		lang: data.query,
+		query: data.subquery,
+		found: data.found
+	});
 </script>
 
 <svelte:head>

@@ -39,6 +39,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
+		"test": "bun test src",
 		"format": "prettier --write .",
 		"sync": "curl -X POST https://ainu-glossary-cron-data-update.mkpoli.workers.dev/"
 	},
