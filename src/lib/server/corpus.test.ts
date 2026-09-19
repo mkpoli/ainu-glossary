@@ -39,3 +39,15 @@ it('drops non-web source links', async () => {
 	const examples = await fetchExamples('kamuy', fetchFn);
 	expect(examples.map((e) => e.uri)).toEqual([null, 'https://example.org/x']);
 });
+
+it('uses the concordance endpoint for single tokens and search for phrases', async () => {
+	const urls: string[] = [];
+	const fetchFn = (async (url: URL) => {
+		urls.push(url.toString());
+		return new Response(JSON.stringify({ api_version: '1', data: [] }));
+	}) as unknown as typeof fetch;
+	await fetchExamples('hap', fetchFn);
+	await fetchExamples('tanto sirpirka', fetchFn);
+	expect(urls[0]).toContain('/v1/concordance?q=hap');
+	expect(urls[1]).toContain('/v1/search?q=tanto+sirpirka');
+});

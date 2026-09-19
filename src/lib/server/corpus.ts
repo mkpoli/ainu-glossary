@@ -11,7 +11,8 @@ export interface Example {
 interface CorpusResponse {
 	api_version: string;
 	data: Array<{
-		id: string;
+		id?: string;
+		sentence_id?: string;
 		text: string;
 		translation: string | null;
 		dialect: string | null;
@@ -24,6 +25,9 @@ interface CorpusResponse {
 }
 
 const CORPUS_SEARCH_URL = 'https://corpus.aynu.org/v1/search';
+// Token-layer concordance: matches whole words, so a short headword such as
+// "hap" does not surface "ahapahci" or "hapo".
+const CORPUS_CONCORDANCE_URL = 'https://corpus.aynu.org/v1/concordance';
 
 /**
  * Reduce an entry's Aynu text to the single expression to look up in the corpus.
@@ -73,11 +77,14 @@ export async function fetchExamples(expr: string, fetchFn = fetch): Promise<Exam
 		return [];
 	}
 
-	const url = new URL(CORPUS_SEARCH_URL);
+	const singleToken = !/\s/.test(query);
+	const url = new URL(singleToken ? CORPUS_CONCORDANCE_URL : CORPUS_SEARCH_URL);
 	url.searchParams.set('q', query);
-	url.searchParams.set('lang', 'any');
-	url.searchParams.set('orthography', 'modern');
 	url.searchParams.set('limit', '3');
+	if (!singleToken) {
+		url.searchParams.set('lang', 'any');
+		url.searchParams.set('orthography', 'modern');
+	}
 
 	try {
 		const response = await fetchFn(url, { signal: AbortSignal.timeout(1500) });
@@ -86,10 +93,10 @@ export async function fetchExamples(expr: string, fetchFn = fetch): Promise<Exam
 		}
 		const { data }: CorpusResponse = await response.json();
 		return data.map((entry) => ({
-			id: entry.id,
+			id: entry.id ?? entry.sentence_id ?? entry.text,
 			text: entry.text,
 			translation: entry.translation,
-			source: [entry.collection, entry.document, entry.author].filter(Boolean).join(' · '),
+			source: [entry.collection, entry.document, entry.author, entry.dialect].filter(Boolean).join(' · '),
 			uri: webUri(entry.uri)
 		}));
 	} catch {
