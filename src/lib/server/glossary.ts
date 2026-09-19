@@ -12,6 +12,8 @@ interface Glossary {
 
 let cached: { glossary: Glossary; expires: number } | undefined;
 let pending: Promise<Glossary> | undefined;
+// Bumped on invalidation so a build that started before it cannot repopulate the cache.
+let generation = 0;
 
 async function build(): Promise<Glossary> {
 	const { table, sheets } = await downloadData();
@@ -37,18 +39,26 @@ export function getGlossary(): Promise<Glossary> {
 		return Promise.resolve(cached.glossary);
 	}
 	if (!pending) {
-		pending = build()
+		const started = generation;
+		const promise = build()
 			.then((glossary) => {
-				cached = { glossary, expires: Date.now() + TTL_MS };
+				if (started === generation) {
+					cached = { glossary, expires: Date.now() + TTL_MS };
+				}
 				return glossary;
 			})
 			.finally(() => {
-				pending = undefined;
+				if (pending === promise) {
+					pending = undefined;
+				}
 			});
+		pending = promise;
 	}
 	return pending;
 }
 
 export function invalidateGlossary(): void {
+	generation += 1;
 	cached = undefined;
+	pending = undefined;
 }
