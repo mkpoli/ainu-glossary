@@ -6,19 +6,26 @@ const SITE_SUFFIX_EN = ' | Itak-uoeroskip';
 const TITLE_MAX = 60;
 const DESCRIPTION_MAX = 155;
 
-/** First non-empty Aynu segment, split the same way the entry pages already do. */
-function firstAynuSegment(aynu: string | undefined): string {
-	return aynu?.split(/[\p{P}\p{S}]+/u).filter(Boolean).at(0) ?? '';
-}
-
-/** First non-empty カナ segment, split the same way the entry pages already do. */
-function firstKanaSegment(kana: string | undefined): string {
+/**
+ * First variant of a possibly comma-separated field. Only list separators split;
+ * apostrophes (hioy’oy) and the person-marker `=` (a=ramu) belong to the word.
+ */
+function firstVariant(text: string | undefined): string {
 	return (
-		kana
-			?.split(/[\s\p{P}\p{S}]+/u)
+		text
+			?.split(/[,;/、；／]+/u)
+			.map((variant) => variant.trim().replace(/[.。!！?？…]+$/u, ''))
 			.filter(Boolean)
 			.at(0) ?? ''
 	);
+}
+
+function firstAynuSegment(aynu: string | undefined): string {
+	return firstVariant(aynu);
+}
+
+function firstKanaSegment(kana: string | undefined): string {
+	return firstVariant(kana);
 }
 
 /** Truncate to `max` characters at the nearest preceding word/punctuation boundary. */

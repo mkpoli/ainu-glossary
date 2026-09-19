@@ -103,3 +103,14 @@ describe('truncation', () => {
 		expect(description.length).toBeLessThanOrEqual(155);
 	});
 });
+
+it('keeps apostrophes and person markers in the first variant', () => {
+	const found = [
+		{ item: { Aynu: 'hioy’oy, iyayraykere.', カナ: 'ヒオイオイ、イヤイライケレ。', 日本語: 'ありがとう', sheetName: 'x' }, refIndex: 0, segments: {}, hasHighlightedSegments: {} }
+	] as unknown as Parameters<typeof entryPageTitle>[0]['found'];
+	expect(entryPageTitle({ lang: 'ja', query: 'ありがとう', found })).toContain('hioy’oy（ヒオイオイ）');
+	const one = [
+		{ item: { Aynu: 'a=ramu', カナ: 'アラム', 日本語: '思う', sheetName: 'x' }, refIndex: 0, segments: {}, hasHighlightedSegments: {} }
+	] as unknown as Parameters<typeof entryPageTitle>[0]['found'];
+	expect(entryPageTitle({ lang: 'ja', query: '思う', found: one })).toContain('a=ramu（アラム）');
+});
