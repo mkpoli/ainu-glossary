@@ -5,6 +5,7 @@
 	import SearchableLink from '$lib/components/links/SegmentedAinuLink.svelte';
 	import ReferenceLink from '../links/ReferenceLink.svelte';
 	import KampisosIcon from '$lib/components/icons/Kampisos.svg.svelte';
+	import CorpusIcon from '$lib/components/icons/CorpusIcon.svelte';
 	import type { Segment } from '$lib/segment';
 	import type { AugmentedLanguage } from '$lib/search';
 	import Localized from '../ui/Localized.svelte';
@@ -60,7 +61,22 @@
 		</p>
 	</div>
 	<div><ReferenceLink content={item['註 / Notes'] ?? ''} /></div>
-	<div class="col-span-2 flex">
+	<div class="col-span-2 flex flex-wrap gap-2">
+		<a
+			href={`https://corpus.aynu.org/?q=${encodeURIComponent(
+				removePlaceholders(segments.ain.map(({ segment }) => segment).join(''))
+			)}`}
+			target="_blank"
+			class="flex items-center gap-2 border border-black px-2 py-1 text-[#111C1B] no-underline shadow-hard hover:bg-neutral-100 hover:text-inherit hover:underline hover:no-underline hover:underline-offset-4"
+			title={m.localized(
+				'Aynu kampisos hunara or ta itaksay a=nukar',
+				'aynu kampisos hunaraで例文を見る',
+				'See example sentences in aynu kampisos hunara'
+			)}
+		>
+			<CorpusIcon class="h-6 w-6" />
+			<Localized ain="Itaksay" jpn="例文" eng="Examples" />
+		</a>
 		<!-- class="button-like-link" -->
 		<a
 			href={`https://kampisos.aynu.io/search?q=${encodeURIComponent(

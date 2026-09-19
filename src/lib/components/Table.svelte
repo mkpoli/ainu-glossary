@@ -27,6 +27,7 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { CategoriesEncoder } from '$lib/categories';
 	import Kampisos from './icons/Kampisos.svg.svelte';
+	import CorpusIcon from './icons/CorpusIcon.svelte';
 	import { removePlaceholders } from '$lib/placeholder';
 
 	interface Props {
@@ -299,8 +300,34 @@
 							/>
 						</td>
 						<td><ReferenceLink content={row['註 / Notes'] ?? ''} /></td>
-						<td
+						<td class="flex flex-wrap gap-2"
 							><a
+								href={`https://corpus.aynu.org/?q=${encodeURIComponent(
+									removePlaceholders(segments.ain.map(({ segment }) => segment).join(' '))
+								)}`}
+								target="_blank"
+								class="text-[#111C1B]"
+								title={m.localized(
+									'Aynu kampisos hunara or ta itaksay a=nukar',
+									'aynu kampisos hunaraで例文を見る',
+									'See example sentences in aynu kampisos hunara'
+								)}
+							>
+								<CorpusIcon
+									class="h-4 w-4"
+									title={m.localized(
+										'Aynu kampisos hunara or ta itaksay a=nukar',
+										'aynu kampisos hunaraで例文を見る',
+										'See example sentences in aynu kampisos hunara'
+									)}
+									aria-label={m.localized(
+										'Aynu kampisos hunara or ta itaksay a=nukar',
+										'aynu kampisos hunaraで例文を見る',
+										'See example sentences in aynu kampisos hunara'
+									)}
+								/>
+							</a>
+							<a
 								href={`https://kampisos.aynu.io/search?q=${encodeURIComponent(
 									removePlaceholders(segments.ain.map(({ segment }) => segment).join(' '))
 								)}`}
