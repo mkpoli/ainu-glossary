@@ -107,7 +107,9 @@ const s3 = new S3Client({
 	endpoint: cloudflareCredentials.endpoint
 }) as NodeJsClient<S3Client>;
 
-export async function downloadTextFile(key: string): Promise<string> {
+export async function downloadTextFile(
+	key: string
+): Promise<{ text: string; lastModified?: Date }> {
 	const result = await s3.send(
 		new GetObjectCommand({
 			Bucket: cloudflareCredentials.bucket,
@@ -121,14 +123,22 @@ export async function downloadTextFile(key: string): Promise<string> {
 		chunks.push(chunk);
 	}
 
-	return Buffer.concat(chunks).toString();
+	return { text: Buffer.concat(chunks).toString(), lastModified: result.LastModified };
 }
 
-export async function downloadData(): Promise<{ table: Entry[]; sheets: Sheet[] }> {
-	const table_result = JSON.parse(await downloadTextFile('table.json'));
-	const sheets_result = JSON.parse(await downloadTextFile('sheets.json'));
+export async function downloadData(): Promise<{
+	table: Entry[];
+	sheets: Sheet[];
+	lastModified?: Date;
+}> {
+	const table_result = await downloadTextFile('table.json');
+	const sheets_result = await downloadTextFile('sheets.json');
 
-	return { table: table_result, sheets: sheets_result };
+	return {
+		table: JSON.parse(table_result.text),
+		sheets: JSON.parse(sheets_result.text),
+		lastModified: table_result.lastModified
+	};
 }
 
 export async function updateData(): Promise<void> {
