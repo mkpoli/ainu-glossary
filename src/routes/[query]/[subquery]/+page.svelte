@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
+	import Examples from '$lib/components/Examples.svelte';
 	import { generateOgImageURL } from '$lib/og.js';
 
 	let { data } = $props();
@@ -96,3 +97,5 @@
 		<SearchResultCard {item} sheets={data.sheets} {segments} {hasHighlightedSegments} />
 	{/each}
 </output>
+
+<Examples expr={data.expr} examples={data.examples} />
