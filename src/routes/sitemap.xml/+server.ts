@@ -15,6 +15,32 @@ function isWord(word: string): boolean {
 	return word.trim().length > 0;
 }
 
+const JAPANESE_PARTICLES = new Set(['の', 'は', 'が', 'を', 'に', 'で', 'と', 'も', 'へ', 'や']);
+
+function isJunkWord(word: string): boolean {
+	if (/^\d+$/.test(word)) {
+		return true;
+	}
+	return false;
+}
+
+function isJunkJapaneseWord(word: string): boolean {
+	if (isJunkWord(word)) {
+		return true;
+	}
+	if (JAPANESE_PARTICLES.has(word)) {
+		return true;
+	}
+	return /^[\p{Script=Hiragana}\p{Script=Katakana}]$/u.test(word);
+}
+
+function isJunkEnglishWord(word: string): boolean {
+	if (isJunkWord(word)) {
+		return true;
+	}
+	return /^[a-zA-Z]$/.test(word);
+}
+
 function extractLinkableWords(content: string): string[] {
 	const words = content.split(/([\s,\{\}]+)/u);
 
@@ -46,52 +72,61 @@ function extractLinkableWordsWithLanguage(content: string, language: string): st
 	].filter(isWord);
 }
 
-function generateSitemap(hostname: string, urls: string[]) {
+function escapeXml(text: string): string {
+	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function generateSitemap(hostname: string, urls: string[], lastmod?: string) {
+	const lastmodTag = lastmod ? `<lastmod>${lastmod}</lastmod>` : '';
 	return `<?xml version="1.0" encoding="UTF-8" ?>
 		<urlset
-			xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
-			xmlns:xhtml="https://www.w3.org/1999/xhtml"
-			xmlns:mobile="https://www.google.com/schemas/sitemap-mobile/1.0"
-			xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
-			xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
-			xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
+			xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 		>
       <url>
         <loc>${hostname}</loc>
-        <changefreq>daily</changefreq>
+        ${lastmodTag}
       </url>
       ${urls
 				.map(
-					(url) =>
-						`<url><loc>${new URL(url, hostname).toString()}</loc><changefreq>daily</changefreq></url>`
+					(url) => `<url><loc>${escapeXml(new URL(url, hostname).toString())}</loc>${lastmodTag}</url>`
 				)
 				.join('\n')}
 		</urlset>`;
 }
 
 export async function GET() {
-	const { table } = await downloadData();
+	const { table, lastModified } = await downloadData();
+	const lastmod = lastModified ? lastModified.toISOString().slice(0, 10) : undefined;
 	const urls: Set<string> = new Set(
 		table.flatMap((item) => [
 			...(item.Aynu
 				? extractLinkableWords(item.Aynu)
+						.filter((word) => !isJunkWord(word))
 						.flatMap((latn) => [latn, latn2kana(latn)])
 						.map((word) => `/${word}`)
 				: []),
 			...(item.日本語
-				? extractLinkableWordsWithLanguage(item.日本語, 'ja').map((word) => `/ja/${word}`)
+				? extractLinkableWordsWithLanguage(item.日本語, 'ja')
+						.filter((word) => !isJunkJapaneseWord(word))
+						.map((word) => `/ja/${word}`)
 				: []),
 			...(item.English
-				? extractLinkableWordsWithLanguage(item.English, 'en').map((word) => `/en/${word}`)
+				? extractLinkableWordsWithLanguage(item.English, 'en')
+						.filter((word) => !isJunkEnglishWord(word))
+						.map((word) => `/en/${word}`)
 				: []),
 			...(item.中文
 				? extractLinkableWordsWithLanguage(item.中文, 'zh-Hant')
+						.filter((word) => !isJunkWord(word))
 						.flatMap((word) => [word, cjk2zhs(word)])
 						.map((word) => `/zh/${word}`)
 				: [])
 		])
 	);
-	return new Response(generateSitemap('https://itak.aynu.org/', Array.from(urls)), {
-		headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=0' }
+	return new Response(generateSitemap('https://itak.aynu.org/', Array.from(urls), lastmod), {
+		headers: {
+			'Content-Type': 'application/xml',
+			'Cache-Control': 'public, max-age=3600, s-maxage=86400'
+		}
 	});
 }
