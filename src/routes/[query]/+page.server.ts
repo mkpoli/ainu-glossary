@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ params: { query }, setHeaders }) =>
 	}
 
 	const expr = deriveExampleExpr(
-		removePlaceholders(found[0].segments.ain.map(({ segment }) => segment).join('')),
+		removePlaceholders((found[0].segments.ain ?? []).map(({ segment }) => segment).join('')),
 		query
 	);
 

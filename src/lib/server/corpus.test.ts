@@ -1,4 +1,4 @@
-import { deriveExampleExpr } from './corpus';
+import { deriveExampleExpr, fetchExamples } from './corpus';
 import { expect, it, describe } from 'bun:test';
 
 describe('deriveExampleExpr', () => {
@@ -23,4 +23,19 @@ describe('deriveExampleExpr', () => {
 	it('falls back to the first variant when no query is given', () => {
 		expect(deriveExampleExpr('Ikatay, Isiorore, Irankarapte')).toBe('Ikatay');
 	});
+});
+
+it('drops non-web source links', async () => {
+	const fetchFn = (async () =>
+		new Response(
+			JSON.stringify({
+				api_version: '1',
+				data: [
+					{ id: '1', text: 'a', translation: null, uri: 'javascript:alert(1)' },
+					{ id: '2', text: 'b', translation: null, uri: 'https://example.org/x' }
+				]
+			})
+		)) as unknown as typeof fetch;
+	const examples = await fetchExamples('kamuy', fetchFn);
+	expect(examples.map((e) => e.uri)).toEqual([null, 'https://example.org/x']);
 });

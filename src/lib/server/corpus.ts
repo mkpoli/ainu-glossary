@@ -56,6 +56,17 @@ export function deriveExampleExpr(raw: string, query?: string): string {
 	return variants[0];
 }
 
+/** Only plain web links from the corpus are rendered as anchors. */
+function webUri(uri: string | null): string | null {
+	if (!uri) return null;
+	try {
+		const { protocol } = new URL(uri);
+		return protocol === 'https:' || protocol === 'http:' ? uri : null;
+	} catch {
+		return null;
+	}
+}
+
 export async function fetchExamples(expr: string, fetchFn = fetch): Promise<Example[]> {
 	const query = deriveExampleExpr(expr);
 	if (!query || query.length > 60) {
@@ -79,7 +90,7 @@ export async function fetchExamples(expr: string, fetchFn = fetch): Promise<Exam
 			text: entry.text,
 			translation: entry.translation,
 			source: [entry.collection, entry.document, entry.author].filter(Boolean).join(' · '),
-			uri: entry.uri
+			uri: webUri(entry.uri)
 		}));
 	} catch {
 		return [];

@@ -20,7 +20,7 @@
 					{#if example.source}
 						<p class="m-0 text-sm text-neutral-500">
 							{#if example.uri}
-								<a href={example.uri} target="_blank" class="hover-underline">{example.source}</a>
+								<a href={example.uri} target="_blank" rel="noopener noreferrer" class="hover-underline">{example.source}</a>
 							{:else}
 								{example.source}
 							{/if}
@@ -32,6 +32,7 @@
 		<a
 			href={`https://corpus.aynu.org/?q=${encodeURIComponent(expr)}`}
 			target="_blank"
+			rel="noopener noreferrer"
 			class="hover-underline text-sm"
 		>
 			<Localized

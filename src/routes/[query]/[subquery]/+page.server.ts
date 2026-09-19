@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ params: { query, subquery }, setHea
 	}
 
 	const expr = deriveExampleExpr(
-		removePlaceholders(found[0].segments.ain.map(({ segment }) => segment).join('')),
+		removePlaceholders((found[0].segments.ain ?? []).map(({ segment }) => segment).join('')),
 		subquery
 	);
 
