@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Localized from '$lib/components/ui/Localized.svelte';
 	import SearchResultCard from '$lib/components/search/SearchResultCard.svelte';
+	import Examples from '$lib/components/Examples.svelte';
 	import type { PageData } from './$types';
 	import m from '$lib/script.svelte';
 	import T from '$lib/components/ui/T.svelte';
@@ -9,6 +10,7 @@
 	import { browser } from '$app/environment';
 	import { generateOgImageURL } from '$lib/og';
 	import { SITE_TITLE } from '$lib/consts';
+
 	function getPairedText(text: string): [string, string] {
 		if (data.query.match(/^[a-zA-Záíúéó='’]+$/)) {
 			return [data.query, latn2kana(data.query)];
@@ -117,3 +119,5 @@
 		<SearchResultCard {item} sheets={data.sheets} {segments} {hasHighlightedSegments} />
 	{/each}
 </output>
+
+<Examples expr={data.expr} examples={data.examples} />

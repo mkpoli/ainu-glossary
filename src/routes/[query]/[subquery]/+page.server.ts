@@ -2,6 +2,8 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getGlossary } from '$lib/server/glossary';
 import { pickRandom, type Language } from '$lib/search';
+import { fetchExamples, deriveExampleExpr } from '$lib/server/corpus';
+import { removePlaceholders } from '$lib/placeholder';
 
 function isValidLanguage(lang: string): lang is 'en' | 'ja' | 'zh' {
 	return ['en', 'ja', 'zh'].includes(lang);
@@ -27,10 +29,17 @@ export const load: PageServerLoad = async ({ params: { query, subquery }, setHea
 		});
 	}
 
+	const expr = deriveExampleExpr(
+		removePlaceholders((found[0].segments.ain ?? []).map(({ segment }) => segment).join('')),
+		subquery
+	);
+
 	return {
 		found,
 		query,
 		subquery,
-		sheets
+		sheets,
+		expr,
+		examples: await fetchExamples(expr)
 	};
 };
