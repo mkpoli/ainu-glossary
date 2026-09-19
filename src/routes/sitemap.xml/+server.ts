@@ -72,6 +72,10 @@ function extractLinkableWordsWithLanguage(content: string, language: string): st
 	].filter(isWord);
 }
 
+function escapeXml(text: string): string {
+	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function generateSitemap(hostname: string, urls: string[], lastmod?: string) {
 	const lastmodTag = lastmod ? `<lastmod>${lastmod}</lastmod>` : '';
 	return `<?xml version="1.0" encoding="UTF-8" ?>
@@ -84,7 +88,7 @@ function generateSitemap(hostname: string, urls: string[], lastmod?: string) {
       </url>
       ${urls
 				.map(
-					(url) => `<url><loc>${new URL(url, hostname).toString()}</loc>${lastmodTag}</url>`
+					(url) => `<url><loc>${escapeXml(new URL(url, hostname).toString())}</loc>${lastmodTag}</url>`
 				)
 				.join('\n')}
 		</urlset>`;
