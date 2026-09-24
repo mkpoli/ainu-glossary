@@ -17,6 +17,7 @@ let generation = 0;
 
 async function build(): Promise<Glossary> {
 	const { table, sheets } = await downloadData();
+	const augmented = SearchIndex.augmentTable(table);
 	const indices = new Map<string, SearchIndex>();
 	return {
 		table,
@@ -25,7 +26,7 @@ async function build(): Promise<Glossary> {
 			const key = langs.join(',');
 			let index = indices.get(key);
 			if (!index) {
-				index = new SearchIndex(table, langs);
+				index = new SearchIndex(augmented, langs);
 				indices.set(key, index);
 			}
 			return index;

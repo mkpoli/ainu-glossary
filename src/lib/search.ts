@@ -53,10 +53,11 @@ export class SearchIndex {
 		});
 	}
 
-	constructor(table: Entry[], languages: Language[], threshold = 0.3) {
-		const augmentedTable = SearchIndex.augmentTable(table);
-		this.table = augmentedTable;
-		this.fuse = new Fuse(augmentedTable, {
+	/** `table` comes from `augmentTable`, which is language-independent, so indexes over
+	 *  several language sets can share one augmented table. */
+	constructor(table: AugmentedEntry[], languages: Language[], threshold = 0.3) {
+		this.table = table;
+		this.fuse = new Fuse(table, {
 			includeScore: true,
 			includeMatches: true,
 			threshold,
