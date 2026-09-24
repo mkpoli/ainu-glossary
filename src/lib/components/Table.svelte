@@ -37,7 +37,9 @@
 
 	let { data, sheets }: Props = $props();
 
-	let searchIndex = $derived(new SearchIndex(data, ['ain', 'en', 'ja', 'zh']));
+	let searchIndex = $derived(
+		new SearchIndex(SearchIndex.augmentTable(data), ['ain', 'en', 'ja', 'zh'])
+	);
 
 	const allCategories: Map<
 		string,
