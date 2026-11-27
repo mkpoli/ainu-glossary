@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { GLOSSARY_CACHE_CONTROL } from '$lib/data';
+import { glossaryBucket } from '$lib/server/data';
 import { getGlossary } from '$lib/server/glossary';
 import { pickRandom, type Language } from '$lib/search';
 import { fetchExamples, deriveExampleExpr } from '$lib/server/corpus';
@@ -10,15 +12,19 @@ function isValidLanguage(lang: string): lang is 'en' | 'ja' | 'zh' {
 	return ['en', 'ja', 'zh'].includes(lang);
 }
 
-export const load: PageServerLoad = async ({ params: { query, subquery }, setHeaders }) => {
+export const load: PageServerLoad = async ({
+	params: { query, subquery },
+	setHeaders,
+	platform
+}) => {
 	if (!isValidLanguage(query)) {
 		error(404, 'Not found');
 	}
 
 	setHeaders({
-		'Cache-Control': 'public, max-age=3600, s-maxage=86400'
+		'Cache-Control': GLOSSARY_CACHE_CONTROL
 	});
-	const { table, sheets, index } = await getGlossary();
+	const { table, sheets, index } = await getGlossary(glossaryBucket(platform));
 
 	// Same order the title uses, so the first card is the word in the snippet.
 	const found = orderForSnippet(query, subquery, index([query as Language]).search(subquery));

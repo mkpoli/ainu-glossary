@@ -1,9 +1,11 @@
 import { isPlaceholderLike } from '$lib/placeholder';
 import { segment } from '$lib/segment';
-import { downloadData } from '$lib/server/data';
+import { glossaryBucket } from '$lib/server/data';
+import { getGlossary, type Glossary } from '$lib/server/glossary';
+import type { RequestHandler } from './$types';
 
 import { cjk2zhs } from 'cjk-conv';
-import { latn2kana } from '$lib/script.svelte';
+import { latn2kana } from '$lib/kana';
 
 function isWord(word: string): boolean {
 	if (isPlaceholderLike(word)) {
@@ -94,9 +96,8 @@ function generateSitemap(hostname: string, urls: string[], lastmod?: string) {
 		</urlset>`;
 }
 
-export async function GET() {
-	const { table, lastModified } = await downloadData();
-	const lastmod = lastModified ? lastModified.toISOString().slice(0, 10) : undefined;
+function buildSitemap({ table, lastModified }: Glossary): string {
+	const lastmod = lastModified.toISOString().slice(0, 10);
 	const urls: Set<string> = new Set(
 		table.flatMap((item) => [
 			...(item.Aynu
@@ -123,10 +124,23 @@ export async function GET() {
 				: [])
 		])
 	);
-	return new Response(generateSitemap('https://itak.aynu.org/', Array.from(urls), lastmod), {
+	return generateSitemap('https://itak.aynu.org/', Array.from(urls), lastmod);
+}
+
+// Segmenting every entry is the costly part, so each glossary build renders its sitemap once.
+const sitemaps = new WeakMap<Glossary, string>();
+
+export const GET: RequestHandler = async ({ platform }) => {
+	const glossary = await getGlossary(glossaryBucket(platform));
+	let sitemap = sitemaps.get(glossary);
+	if (!sitemap) {
+		sitemap = buildSitemap(glossary);
+		sitemaps.set(glossary, sitemap);
+	}
+	return new Response(sitemap, {
 		headers: {
 			'Content-Type': 'application/xml',
 			'Cache-Control': 'public, max-age=3600, s-maxage=86400'
 		}
 	});
-}
+};

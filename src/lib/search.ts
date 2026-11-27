@@ -2,7 +2,7 @@ import Fuse from 'fuse.js';
 import * as WanaKana from 'wanakana';
 import * as cjkConv from 'cjk-conv';
 import type { Entry } from './data';
-import { latn2kana } from './script.svelte';
+import { latn2kana } from './kana';
 import { segment, segmentWithHighlightIndices, type Segment } from './segment';
 import { isPlaceholderLike } from './placeholder';
 import groupBy from 'object.groupby';
