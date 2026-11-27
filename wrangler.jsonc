@@ -11,6 +11,14 @@
 		"directory": ".svelte-kit/cloudflare"
 	},
 	"routes": [{ "pattern": "itak.aynu.org", "custom_domain": true }],
+	"r2_buckets": [
+		{
+			"binding": "GLOSSARY_BUCKET",
+			"bucket_name": "ainu-glossary",
+			// Local dev reads the deployed bucket, which needs `wrangler login`.
+			"remote": true
+		}
+	],
 	"observability": {
 		"enabled": true
 	}

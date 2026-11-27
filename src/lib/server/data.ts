@@ -1,5 +1,5 @@
 import type { Entry, Sheet } from '$lib/data';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import type { R2Bucket } from '@cloudflare/workers-types';
 import { getGoogleAccessToken } from './google-auth';
 
 interface GoogleCredentials {
@@ -12,20 +12,8 @@ interface GoogleCredentials {
 }
 let googleCredentials: GoogleCredentials;
 
-interface CloudflareCredentials {
-	accessKeyId: string;
-	secretAccessKey: string;
-	bucket: string;
-	endpoint: string;
-}
-let cloudflareCredentials: CloudflareCredentials;
-
 try {
 	const {
-		PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-		PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
-		PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-		PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT,
 		PRIVATE_GOOGLE_API_TYPE,
 		PRIVATE_GOOGLE_API_PROJECT_ID,
 		PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
@@ -41,21 +29,10 @@ try {
 		client_email: PRIVATE_GOOGLE_API_CLIENT_EMAIL,
 		client_id: PRIVATE_GOOGLE_API_CLIENT_ID
 	};
-
-	cloudflareCredentials = {
-		accessKeyId: PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-		secretAccessKey: PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
-		bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-		endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
-	};
 } catch (e) {
 	// Use dot env
 
 	const {
-		PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-		PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
-		PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-		PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT,
 		PRIVATE_GOOGLE_API_TYPE,
 		PRIVATE_GOOGLE_API_PROJECT_ID,
 		PRIVATE_GOOGLE_API_PRIVATE_KEY_ID,
@@ -71,13 +48,6 @@ try {
 		private_key: PRIVATE_GOOGLE_API_PRIVATE_KEY,
 		client_email: PRIVATE_GOOGLE_API_CLIENT_EMAIL,
 		client_id: PRIVATE_GOOGLE_API_CLIENT_ID
-	};
-
-	cloudflareCredentials = {
-		accessKeyId: PRIVATE_CLOUDFLARE_R2_S3_ACCESS_KEY_ID,
-		secretAccessKey: PRIVATE_CLOUDFLARE_R2_S3_SECRET_ACCESS_KEY,
-		bucket: PRIVATE_CLOUDFLARE_R2_S3_BUCKET,
-		endpoint: PRIVATE_CLOUDFLARE_R2_S3_ENDPOINT
 	};
 }
 
@@ -95,53 +65,51 @@ async function sheetsApi<T>(path: string): Promise<T> {
 	return response.json() as Promise<T>;
 }
 
-import type { NodeJsClient } from '@smithy/types';
-import { Buffer } from 'node:buffer';
+const TABLE_KEY = 'table.json';
+const SHEETS_KEY = 'sheets.json';
 
-const s3 = new S3Client({
-	region: 'auto',
-	credentials: {
-		accessKeyId: cloudflareCredentials.accessKeyId,
-		secretAccessKey: cloudflareCredentials.secretAccessKey
-	},
-	endpoint: cloudflareCredentials.endpoint
-}) as NodeJsClient<S3Client>;
+/** The R2 operations the glossary needs, served by the `GLOSSARY_BUCKET` binding. */
+export type GlossaryBucket = Pick<R2Bucket, 'get' | 'head' | 'put'>;
 
-export async function downloadTextFile(
-	key: string
-): Promise<{ text: string; lastModified?: Date }> {
-	const result = await s3.send(
-		new GetObjectCommand({
-			Bucket: cloudflareCredentials.bucket,
-			Key: key
-		})
-	);
-
-	const chunks: Uint8Array[] = [];
-
-	for await (const chunk of result.Body ?? []) {
-		chunks.push(chunk);
+export function glossaryBucket(platform: App.Platform | undefined): GlossaryBucket {
+	const bucket = platform?.env?.GLOSSARY_BUCKET;
+	if (!bucket) {
+		throw new Error('The GLOSSARY_BUCKET R2 binding is missing from platform.env');
 	}
-
-	return { text: Buffer.concat(chunks).toString(), lastModified: result.LastModified };
+	return bucket;
 }
 
-export async function downloadData(): Promise<{
+function versionOf(table: { etag: string }, sheets: { etag: string }): string {
+	return `${table.etag}:${sheets.etag}`;
+}
+
+/** Identifies the stored glossary by its ETags; changes whenever either object is rewritten. */
+export async function dataVersion(bucket: GlossaryBucket): Promise<string | undefined> {
+	const [table, sheets] = await Promise.all([bucket.head(TABLE_KEY), bucket.head(SHEETS_KEY)]);
+	return table && sheets ? versionOf(table, sheets) : undefined;
+}
+
+export async function downloadData(bucket: GlossaryBucket): Promise<{
 	table: Entry[];
 	sheets: Sheet[];
-	lastModified?: Date;
+	lastModified: Date;
+	version: string;
 }> {
-	const table_result = await downloadTextFile('table.json');
-	const sheets_result = await downloadTextFile('sheets.json');
+	const [table, sheets] = await Promise.all([bucket.get(TABLE_KEY), bucket.get(SHEETS_KEY)]);
+	if (!table || !sheets) {
+		const missing = [!table && TABLE_KEY, !sheets && SHEETS_KEY].filter(Boolean).join(', ');
+		throw new Error(`Glossary bucket has no ${missing}`);
+	}
 
 	return {
-		table: JSON.parse(table_result.text),
-		sheets: JSON.parse(sheets_result.text),
-		lastModified: table_result.lastModified
+		table: await table.json<Entry[]>(),
+		sheets: await sheets.json<Sheet[]>(),
+		lastModified: table.uploaded,
+		version: versionOf(table, sheets)
 	};
 }
 
-export async function updateData(): Promise<void> {
+export async function updateData(bucket: GlossaryBucket): Promise<void> {
 	console.info('[updateData] Start');
 
 	const sheets = await sheetsApi<{
@@ -219,27 +187,11 @@ export async function updateData(): Promise<void> {
 
 	// console.log(all_content_sheets_data_flattened);
 
-	// Upload the result to Cloudflare R2 thourgh S3 API
-
 	console.info('[updateData] Uploading to Cloudflare R2');
 
-	await s3.send(
-		new PutObjectCommand({
-			Bucket: cloudflareCredentials.bucket,
-			Key: 'table.json',
-			Body: JSON.stringify(all_content_sheets_data_flattened),
-			ContentType: 'application/json'
-		})
-	);
-
-	await s3.send(
-		new PutObjectCommand({
-			Bucket: cloudflareCredentials.bucket,
-			Key: 'sheets.json',
-			Body: JSON.stringify(all_content_sheets),
-			ContentType: 'application/json'
-		})
-	);
+	const json = { httpMetadata: { contentType: 'application/json' } };
+	await bucket.put(TABLE_KEY, JSON.stringify(all_content_sheets_data_flattened), json);
+	await bucket.put(SHEETS_KEY, JSON.stringify(all_content_sheets), json);
 
 	console.info('[updateData] Uploaded to Cloudflare R2');
 }

@@ -2,18 +2,21 @@ import { json } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
 
-import { downloadData, updateData } from '$lib/server/data';
-import { invalidateGlossary } from '$lib/server/glossary';
+import { GLOSSARY_CACHE_CONTROL } from '$lib/data';
+import { glossaryBucket, updateData } from '$lib/server/data';
+import { getGlossary, invalidateGlossary } from '$lib/server/glossary';
 
-export const GET: RequestHandler = async () => {
-	// Retrive data from R2 through S3 API
+export const GET: RequestHandler = async ({ platform }) => {
 	try {
-		const data = await downloadData();
-		return json(data, {
-			headers: {
-				'Cache-Control': 'public, max-age=86400, s-maxage=86400'
+		const { table, sheets, lastModified } = await getGlossary(glossaryBucket(platform));
+		return json(
+			{ table, sheets, lastModified },
+			{
+				headers: {
+					'Cache-Control': GLOSSARY_CACHE_CONTROL
+				}
 			}
-		});
+		);
 	} catch (e) {
 		console.error(e);
 		return json({ error: e });
@@ -26,7 +29,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		return json({ error: 'unauthorized' }, { status: 401 });
 	}
 	try {
-		await updateData();
+		await updateData(glossaryBucket(platform));
 		invalidateGlossary();
 		return json({ success: true });
 	} catch (e) {
